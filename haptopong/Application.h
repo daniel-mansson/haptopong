@@ -50,6 +50,7 @@ private:
 
 	// Scene stack
 	std::vector<ScenePtr> m_sceneStack;
+	ScenePtr m_currentScene;
 
 	//Update rate counters
     chai3d::cFrequencyCounter m_frequencyCounter;

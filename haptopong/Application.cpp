@@ -57,6 +57,7 @@ bool Application::initialize(const std::string& title, int* argc, char** argv)
 	glutKeyboardFunc(callbackKeySelect);
 	glutReshapeFunc(callbackResizeWindow);
 	glutSetWindowTitle(title.c_str());
+	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
 
 	// set fullscreen mode
 	if (m_fullscreen)
@@ -89,7 +90,6 @@ void Application::run()
 {
 	m_timer.start(true);
 	glutMainLoop();
-	close();
 }
 
 void Application::resizeWindow(int w, int h)
@@ -100,11 +100,10 @@ void Application::resizeWindow(int w, int h)
 
 void Application::keySelect(unsigned char key, int x, int y)
 {
-	// option ESC: exit
+	// option ESC: pop
 	if ((key == 27) || (key == 'x'))
 	{
-		close();
-		exit(0);
+		popScene();
 	}
 
 	// option f: toggle fullscreen
@@ -144,6 +143,10 @@ void Application::updateGraphics(void)
 		m_sceneStack.back()->updateLogic(timeStep);
 		m_sceneStack.back()->render(timeStep);
 	}
+	else 
+	{
+		close();
+	}
 
 	glutSwapBuffers();
 
@@ -157,9 +160,11 @@ void Application::updateGraphics(void)
 void Application::graphicsTimer(int data)
 {    
 	if (m_simulationRunning)
+	{
 		glutPostRedisplay();
 
-	glutTimerFunc(16, callbackGraphicsTimer, 0);
+		glutTimerFunc(16, callbackGraphicsTimer, 0);
+	}
 }
 
 void Application::close()
@@ -167,13 +172,18 @@ void Application::close()
 	// stop the simulation
 	m_simulationRunning = false;
 
+	// close all scenes
 	clearScenes();
 
 	// wait for graphics and haptics loops to terminate
-	while (!m_simulationFinished) { cSleepMs(100); }
+	while (!m_simulationFinished) 
+		cSleepMs(100);
 
 	// close haptic device
 	m_hapticDevice->close();
+
+	// shut down glut
+	glutLeaveMainLoop();
 }
 
 void Application::updateHaptics()
@@ -196,8 +206,10 @@ void Application::updateHaptics()
 		m_smoothHapticTimeStep += m_timeStepSmoothFactor * (timeStep - m_smoothHapticTimeStep);
 		timer.start(true);
 
-		if(!m_sceneStack.empty())
-			m_sceneStack.back()->updateHaptics(timeStep);
+		//Copy to local to avoid threading errors
+		ScenePtr current = m_currentScene;
+		if(current != nullptr)
+			current->updateHaptics(timeStep);
 
 		m_frequencyCounter.signal(1);
 	}
@@ -213,6 +225,8 @@ void Application::pushScene(ScenePtr scene)
 	if(prev != nullptr)
 		prev->exit(scene);
 	scene->enter(prev);
+
+	m_currentScene = scene;
 }
 
 ScenePtr Application::popScene()
@@ -227,7 +241,12 @@ ScenePtr Application::popScene()
 		ScenePtr next = m_sceneStack.empty() ? nullptr : m_sceneStack.back();
 		top->exit(next);
 		if(next != nullptr)
+		{
 			next->enter(top);
+			m_currentScene = next;
+		}
+		else
+			m_currentScene = nullptr;
 
 		return top;
 	}
