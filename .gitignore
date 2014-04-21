@@ -19,3 +19,11 @@
 *.exe
 *.out
 *.app
+
+# Other compiler stuff
+*.ilk
+*.pdb
+bin/
+depends/
+haptopong/Debug/
+haptopong/Release/
