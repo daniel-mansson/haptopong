@@ -13,58 +13,67 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Scenes">
+      <UniqueIdentifier>{64ea24c7-f4f3-48a9-9a5b-f290bf44a08e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application">
+      <UniqueIdentifier>{89964a52-bcf7-4aac-9e32-853faa6e209c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pong">
+      <UniqueIdentifier>{bb66435d-8adf-4f82-9d9b-2c85392495aa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pch.cpp">
       <Filter>PCH</Filter>
     </ClCompile>
-    <ClCompile Include="Application.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TestScene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BallProperties.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RacketProperties.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="PongScene.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Application.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Application</Filter>
     </ClCompile>
     <ClCompile Include="MenuScene.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="RacketProperties.cpp">
+      <Filter>Pong</Filter>
+    </ClCompile>
+    <ClCompile Include="BallProperties.cpp">
+      <Filter>Pong</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
       <Filter>PCH</Filter>
     </ClInclude>
-    <ClInclude Include="Application.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TestScene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BallProperties.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RacketProperties.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="MenuScene.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="PongScene.h">
-      <Filter>Header Files</Filter>
+      <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="MenuScene.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Scene.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Application.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="TestScene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="RacketProperties.h">
+      <Filter>Pong</Filter>
+    </ClInclude>
+    <ClInclude Include="BallProperties.h">
+      <Filter>Pong</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
