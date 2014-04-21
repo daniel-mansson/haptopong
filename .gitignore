@@ -23,6 +23,9 @@
 # Other compiler stuff
 *.ilk
 *.pdb
+*.sdf
+*.opensdf
+*.ipch
 bin/
 depends/
 haptopong/Debug/

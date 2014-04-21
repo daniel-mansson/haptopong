@@ -91,14 +91,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="BallProperties.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="RacketProperties.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="TestScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="BallProperties.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="RacketProperties.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="TestScene.h" />
   </ItemGroup>
