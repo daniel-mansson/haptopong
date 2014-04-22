@@ -64,6 +64,9 @@
     <ClCompile Include="LinearResponse.cpp">
       <Filter>Pong\Collision</Filter>
     </ClCompile>
+    <ClCompile Include="TestHapticCollisionScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -101,6 +104,9 @@
     </ClInclude>
     <ClInclude Include="LinearResponse.h">
       <Filter>Pong\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="TestHapticCollisionScene.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

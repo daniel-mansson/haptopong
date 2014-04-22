@@ -9,3 +9,4 @@ public:
 	virtual bool isDone() const = 0;
 };
 
+typedef std::shared_ptr<CollisionResponse> CollisionResponsePtr;

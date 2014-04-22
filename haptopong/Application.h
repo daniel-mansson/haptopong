@@ -33,6 +33,7 @@ public:
 	const double& getSmoothRenderTimeStep() const { return m_smoothRenderTimeStep; }
 	const double& getSmoothLogicTimeStep() const { return m_smoothLogicTimeStep; }
 	const double& getSmoothHapticTimeStep() const { return m_smoothHapticTimeStep; }
+	chai3d::cGenericHapticDevicePtr getHapticDevice() const { return m_hapticDevice; }
 
 private:
 	//Display info

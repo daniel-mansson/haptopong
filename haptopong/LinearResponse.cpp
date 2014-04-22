@@ -23,6 +23,7 @@ LinearResponse::LinearResponse(const Racket& racket, const Ball& ball) :
 
 	m_magnitude = cDot(m_normal, m_ball.getVelocity() - m_racket.getVelocity());
 	m_magnitudeTangent = angle;
+
 }
 
 LinearResponse::~LinearResponse(void)
@@ -33,7 +34,7 @@ LinearResponse::~LinearResponse(void)
 void LinearResponse::updateHaptics(const double& timeStep, chai3d::cVector3d& force)
 {
 	m_time += timeStep;
-
+	
 	if(m_time >= m_duration)
 	{
 		force.zero();
@@ -53,5 +54,5 @@ void LinearResponse::updateHaptics(const double& timeStep, chai3d::cVector3d& fo
 
 bool LinearResponse::isDone() const
 {
-	return m_time < m_duration;
+	return m_time >= m_duration;
 }
