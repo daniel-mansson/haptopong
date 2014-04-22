@@ -22,6 +22,9 @@
     <Filter Include="Pong">
       <UniqueIdentifier>{bb66435d-8adf-4f82-9d9b-2c85392495aa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pong\Collision">
+      <UniqueIdentifier>{d103df1e-48cc-4573-b677-58194f03809c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -49,6 +52,18 @@
     <ClCompile Include="BallProperties.cpp">
       <Filter>Pong</Filter>
     </ClCompile>
+    <ClCompile Include="Ball.cpp">
+      <Filter>Pong</Filter>
+    </ClCompile>
+    <ClCompile Include="Racket.cpp">
+      <Filter>Pong</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionResponse.cpp">
+      <Filter>Pong\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="LinearResponse.cpp">
+      <Filter>Pong\Collision</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -74,6 +89,18 @@
     </ClInclude>
     <ClInclude Include="BallProperties.h">
       <Filter>Pong</Filter>
+    </ClInclude>
+    <ClInclude Include="Racket.h">
+      <Filter>Pong</Filter>
+    </ClInclude>
+    <ClInclude Include="Ball.h">
+      <Filter>Pong</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionResponse.h">
+      <Filter>Pong\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="LinearResponse.h">
+      <Filter>Pong\Collision</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

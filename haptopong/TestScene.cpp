@@ -76,18 +76,18 @@ void TestScene::exit(ScenePtr to)
 {
 }
 
-void TestScene::render(double timeStep)
+void TestScene::render(const double& timeStep)
 {
 	m_label->setString ("Hej hej hej hej  " + cStr(m_app.getHapticHz()) + "   " + cStr(1.0 / m_app.getSmoothRenderTimeStep(), 0));
 
 	m_camera->renderView(m_app.getWindowWidth(), m_app.getWindowHeight());
 }
 
-void TestScene::updateLogic(double timeStep)
+void TestScene::updateLogic(const double& timeStep)
 {
 }
 
-void TestScene::updateHaptics(double timeStep)
+void TestScene::updateHaptics(const double& timeStep)
 {
 }
 

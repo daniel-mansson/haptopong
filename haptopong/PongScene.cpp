@@ -30,17 +30,17 @@ void PongScene::exit(ScenePtr to)
 
 }
 
-void PongScene::render(double timeStep)
+void PongScene::render(const double& timeStep)
 {
 	m_camera->renderView(m_app.getWindowWidth(), m_app.getWindowHeight());
 }
 
-void PongScene::updateLogic(double timeStep)
+void PongScene::updateLogic(const double& timeStep)
 {
 
 }
 
-void PongScene::updateHaptics(double timeStep)
+void PongScene::updateHaptics(const double& timeStep)
 {
 
 }

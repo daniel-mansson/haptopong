@@ -70,7 +70,7 @@ void MenuScene::exit(ScenePtr to)
 
 }
 
-void MenuScene::render(double timeStep)
+void MenuScene::render(const double& timeStep)
 {
 	double w = (double)m_app.getWindowWidth();
 	double h = (double)m_app.getWindowHeight();
@@ -100,12 +100,12 @@ void MenuScene::render(double timeStep)
 	m_camera->renderView(m_app.getWindowWidth(), m_app.getWindowHeight());
 }
 
-void MenuScene::updateLogic(double timeStep)
+void MenuScene::updateLogic(const double& timeStep)
 {
 
 }
 
-void MenuScene::updateHaptics(double timeStep)
+void MenuScene::updateHaptics(const double& timeStep)
 {
 
 }

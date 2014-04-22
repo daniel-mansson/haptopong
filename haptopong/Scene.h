@@ -16,11 +16,11 @@ public:
 	virtual void exit(std::shared_ptr<Scene> to) = 0;
 
 	// Render the scene
-	virtual void render(double timeStep) = 0;
+	virtual void render(const double& timeStep) = 0;
 	// Update the logic in the scene (Often with a time step similar to render)
-	virtual void updateLogic(double timeStep) = 0;
+	virtual void updateLogic(const double& timeStep) = 0;
 	// Update the haptics rendering (Needs to be high performance and thread safe)
-	virtual void updateHaptics(double timeStep) = 0;
+	virtual void updateHaptics(const double& timeStep) = 0;
 
 	// Called when a keyboard button is pressed
 	virtual void onKeyDown(unsigned char key, int x, int y) = 0;

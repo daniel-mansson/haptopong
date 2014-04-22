@@ -10,9 +10,9 @@ public:
 	void enter(ScenePtr from);
 	void exit(ScenePtr to);
 
-	void render(double timeStep);
-	void updateLogic(double timeStep);
-	void updateHaptics(double timeStep);
+	void render(const double& timeStep);
+	void updateLogic(const double& timeStep);
+	void updateHaptics(const double& timeStep);
 
 	void onKeyDown(unsigned char key, int x, int y);
 
