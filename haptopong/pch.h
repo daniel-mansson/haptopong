@@ -6,6 +6,9 @@
 
 #include <GL/freeglut.h>
 
+//Chai ODE
+#include <CODE.h>
+
 #ifndef MACOSX
 #include <GL/glut.h>
 #else
