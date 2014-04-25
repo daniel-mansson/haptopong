@@ -67,7 +67,6 @@ void TestHapticCollisionScene::render(const double& timeStep)
 		label->setLocalPos(0.5 * (w - m_maxLabelWidth), y, 0);
 	}
 
-
 	m_camera->renderView(m_app.getWindowWidth(), m_app.getWindowHeight());
 }
 
