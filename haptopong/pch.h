@@ -4,7 +4,9 @@
 #include <iostream>
 #include <cstdlib>
 
+#ifndef MACOSX
 #include <GL/freeglut.h>
+#endif
 
 #ifndef MACOSX
 #include <GL/glut.h>
