@@ -20,7 +20,6 @@ public:
 
 private:
 	
-	dWorldID m_physics;
 	chai3d::cWorldPtr m_world;
 	chai3d::cCamera* m_camera;
 };

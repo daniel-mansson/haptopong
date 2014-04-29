@@ -15,8 +15,6 @@ PongScene::PongScene(Application& app) :
 	
 	m_camera = new cCamera(m_world.get());
     m_world->addChild(m_camera);
-
-	m_physics = dWorldCreate();
 }
 
 PongScene::~PongScene(void)
@@ -41,7 +39,7 @@ void PongScene::render(const double& timeStep)
 
 void PongScene::updateLogic(const double& timeStep)
 {
-
+	
 }
 
 void PongScene::updateHaptics(const double& timeStep)
