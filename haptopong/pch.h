@@ -4,7 +4,9 @@
 #include <iostream>
 #include <cstdlib>
 
+#ifndef MACOSX
 #include <GL/freeglut.h>
+#endif
 
 #include <ode/ode.h>
 //Chai ODE
