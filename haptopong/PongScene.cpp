@@ -3,6 +3,8 @@
 
 #include "Application.h"
 
+#include <ode/ode.h>
+
 using namespace chai3d;
 
 PongScene::PongScene(Application& app) :
@@ -13,6 +15,8 @@ PongScene::PongScene(Application& app) :
 	
 	m_camera = new cCamera(m_world.get());
     m_world->addChild(m_camera);
+
+	m_physics = dWorldCreate();
 }
 
 PongScene::~PongScene(void)

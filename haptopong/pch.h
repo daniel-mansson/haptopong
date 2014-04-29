@@ -6,6 +6,7 @@
 
 #include <GL/freeglut.h>
 
+#include <ode/ode.h>
 //Chai ODE
 #include <CODE.h>
 

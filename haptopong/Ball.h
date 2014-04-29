@@ -12,15 +12,16 @@ public:
 		
 	//Setters for testing (should be updated by the physics engine later)
 	void setVelocity(const chai3d::cVector3d& velocity) { m_velocity = velocity; }
-	void setAngularVelocity(const chai3d::cQuaternion& angularVelocity) { m_angularVelocity = angularVelocity; }
+	void setAngularVelocity(const chai3d::cVector3d& angularVelocity) { m_angularVelocity = angularVelocity; }
+	void setAngularVelocity(const chai3d::cVector3d& axis, const double& angle) { m_angularVelocity = angle * axis; }
 
 	const BallProperties& getProperties() const { return m_properties; }
 	const chai3d::cVector3d& getVelocity() const { return m_velocity; }
-	const chai3d::cQuaternion& getAngularVelocity() const { return m_angularVelocity; }
+	const chai3d::cVector3d& getAngularVelocity() const { return m_angularVelocity; }
 
 private:
 	chai3d::cVector3d m_velocity;
-	chai3d::cQuaternion m_angularVelocity;
+	chai3d::cVector3d m_angularVelocity;
 	BallProperties m_properties;
 };
 

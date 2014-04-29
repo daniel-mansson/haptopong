@@ -20,7 +20,7 @@ public:
 
 	void onKeyDown(unsigned char key, int x, int y);
 
-	static ScenePtr create(Application& app) { return ScenePtr(new TestHapticCollisionScene(app)); }
+	static ScenePtr create(Application& app) { return ScenePtr(new TestHapticCollisionScene(app)); }	
 
 private:
 	

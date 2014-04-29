@@ -86,7 +86,7 @@ void TestHapticCollisionScene::updateHaptics(const double& timeStep)
 	if(collision != nullptr)
 	{
 		collision->updateHaptics(timeStep, force);
-		m_hapticDevice->setForce(force);
+		m_hapticDevice->setForce(-force);
 	}
 	else 
 	{
@@ -102,10 +102,10 @@ void TestHapticCollisionScene::onKeyDown(unsigned char key, int x, int y)
 	case '1':
 		{
 			m_racket.setNormal(cVector3d(1, 0, 0));
-			m_racket.setVelocity(cVector3d(2, 0, 0));
+			m_racket.setVelocity(cVector3d(20, 0, 0));
 
 			m_ball.setVelocity(cVector3d(-5, 0, 0));
-			m_ball.setAngularVelocity(cQuaternion(0,0,0,1));
+			m_ball.setAngularVelocity(cVector3d(0,0,0));
 
 			m_collision = CollisionResponsePtr(new LinearResponse(m_racket, m_ball));
 		}
@@ -113,10 +113,10 @@ void TestHapticCollisionScene::onKeyDown(unsigned char key, int x, int y)
 	case '2':
 		{
 			m_racket.setNormal(cVector3d(1, 0, 0));
-			m_racket.setVelocity(cVector3d(2, 0, 0));
+			m_racket.setVelocity(cVector3d(20, 0, 0));
 
 			m_ball.setVelocity(cVector3d(-5, 0, 0));
-			m_ball.setAngularVelocity(cQuaternion(0,10,0,1));
+			m_ball.setAngularVelocity(cVector3d(0, 10, 0));
 
 			m_collision = CollisionResponsePtr(new LinearResponse(m_racket, m_ball));
 		}
