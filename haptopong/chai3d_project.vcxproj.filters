@@ -67,6 +67,9 @@
     <ClCompile Include="TestHapticCollisionScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="NetworkScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -107,6 +110,9 @@
     </ClInclude>
     <ClInclude Include="TestHapticCollisionScene.h">
       <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkScene.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

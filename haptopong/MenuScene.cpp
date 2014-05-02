@@ -4,6 +4,7 @@
 #include "TestScene.h"
 #include "TestHapticCollisionScene.h"
 #include "PongScene.h"
+#include "NetworkScene.h"
 
 #include "Application.h"
 
@@ -46,7 +47,11 @@ MenuScene::MenuScene(Application& app) :
 	m_menu.push_back(item);
 
 	item = new cLabel(menuFont.get());
-	item->setString("4. Exit");
+	item->setString("4. Start NetworkScene");
+	m_menu.push_back(item);
+
+	item = new cLabel(menuFont.get());
+	item->setString("5. Exit");
 	m_menu.push_back(item);
 	
     m_camera->m_frontLayer->addChild(m_title);
@@ -129,6 +134,9 @@ void MenuScene::onKeyDown(unsigned char key, int x, int y)
 		m_app.pushScene(TestHapticCollisionScene::create(m_app));
 		break;
 	case '4':
+		m_app.pushScene(NetworkScene::create(m_app));
+		break;
+	case '5':
 		m_app.popScene();
 		break;
 	}
