@@ -18,6 +18,21 @@ PongScene::PongScene(Application& app) :
                  cVector3d (0.0, 0.0, 0.0),    // look at position (target)
                  cVector3d (0.0, 0.0, 1.0));   // direction of the (up) vector
 	m_world->addChild(m_camera);
+
+	
+    // create a directional light source
+    cDirectionalLight* light = new cDirectionalLight(m_world.get());
+
+    // insert light source inside world
+    m_world->addChild(light);
+
+    // enable light source
+    light->setEnabled(true);                   
+
+    // define direction of light beam
+	cVector3d ldir(-1, -0.5, -2);
+	ldir.normalize();
+    light->setDir(ldir); 
 	 
 	//Create physics
 	btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
@@ -29,7 +44,7 @@ PongScene::PongScene(Application& app) :
 	m_dynamicsWorld->setGravity(btVector3(0, 0, -10));
 
 
-	m_groundShape = new btBoxShape(btVector3(btScalar(0.5),btScalar(0.5),btScalar(0.5)));
+	m_groundShape = new btBoxShape(btVector3(btScalar(0.5),btScalar(2),btScalar(0.5)));
 
 	btTransform groundTransform;
 	groundTransform.setIdentity();
@@ -51,7 +66,7 @@ PongScene::PongScene(Application& app) :
 		//add the body to the dynamics world
 		m_dynamicsWorld->addRigidBody(m_groundBody);
 	}
-	m_ground = new cShapeBox(1.0, 1.0, 1.0);
+	m_ground = new cShapeBox(1.0, 4, 1.0);
 	m_world->addChild(m_ground);
 	
 	{
@@ -124,7 +139,18 @@ void PongScene::updateLogic(const double& timeStep)
 
 void PongScene::updateHaptics(const double& timeStep)
 {
+	cVector3d pos;
+	m_app.getHapticDevice()->getPosition(pos);
 
+	pos *= 100;
+	double mag = cClamp((pos.x() + 3.5) * 1.5, 2.0, 20.0); 
+
+	m_camera->set( cVector3d (mag * cCosRad(pos.y()* 0.5), mag * cSinRad(pos.y() * 0.5), pos.z() * 1.7),    // camera position (eye)
+                 cVector3d (0.0, 0.0, 0.0),    // look at position (target)
+                 cVector3d (0.0, 0.0, 1.0));   // direction of the (up) vector
+
+	cVector3d zero(0,0,0);
+	m_app.getHapticDevice()->setForce(zero);
 }
 
 void PongScene::onKeyDown(unsigned char key, int x, int y)
