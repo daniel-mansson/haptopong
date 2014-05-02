@@ -8,7 +8,11 @@
 #include <GL/freeglut.h>
 #endif
 
+//Bullet physics engine
 #include <btBulletDynamicsCommon.h>
+
+//Network engine
+#include <enet/enet.h>
 
 #ifndef MACOSX
 #include <GL/glut.h>
