@@ -25,6 +25,9 @@
     <Filter Include="Pong\Collision">
       <UniqueIdentifier>{d103df1e-48cc-4573-b677-58194f03809c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Util">
+      <UniqueIdentifier>{63ea87c7-d8f0-43b4-b495-fb379d884fe0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -113,6 +116,9 @@
     </ClInclude>
     <ClInclude Include="NetworkScene.h">
       <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Util.h">
+      <Filter>Util</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

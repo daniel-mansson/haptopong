@@ -15,6 +15,7 @@
 //Bullet physics engine
 #include <btBulletDynamicsCommon.h>
 
+#include "Util.h"
 
 #ifndef MACOSX
 #include <GL/glut.h>

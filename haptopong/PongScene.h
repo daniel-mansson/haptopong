@@ -29,5 +29,7 @@ private:
 	btCollisionShape* m_sphereShape;
 	btRigidBody* m_groundBody;
 	btRigidBody* m_sphereBody;
+	chai3d::cShapeSphere* m_sphere;
+	chai3d::cShapeBox* m_ground;
 };
 
