@@ -8,8 +8,7 @@
 #include <GL/freeglut.h>
 #endif
 
-//Chai ODE
-#include <CODE.h>
+#include <btBulletDynamicsCommon.h>
 
 #ifndef MACOSX
 #include <GL/glut.h>

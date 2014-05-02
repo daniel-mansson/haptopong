@@ -20,7 +20,7 @@ public:
 
 	void onKeyDown(unsigned char key, int x, int y);
 
-	static ScenePtr create(Application& app) { return ScenePtr(new TestHapticCollisionScene(app)); }
+	static ScenePtr create(Application& app) { return ScenePtr(new TestHapticCollisionScene(app)); }	
 
 private:
 	
@@ -34,5 +34,6 @@ private:
 	Ball m_ball;
 	Racket m_racket;
 	CollisionResponsePtr m_collision;
+	bool m_force;
 };
 

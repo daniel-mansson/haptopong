@@ -3,6 +3,8 @@
 
 #include "Application.h"
 
+#include <ode/ode.h>
+
 using namespace chai3d;
 
 PongScene::PongScene(Application& app) :
@@ -37,7 +39,7 @@ void PongScene::render(const double& timeStep)
 
 void PongScene::updateLogic(const double& timeStep)
 {
-
+	
 }
 
 void PongScene::updateHaptics(const double& timeStep)

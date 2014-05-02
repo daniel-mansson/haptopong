@@ -8,7 +8,8 @@ using namespace chai3d;
 
 TestHapticCollisionScene::TestHapticCollisionScene(Application& app) :
 	Scene(app),
-	m_collision(nullptr)
+	m_collision(nullptr),
+	m_force(false)
 {
 	m_hapticDevice = m_app.getHapticDevice();
 
@@ -23,11 +24,16 @@ TestHapticCollisionScene::TestHapticCollisionScene(Application& app) :
 	cLabel* line;
 
 	line = new cLabel(m_font.get());
-	line->setString("1. Linear, Front, No spin");
+	line->setString("1. Linear, dFront, No spin");
+	
 	m_labels.push_back(line);
 
 	line = new cLabel(m_font.get());
 	line->setString("2. Linear, Front, Spin");
+	m_labels.push_back(line);
+
+	line = new cLabel(m_font.get());
+	line->setString("3. Linear, Front, No spin, Less elasticity");
 	m_labels.push_back(line);
 
 	m_maxLabelWidth = 0;
@@ -82,16 +88,34 @@ void TestHapticCollisionScene::updateHaptics(const double& timeStep)
 {	
 	CollisionResponsePtr collision = m_collision;
 	cVector3d force;
+	cVector3d pos;
 
 	if(collision != nullptr)
 	{
-		collision->updateHaptics(timeStep, force);
-		m_hapticDevice->setForce(force);
+		force.zero();
+
+		m_app.getHapticDevice()->getPosition(pos);
+		if(pos(0) < 0)
+		{
+			if(!collision->isDone())
+				m_force = true;
+		}
+
+		if(m_force)
+		{
+			collision->updateHaptics(timeStep, force);	
+
+			if(collision->isDone())
+				m_force = false;
+		}
+		
+		m_hapticDevice->setForce(-force);
 	}
 	else 
 	{
 		force.zero();
 		m_hapticDevice->setForce(force);
+		m_force = false;
 	}
 }
 
@@ -102,10 +126,11 @@ void TestHapticCollisionScene::onKeyDown(unsigned char key, int x, int y)
 	case '1':
 		{
 			m_racket.setNormal(cVector3d(1, 0, 0));
-			m_racket.setVelocity(cVector3d(2, 0, 0));
+			m_racket.setVelocity(cVector3d(20, 0, 0));
 
 			m_ball.setVelocity(cVector3d(-5, 0, 0));
-			m_ball.setAngularVelocity(cQuaternion(0,0,0,1));
+			m_ball.setAngularVelocity(cVector3d(0,0,0));
+			m_ball.setProperties(BallProperties());
 
 			m_collision = CollisionResponsePtr(new LinearResponse(m_racket, m_ball));
 		}
@@ -113,10 +138,25 @@ void TestHapticCollisionScene::onKeyDown(unsigned char key, int x, int y)
 	case '2':
 		{
 			m_racket.setNormal(cVector3d(1, 0, 0));
-			m_racket.setVelocity(cVector3d(2, 0, 0));
+			m_racket.setVelocity(cVector3d(20, 0, 0));
 
 			m_ball.setVelocity(cVector3d(-5, 0, 0));
-			m_ball.setAngularVelocity(cQuaternion(0,10,0,1));
+			m_ball.setAngularVelocity(cVector3d(0, 10, 0));
+			m_ball.setProperties(BallProperties());
+
+			m_collision = CollisionResponsePtr(new LinearResponse(m_racket, m_ball));
+		}
+		break;
+	case '3':
+		{
+			m_racket.setNormal(cVector3d(1, 0, 0));
+			m_racket.setVelocity(cVector3d(22, 0, 0));
+
+			m_ball.setVelocity(cVector3d(-7, 0, 0));
+			m_ball.setAngularVelocity(cVector3d(0,0,0));
+			BallProperties p;
+			p.setElasticity(0);
+			m_ball.setProperties(p);
 
 			m_collision = CollisionResponsePtr(new LinearResponse(m_racket, m_ball));
 		}

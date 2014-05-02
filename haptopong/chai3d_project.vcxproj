@@ -56,14 +56,14 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\depends\chai3d\include;..\depends\CODE\include;..\depends\freeglut\include;..\depends\Eigen;..\depends\glew\include;..\depends\ODE\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\depends\chai3d\include;..\depends\bullet\include;..\depends\CODE\include;..\depends\freeglut\include;..\depends\Eigen;..\depends\glew\include;..\depends\ODE\include</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\depends\CODE\lib\$(Configuration)\$(Platform);..\depends\glew\lib\$(Configuration)\$(Platform);..\depends\ODE\lib\$(Configuration)\$(Platform);..\depends\chai3d\lib\$(Configuration)\$(Platform);..\depends\freeglut\lib\$(Configuration)\$(Platform)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);chai3d.lib;freeglut.lib;glew.lib;ODE.lib;CODE.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\depends\bullet\lib\$(Configuration)\$(Platform);..\depends\CODE\lib\$(Configuration)\$(Platform);..\depends\glew\lib\$(Configuration)\$(Platform);..\depends\ODE\lib\$(Configuration)\$(Platform);..\depends\chai3d\lib\$(Configuration)\$(Platform);..\depends\freeglut\lib\$(Configuration)\$(Platform)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);chai3d.lib;freeglut.lib;glew.lib;ODE.lib;CODE.lib;BulletCollision.lib;BulletDynamics.lib;LinearMath.lib</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
     </Link>
   </ItemDefinitionGroup>
@@ -76,7 +76,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\depends\chai3d\include;..\depends\CODE\include;..\depends\freeglut\include;..\depends\Eigen;..\depends\glew\include;..\depends\ODE\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\depends\chai3d\include;..\depends\bullet\include;..\depends\CODE\include;..\depends\freeglut\include;..\depends\Eigen;..\depends\glew\include;..\depends\ODE\include</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -84,8 +84,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>..\depends\CODE\lib\$(Configuration)\$(Platform);..\depends\glew\lib\$(Configuration)\$(Platform);..\depends\ODE\lib\$(Configuration)\$(Platform);..\depends\chai3d\lib\$(Configuration)\$(Platform);..\depends\freeglut\lib\$(Configuration)\$(Platform)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);chai3d.lib;freeglut.lib;glew.lib;ODE.lib;CODE.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\depends\bullet\lib\$(Configuration)\$(Platform);..\depends\CODE\lib\$(Configuration)\$(Platform);..\depends\glew\lib\$(Configuration)\$(Platform);..\depends\ODE\lib\$(Configuration)\$(Platform);..\depends\chai3d\lib\$(Configuration)\$(Platform);..\depends\freeglut\lib\$(Configuration)\$(Platform)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);chai3d.lib;freeglut.lib;glew.lib;ODE.lib;CODE.lib;BulletCollision.lib;BulletDynamics.lib;LinearMath.lib</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
     </Link>
   </ItemDefinitionGroup>
