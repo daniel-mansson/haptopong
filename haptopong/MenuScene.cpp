@@ -4,7 +4,7 @@
 #include "TestScene.h"
 #include "TestHapticCollisionScene.h"
 #include "PongScene.h"
-#include "NetworkScene.h"
+//#include "NetworkScene.h"
 
 #include "Application.h"
 
@@ -134,7 +134,7 @@ void MenuScene::onKeyDown(unsigned char key, int x, int y)
 		m_app.pushScene(TestHapticCollisionScene::create(m_app));
 		break;
 	case '4':
-		m_app.pushScene(NetworkScene::create(m_app));
+		//m_app.pushScene(NetworkScene::create(m_app));
 		break;
 	case '5':
 		m_app.popScene();

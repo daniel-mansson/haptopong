@@ -65,8 +65,9 @@
       <AdditionalLibraryDirectories>..\depends\enet\lib;..\depends\bullet\lib\$(Configuration)\$(Platform);..\depends\CODE\lib\$(Configuration)\$(Platform);..\depends\glew\lib\$(Configuration)\$(Platform);..\depends\ODE\lib\$(Configuration)\$(Platform);..\depends\chai3d\lib\$(Configuration)\$(Platform);..\depends\freeglut\lib\$(Configuration)\$(Platform)</AdditionalLibraryDirectories>
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);chai3d.lib;freeglut.lib;glew.lib;ODE.lib;CODE.lib;BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;enet.lib;ws2_32.lib;winmm.lib</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
-      <IgnoreAllDefaultLibraries>
-      </IgnoreAllDefaultLibraries>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -99,7 +100,6 @@
     <ClCompile Include="LinearResponse.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuScene.cpp" />
-    <ClCompile Include="NetworkScene.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="PongScene.cpp" />
     <ClCompile Include="Racket.cpp" />
@@ -115,7 +115,6 @@
     <ClInclude Include="CollisionResponse.h" />
     <ClInclude Include="LinearResponse.h" />
     <ClInclude Include="MenuScene.h" />
-    <ClInclude Include="NetworkScene.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PongScene.h" />
     <ClInclude Include="Racket.h" />
