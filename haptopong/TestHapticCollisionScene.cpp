@@ -24,7 +24,7 @@ TestHapticCollisionScene::TestHapticCollisionScene(Application& app) :
 	cLabel* line;
 
 	line = new cLabel(m_font.get());
-	line->setString("1. Linear, dFront, No spin");
+	line->setString("1. Linear, Front, No spin");
 	
 	m_labels.push_back(line);
 

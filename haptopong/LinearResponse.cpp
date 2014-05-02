@@ -2,6 +2,7 @@
 #include "LinearResponse.h"
 
 #include "Ball.h"
+
 #include "Racket.h"
 
 using namespace chai3d;

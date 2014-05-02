@@ -9,16 +9,28 @@ public:
 	double getElasticity() const { return m_elasticity; }
 	double getRestitution() const { return m_restitution; }
 	double getWeight() const { return m_weight; }
+	double getRadius() const { return m_radius; }
+	double getArea() const { return m_area; }
+	double getVolume() const { return m_volume; }
+	double getGravity() const { return m_gravity; }
 	
 	void setFriction(const double& friction) { m_friction = friction; }
 	void setElasticity(const double& elasticity) { m_elasticity = elasticity; }
 	void setRestitution(const double& restitution) { m_restitution = restitution; }
 	void setWeight(const double& weight) { m_weight = weight; }
+	void setRadius(const double& radius) { m_radius = radius; }
+	void setArea(const double& area) { m_area = area; }
+	void setVolume(const double& volume) { m_volume = volume; }
+	void setGravity(const double& gravity) { m_gravity = gravity; }
 
 private:
 	double m_friction;
 	double m_elasticity;
 	double m_restitution;
 	double m_weight;
+	double m_radius;
+	double m_area;
+	double m_volume;
+	double m_gravity;
 };
 

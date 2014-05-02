@@ -22,7 +22,7 @@ MenuScene::MenuScene(Application& app) :
 	cFontPtr titleFont		= cFontPtr(NEW_CFONTCALIBRI72());
 	cFontPtr subtitleFont	= cFontPtr(NEW_CFONTCALIBRI18());
 	cFontPtr menuFont		= cFontPtr(NEW_CFONTCALIBRI40());
-	
+	 
 	m_fonts.push_back(titleFont);
 	m_fonts.push_back(subtitleFont);
 	m_fonts.push_back(menuFont);
@@ -134,7 +134,7 @@ void MenuScene::onKeyDown(unsigned char key, int x, int y)
 		m_app.pushScene(TestHapticCollisionScene::create(m_app));
 		break;
 	case '4':
-		m_app.pushScene(NetworkScene::create(m_app));
+		//m_app.pushScene(NetworkScene::create(m_app));
 		break;
 	case '5':
 		m_app.popScene();
