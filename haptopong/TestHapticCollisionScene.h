@@ -34,5 +34,6 @@ private:
 	Ball m_ball;
 	Racket m_racket;
 	CollisionResponsePtr m_collision;
+	bool m_force;
 };
 
