@@ -68,7 +68,7 @@
       <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="NetworkScene.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -112,7 +112,7 @@
       <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="NetworkScene.h">
-      <Filter>Header Files</Filter>
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
