@@ -18,9 +18,7 @@ Application::Application(void) :
 	m_timeStepSmoothFactor(0.1),
 	m_smoothHapticTimeStep(0.1),
 	m_smoothLogicTimeStep(0.1),
-	m_smoothRenderTimeStep(0.1),
-	m_logicAccumulator(0),
-	m_logicTimeStep(1.0/60.0)
+	m_smoothRenderTimeStep(0.1)
 {
 }
 
@@ -142,15 +140,7 @@ void Application::updateGraphics(void)
 
 	if(!m_sceneStack.empty())
 	{
-		m_logicAccumulator += timeStep;
-		if(m_logicAccumulator > 3.0 * m_logicTimeStep)
-			m_logicAccumulator = 3.0 * m_logicTimeStep;
-
-		while(m_logicAccumulator > m_logicTimeStep)
-		{
-			m_sceneStack.back()->updateLogic(m_logicTimeStep);
-			m_logicAccumulator -= m_logicTimeStep;
-		}
+		m_sceneStack.back()->updateLogic(timeStep);
 		m_sceneStack.back()->render(timeStep);
 	}
 	else 

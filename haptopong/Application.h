@@ -53,10 +53,6 @@ private:
 	std::vector<ScenePtr> m_sceneStack;
 	ScenePtr m_currentScene;
 
-	// Logic timer
-	double m_logicTimeStep;
-	double m_logicAccumulator;
-
 	//Update rate counters
     chai3d::cFrequencyCounter m_frequencyCounter;
 	double m_smoothRenderTimeStep;

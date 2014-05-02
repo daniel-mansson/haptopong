@@ -28,6 +28,7 @@ public:
 	const chai3d::cVector3d& getBernoulli() const { return m_bernoulli; }
 	const chai3d::cVector3d& getResistance() const { return m_resistance; }
 	
+	void update(double timeStep);
 
 private:
 	chai3d::cVector3d m_position;
@@ -37,6 +38,7 @@ private:
 	chai3d::cVector3d m_bernoulli;
 	chai3d::cVector3d m_resistance;
 	BallProperties m_properties;
+
 
 };
 
