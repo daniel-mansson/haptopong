@@ -27,7 +27,7 @@ Ball::Ball(void) :
 	double weight = m_properties.getWeight();
     double volume = m_properties.getVolume();
 
-	m_angularVelocity.normalize;
+	m_angularVelocity.normalize();
 
 
 	double a = 2*radius*radius*m_angularVelocity*m_angularVelocity*weight/(volume*2);
@@ -39,7 +39,7 @@ Ball::Ball(void) :
 
 	//fluid resistance(0.4 is coefficient of resistance)
 	double area = m_properties.getArea();
-	double vel = m_velocity.normalizer;
+	double vel = m_velocity.length();
 	double b = (weight/volume)*vel*vel*area*0.4/2;
 	//m_acceleration -= m_resistance;
 	

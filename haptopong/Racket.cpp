@@ -9,7 +9,7 @@ Racket::Racket(void) :
 	m_force(0, 0, 0)
 {
 	//0.000034 represents volume
-	m_force = m_velocity*m_velocity*0.000034/2;
+	double force = m_velocity*m_velocity*0.000034/2;
 	}
 
 

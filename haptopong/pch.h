@@ -1,4 +1,7 @@
 
+//Network engine
+#include <enet/enet.h>
+
 #include <chai3d.h>
 #include <vector>
 #include <iostream>
@@ -8,7 +11,9 @@
 #include <GL/freeglut.h>
 #endif
 
+//Bullet physics engine
 #include <btBulletDynamicsCommon.h>
+
 
 #ifndef MACOSX
 #include <GL/glut.h>
