@@ -50,6 +50,8 @@ NetworkScene::~NetworkScene(void)
 		if(m_client)
 			enet_host_destroy(m_client);
 	}
+
+	enet_deinitialize();
 }
 
 void NetworkScene::enter(ScenePtr from)
@@ -85,7 +87,23 @@ void NetworkScene::updateLogic(const double& timeStep)
 
 	if(m_state == 1)
 	{
+		while(enet_host_service(m_server, &event, 0) > 0)
+		{
+			switch(event.type)
+			{
+			case ENET_EVENT_TYPE_CONNECT:
+				print("Connected");
+				break;
 
+			case ENET_EVENT_TYPE_RECEIVE:
+				print(std::string((char*)event.packet->data));
+				break;
+
+			case ENET_EVENT_TYPE_DISCONNECT:
+				print("Disconnected");
+				break;
+			}
+		}
 	}
 	else if(m_state == 2)
 	{
@@ -107,6 +125,9 @@ void NetworkScene::updateLogic(const double& timeStep)
 			}
 		}
 	}
+#ifdef WIN32
+	Sleep(0);
+#endif
 }
 
 void NetworkScene::updateHaptics(const double& timeStep)
