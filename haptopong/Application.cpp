@@ -57,8 +57,10 @@ bool Application::initialize(const std::string& title, int* argc, char** argv)
 	glutKeyboardFunc(callbackKeySelect);
 	glutReshapeFunc(callbackResizeWindow);
 	glutSetWindowTitle(title.c_str());
+    #ifndef MACOSX
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
-
+    #endif
+    
 	// set fullscreen mode
 	if (m_fullscreen)
 		glutFullScreen();
@@ -182,8 +184,12 @@ void Application::close()
 	// close haptic device
 	m_hapticDevice->close();
 
+    #ifndef MACOSX
 	// shut down glut
 	glutLeaveMainLoop();
+    #else
+    exit(0);
+    #endif
 }
 
 void Application::updateHaptics()
