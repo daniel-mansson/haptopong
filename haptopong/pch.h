@@ -1,6 +1,8 @@
 
 //Network engine
+#ifndef MACOSX
 #include <WinSock2.h>
+#endif
 #include <enet/enet.h>
 
 #include <chai3d.h>
