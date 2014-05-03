@@ -23,7 +23,7 @@ MenuScene::MenuScene(Application& app) :
 	cFontPtr titleFont		= cFontPtr(NEW_CFONTCALIBRI72());
 	cFontPtr subtitleFont	= cFontPtr(NEW_CFONTCALIBRI18());
 	cFontPtr menuFont		= cFontPtr(NEW_CFONTCALIBRI40());
-	
+	 
 	m_fonts.push_back(titleFont);
 	m_fonts.push_back(subtitleFont);
 	m_fonts.push_back(menuFont);

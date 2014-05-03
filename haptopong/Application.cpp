@@ -164,7 +164,6 @@ void Application::graphicsTimer(int data)
 	if (m_simulationRunning)
 	{
 		glutPostRedisplay();
-
 		glutTimerFunc(16, callbackGraphicsTimer, 0);
 	}
 }
