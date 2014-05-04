@@ -115,13 +115,57 @@ Scene(app)
     
     
     /////////////////////////////////////////////////////////////////////////
+    // HAPTIC DEVICES / TOOLS
+    /////////////////////////////////////////////////////////////////////////
+    
+    // create a haptic device handler
+    m_handler = new cHapticDeviceHandler();
+    
+    // get access to the first available haptic device found
+    m_handler->getDevice(m_hapticDevice, 0);
+    
+    // retrieve information about the current haptic device
+    cHapticDeviceInfo hapticDeviceInfo = m_hapticDevice->getSpecifications();
+    
+    // create a tool (cursor) and insert into the world
+    m_tool = new cToolCursor(m_world);
+    m_world->addChild(m_tool);
+    
+    // connect the haptic device to the virtual tool
+    m_tool->setHapticDevice(m_hapticDevice);
+    
+    // define the radius of the tool (sphere)
+    //double toolRadius = 0.01;
+    
+    // define a radius for the tool
+    //tool->setRadius(toolRadius);
+    
+    // hide the device sphere. only show proxy.
+    m_tool->setShowContactPoints(/*true*/ false, false);
+    
+    // create a white cursor
+    //m_tool->m_hapticPoint->m_sphereProxy->m_material->setWhite();
+    
+    // enable if objects in the scene are going to rotate of translate
+    // or possibly collide against the tool. If the environment
+    // is entirely static, you can set this parameter to "false"
+    //m_tool->enableDynamicObjects(true);
+    
+    // map the physical workspace of the haptic device to a larger virtual workspace.
+    m_tool->setWorkspaceRadius(1.0);
+    
+    // start the haptic tool
+    m_tool->start();
+    
+    
+    /////////////////////////////////////////////////////////////////////////
     // TABLE
     /////////////////////////////////////////////////////////////////////////
     
     // create cMultiMesh
     m_table = new cMultiMesh();
     
-    // load an object0 file
+    // load an object file
     bool fileload;
     fileload = m_table->loadFromFile("../../gfx/table.obj");
     
@@ -137,8 +181,8 @@ Scene(app)
     // Since we don't need to see our polygons from both sides, we enable culling.
     m_table->setUseCulling(true);
     
-    // enable display list for faster graphic rendering
-    m_table->setUseDisplayList(true, true); // ???
+    // enable display list for faster graphic rendering ???
+    m_table->setUseDisplayList(true, true);
     
     // create texture
     cTexture2dPtr table_texture = cTexture2d::create();
@@ -153,6 +197,9 @@ Scene(app)
     m_table->setTexture(table_texture);
     m_table->setUseTexture(true, true);
     
+    // enable mipmaps for adaptive texture size rendering
+    //m_net->getMesh(0)->m_texture->setUseMipmaps(true);
+    
     
     /////////////////////////////////////////////////////////////////////////
     // NET
@@ -161,7 +208,7 @@ Scene(app)
     // create cMultiMesh
     m_net = new cMultiMesh();
     
-    // load an object0 file
+    // load an object file
     fileload = m_net->loadFromFile("../../gfx/net.obj");
     
     if (!fileload)
@@ -176,8 +223,8 @@ Scene(app)
     // Since we don't need to see our polygons from both sides, we enable culling.
     m_net->setUseCulling(false);
 
-    // enable display list for faster graphic rendering
-    m_net->setUseDisplayList(true, true); // ???
+    // enable display list for faster graphic rendering ???
+    m_net->setUseDisplayList(true, true);
     
     // create texture
     cTexture2dPtr net_texture = cTexture2d::create();
@@ -193,16 +240,86 @@ Scene(app)
     m_net->getMesh(0)->setUseTexture(true, true);
     
     // enable mipmaps for adaptive texture size rendering
-     m_net->getMesh(0)->m_texture->setUseMipmaps(true);
+    //m_net->getMesh(0)->m_texture->setUseMipmaps(true);
     
     // enable transparency for this object
     m_net->getMesh(0)->m_texture->m_image->setTransparentColor(30, 30, 30, 0);
     m_net->getMesh(0)->setUseTransparency(true);
     
+    // m_net->setGfxMesh(...);
+    // m_net->setPhysicsMesh(...)
+    
     
     /////////////////////////////////////////////////////////////////////////
-    // RACKET
+    // PLAYER RACKET
     /////////////////////////////////////////////////////////////////////////
+    
+    // create a new mesh.
+    m_playerRacket = new cMultiMesh();
+    
+    // load an object file
+    fileload = m_playerRacket->loadFromFile("../../gfx/racket.obj");
+    if (!fileload)
+    {
+        std::cout << "Error - 3D Model failed to load correctly" << std::endl;
+        std::exit(EXIT_FAILURE);
+    }
+    
+    // remove the collision detector. we do not want to compute any
+    // force feedback rendering on the object itself.
+    //m_playerRacket->deleteCollisionDetector(true);
+    
+    // attach racket to tool
+    m_tool->m_image->addChild(m_playerRacket);
+    
+    // set the position of the racket
+    m_tool->setLocalPos(1.9, 0, 0.6);
+    
+    // rotate the racket in scene
+    m_playerRacket->rotateExtrinsicEulerAnglesDeg(40, 0, 0, C_EULER_ORDER_XYZ);
+    
+    // set transparency
+    m_playerRacket->setUseTransparency(true);
+    m_playerRacket->setTransparencyLevel(m_playerTransparency);
+
+    
+    /////////////////////////////////////////////////////////////////////////
+    // OPPONENT RACKET
+    /////////////////////////////////////////////////////////////////////////
+    
+    // create a new mesh.
+    m_opponentRacket = new cMultiMesh();
+    
+    // load an object file
+    fileload = m_opponentRacket->loadFromFile("../../gfx/racket.obj");
+    if (!fileload)
+    {
+        std::cout << "Error - 3D Model failed to load correctly" << std::endl;
+        std::exit(EXIT_FAILURE);
+    }
+    
+    // remove the collision detector. we do not want to compute any
+    // force feedback rendering on the object itself.
+    //m_opponentRacket->deleteCollisionDetector(true);
+    
+    // add gfx objects to world
+    m_world->addChild(m_opponentRacket);
+    
+    // Since we don't need to see our polygons from both sides, we enable culling.
+    m_opponentRacket->setUseCulling(false);
+    
+    // set the position of the racket
+    m_opponentRacket->setLocalPos(-1.9, 0, 0.6);
+    
+    // rotate the racket in scene
+    m_opponentRacket->rotateExtrinsicEulerAnglesDeg(-40, 0, 0, C_EULER_ORDER_XYZ);
+    
+    cMaterial mat;
+    mat.m_ambient.set(0.8, 0.8, 0.8);
+    mat.m_diffuse.set(1.0, 1.0, 1.0);
+    mat.m_specular.set(1.0, 1.0, 1.0);
+    m_opponentRacket->setMaterial(mat, true);
+    m_opponentRacket->computeAllNormals();
     
 }
 
