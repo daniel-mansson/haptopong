@@ -18,21 +18,9 @@ PongScene::PongScene(Application& app) :
     
     createCamera();
     
-    // create a directional light source
-    cDirectionalLight* light = new cDirectionalLight(m_world.get());
-
-    // insert light source inside world
-    m_world->addChild(light);
-
-    // enable light source
-    light->setEnabled(true);                   
-
-    // define direction of light beam
-	cVector3d ldir(-1, -0.5, -2);
-	ldir.normalize();
-    light->setDir(ldir); 
-	 
-	//Create dynamics world, default settings
+    createLight();
+	
+    //Create dynamics world, default settings
 	btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
 	btCollisionDispatcher* dispatcher = new	btCollisionDispatcher(collisionConfiguration);
 	btBroadphaseInterface* overlappingPairCache = new btDbvtBroadphase();
@@ -195,6 +183,55 @@ void PongScene::createCamera() {
     
     // enable shadow casting
     m_camera->setUseShadowCasting(true);
+}
+
+void PongScene::createLight() {
+    // create a directional light source
+    chai3d::cDirectionalLight *dirLight = new cDirectionalLight(m_world.get());
+    
+    // insert light source inside world
+    m_world->addChild(dirLight);
+    
+    // enable light source
+    dirLight->setEnabled(true);
+    
+    // define direction of light beam
+    dirLight->setDir(-7 , 5, -3);
+    
+    // set lighting conditions
+    dirLight->m_ambient.set(0.4, 0.4, 0.4);
+    dirLight->m_diffuse.set(0.45, 0.45, 0.45);
+    dirLight->m_specular.set(0.2, 0.2, 0.2);
+    
+    
+    // create a spot light source
+    cSpotLight *spotLight = new cSpotLight(m_world.get());
+    
+    // attach light to camera
+    //m_world->addChild(spotLight);
+    
+    // enable light source
+    spotLight->setEnabled(true);
+    
+    // position the light source
+    spotLight->setLocalPos(2.5, 0.0, 2.0);
+    
+    // define the direction of the light beam
+    spotLight->setDir(-1.0, 0.0, -1.0);
+    
+    // enable this light source to generate shadows
+    spotLight->setShadowMapEnabled(true);
+    
+    // set the resolution of the shadow map
+    spotLight->m_shadowMap->setResolutionMedium();
+    
+    // set light cone half angle
+    spotLight->setCutOffAngleDeg(25);
+    
+    // set lighting conditions
+    spotLight->m_ambient.set(0.0, 0.0, 0.0);
+    spotLight->m_diffuse.set(0.9, 0.9, 0.9);
+    spotLight->m_specular.set(0.7, 0.7, 0.7);
 }
 
 void PongScene::createTable()

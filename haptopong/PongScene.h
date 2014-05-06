@@ -37,8 +37,9 @@ private:
 	chai3d::cShapeBox* m_ground;
 	
 	TablePtr m_table;
-
-	void createTable();
+    
 	void createCamera();
+    void createLight();
+	void createTable();
 };
 
