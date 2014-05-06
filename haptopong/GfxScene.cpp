@@ -119,6 +119,8 @@ GfxScene::GfxScene(Application& app) :
     // HAPTIC DEVICES / TOOLS
     /////////////////////////////////////////////////////////////////////////
     
+    app.getHapticDevice()->close();
+    
     // create a haptic device handler
     m_handler = new cHapticDeviceHandler();
     

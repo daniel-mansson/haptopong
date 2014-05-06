@@ -15,6 +15,8 @@ public:
 	virtual void updateHaptics(float timeStep);
 
 	virtual void onCollision(const btCollisionResult& collision);
+    
+    std::string s;
 
 private:
 

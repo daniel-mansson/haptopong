@@ -39,5 +39,6 @@ private:
 	TablePtr m_table;
 
 	void createTable();
+	void createCamera();
 };
 

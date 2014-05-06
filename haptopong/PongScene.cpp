@@ -10,16 +10,14 @@ using namespace chai3d;
 PongScene::PongScene(Application& app) :
 	Scene(app)
 {
-	m_world = cWorldPtr(new cWorld());
-	m_world->m_backgroundColor.set(0.9f, 0.2f, 0.4f);  
-
-	m_camera = new cCamera(m_world.get());
-    m_camera->set( cVector3d (15, 0.0, 0.0),    // camera position (eye)
-                 cVector3d (0.0, 0.0, 0.0),    // look at position (target)
-                 cVector3d (0.0, 0.0, 1.0));   // direction of the (up) vector
-	m_world->addChild(m_camera);
-
-	
+    // create a new world.
+    m_world = std::make_shared<chai3d::cWorld>();
+    
+    // set the background color of the environment
+    m_world->m_backgroundColor.setGrayLevel(0.6);
+    
+    createCamera();
+    
     // create a directional light source
     cDirectionalLight* light = new cDirectionalLight(m_world.get());
 
@@ -43,7 +41,10 @@ PongScene::PongScene(Application& app) :
 	m_dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher,overlappingPairCache,solver,collisionConfiguration);
 	m_dynamicsWorld->setGravity(btVector3(0, 0, -10));
 
+    
+    
 	createTable();
+    
 	/*
 
 	m_groundShape = new btBoxShape(btVector3(btScalar(0.5),btScalar(2),btScalar(0.5)));
@@ -122,6 +123,7 @@ void PongScene::exit(ScenePtr to)
 
 void PongScene::render(const double& timeStep)
 {
+    /*
 	btTransform transform;
 	btMotionState* pState = m_sphereBody->getMotionState();
 	pState->getWorldTransform(transform);	
@@ -130,8 +132,9 @@ void PongScene::render(const double& timeStep)
 	pState = m_groundBody->getMotionState();
 	pState->getWorldTransform(transform);	
 	m_ground->setLocalPos(Util::Vec(transform.getOrigin()));
-
+ */
 	m_camera->renderView(m_app.getWindowWidth(), m_app.getWindowHeight());
+    
 }
 
 void PongScene::updateLogic(const double& timeStep)
@@ -147,10 +150,10 @@ void PongScene::updateHaptics(const double& timeStep)
 	pos *= 100;
 	double mag = cClamp((pos.x() + 3.5) * 1.5, 2.0, 20.0); 
 
-	m_camera->set( cVector3d (mag * cCosRad(pos.y()* 0.5), mag * cSinRad(pos.y() * 0.5), pos.z() * 1.7),    // camera position (eye)
+	/*m_camera->set( cVector3d (mag * cCosRad(pos.y()* 0.5), mag * cSinRad(pos.y() * 0.5), pos.z() * 1.7),    // camera position (eye)
                  cVector3d (0.0, 0.0, 0.0),    // look at position (target)
                  cVector3d (0.0, 0.0, 1.0));   // direction of the (up) vector
-
+*/
 	cVector3d zero(0,0,0);
 	m_app.getHapticDevice()->setForce(zero);
 }
@@ -164,9 +167,39 @@ void PongScene::onKeyDown(unsigned char key, int x, int y)
 	}
 }
 
+void PongScene::createCamera() {
+    // create a camera and insert it into the virtual world
+    m_camera = new chai3d::cCamera(m_world.get());
+    m_world->addChild(m_camera);
+    
+    // position and orient the camera
+    m_camera->set(cVector3d (2.47, 0.0, 0.95),    // camera position (eye)
+                  cVector3d (0.0, 0.0, 0.01),    // look at position (target)
+                  cVector3d (0.0, 0.0, 1.0));   // direction of the (up) vector
+    
+    // set the near and far clipping planes of the camera
+    m_camera->setClippingPlanes(0.01, 100.0);
+    
+    // set stereo mode
+	m_camera->setStereoMode(C_STEREO_DISABLED);
+    
+    // set stereo eye separation and focal length (applies only if stereo is enabled)
+    m_camera->setStereoEyeSeparation(0.01);
+    m_camera->setStereoFocalLength(0.5);
+    
+    // set vertical mirrored display mode
+    m_camera->setMirrorVertical(false);
+    
+    // enable multi-pass rendering to handle transparent objects
+    m_camera->setUseMultipassTransparency(true);
+    
+    // enable shadow casting
+    m_camera->setUseShadowCasting(true);
+}
+
 void PongScene::createTable()
 {
-	    // create cMultiMesh
+    // create cMultiMesh
     cMultiMesh* table = new cMultiMesh();
     
     // load an object file
@@ -185,7 +218,7 @@ void PongScene::createTable()
     // Since we don't need to see our polygons from both sides, we enable culling.
     table->setUseCulling(true);
     
-    // enable display list for faster graphic rendering ???
+    // enable display list for faster graphic rendering (need tp recompute if tranlated?)
     table->setUseDisplayList(true, true);
     
     // create texture
@@ -200,5 +233,7 @@ void PongScene::createTable()
     
     table->setTexture(table_texture);
     table->setUseTexture(true, true);
+    
+    m_table = std::make_shared<Table>(table, nullptr);
     
 }
