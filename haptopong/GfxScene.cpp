@@ -16,7 +16,7 @@ Scene(app)
     m_world = new cWorld();
     
     // set the background color of the environment
-    m_world->m_backgroundColor.setGrayLevel(0.5);
+    m_world->m_backgroundColor.setGrayLevel(0.6);
     
     // create a camera and insert it into the virtual world
     m_camera = new cCamera(m_world);
@@ -167,7 +167,7 @@ Scene(app)
     
     // load an object file
     bool fileload;
-    fileload = m_table->loadFromFile("../../gfx/table.obj");
+    fileload = m_table->loadFromFile("../gfx/table.obj");
     
     if (!fileload)
     {
@@ -187,7 +187,7 @@ Scene(app)
     // create texture
     cTexture2dPtr table_texture = cTexture2d::create();
     table_texture->setWrapMode(GL_REPEAT);
-    fileload = table_texture->loadFromFile("../../gfx/table_diffuse.png");
+    fileload = table_texture->loadFromFile("../gfx/table_diffuse.png");
     if (!fileload)
     {
         std::cout << "Error - Texture image failed to load correctly." << std::endl;
@@ -209,7 +209,7 @@ Scene(app)
     m_net = new cMultiMesh();
     
     // load an object file
-    fileload = m_net->loadFromFile("../../gfx/net.obj");
+    fileload = m_net->loadFromFile("../gfx/net.obj");
     
     if (!fileload)
     {
@@ -229,7 +229,7 @@ Scene(app)
     // create texture
     cTexture2dPtr net_texture = cTexture2d::create();
     table_texture->setWrapMode(GL_REPEAT);
-    fileload = net_texture->loadFromFile("../../gfx/net_diffuse.png");
+    fileload = net_texture->loadFromFile("../gfx/net_diffuse.png");
     if (!fileload)
     {
         std::cout << "Error - Texture image failed to load correctly." << std::endl;
@@ -258,7 +258,7 @@ Scene(app)
     m_playerRacket = new cMultiMesh();
     
     // load an object file
-    fileload = m_playerRacket->loadFromFile("../../gfx/racket.obj");
+    fileload = m_playerRacket->loadFromFile("../gfx/racket.obj");
     if (!fileload)
     {
         std::cout << "Error - 3D Model failed to load correctly" << std::endl;
@@ -291,7 +291,7 @@ Scene(app)
     m_opponentRacket = new cMultiMesh();
     
     // load an object file
-    fileload = m_opponentRacket->loadFromFile("../../gfx/racket.obj");
+    fileload = m_opponentRacket->loadFromFile("../gfx/racket.obj");
     if (!fileload)
     {
         std::cout << "Error - 3D Model failed to load correctly" << std::endl;
@@ -320,6 +320,17 @@ Scene(app)
     mat.m_specular.set(1.0, 1.0, 1.0);
     m_opponentRacket->setMaterial(mat, true);
     m_opponentRacket->computeAllNormals();
+    
+    
+    /////////////////////////////////////////////////////////////////////////
+    // BALL
+    /////////////////////////////////////////////////////////////////////////
+    
+    m_ball = new cShapeSphere(0.02);
+	m_world->addChild(m_ball);
+    
+    // set the position of the ball
+    m_ball->setLocalPos(1.7, 0, 0.5);
     
 }
 
