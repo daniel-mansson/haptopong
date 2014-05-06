@@ -273,4 +273,28 @@ void PongScene::createTable()
     
     m_table = std::make_shared<Table>(table, nullptr);
     
+    
+    
+    
+    
+    cMultiMesh* tableBody = new cMultiMesh();
+
+    fileload = tableBody->loadFromFile("../gfx/table_body.obj");
+    
+    if (!fileload)
+    {
+        std::cout << "Error - 3D Model failed to load correctly" << std::endl;
+        std::exit(EXIT_FAILURE);
+    }
+    
+    btTriangleMesh* trimesh = new btTriangleMesh();
+    
+    for (int i = 0; i < tableBody->getMesh(0)->getNumTriangles(); ++i) {
+        cVertexArrayPtr vertices = tableBody->getMesh(0)->m_triangles->m_vertices;
+
+        trimesh->addTriangle(Util::Vec(vertices->m_localPos[0]), Util::Vec(vertices->m_localPos[1]), Util::Vec(vertices->m_localPos[2]));
+    }
+    
+    
+    
 }
