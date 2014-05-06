@@ -17,7 +17,7 @@ GfxScene::GfxScene(Application& app) :
     m_world = new cWorld();
     
     // set the background color of the environment
-    m_world->m_backgroundColor.setGrayLevel(0.6);
+    m_world->m_backgroundColor.setGrayLevel(0.6f);
     
     // create a camera and insert it into the virtual world
     m_camera = new cCamera(m_world);
@@ -65,9 +65,9 @@ GfxScene::GfxScene(Application& app) :
     m_light->setDir(-7 , 5, -3);
     
     // set lighting conditions
-    m_light->m_ambient.set(0.4, 0.4, 0.4);
-    m_light->m_diffuse.set(0.45, 0.45, 0.45);
-    m_light->m_specular.set(0.2, 0.2, 0.2);
+    m_light->m_ambient.set(0.4f, 0.4f, 0.4f);
+    m_light->m_diffuse.set(0.45f, 0.45f, 0.45f);
+    m_light->m_specular.set(0.2f, 0.2f, 0.2f);
     
     
     // create a spot light source
@@ -95,9 +95,9 @@ GfxScene::GfxScene(Application& app) :
     light->setCutOffAngleDeg(25);
     
     // set lighting conditions
-    light->m_ambient.set(0.0, 0.0, 0.0);
-    light->m_diffuse.set(0.9, 0.9, 0.9);
-    light->m_specular.set(0.7, 0.7, 0.7);
+    light->m_ambient.set( 0.0f, 0.0f, 0.0f);
+    light->m_diffuse.set( 0.9f, 0.9f, 0.9f);
+    light->m_specular.set(0.7f, 0.7f, 0.7f);
     
     
     /////////////////////////////////////////////////////////////////////////
@@ -283,7 +283,7 @@ GfxScene::GfxScene(Application& app) :
     
     // set transparency
     m_playerRacket->setUseTransparency(true);
-    m_playerRacket->setTransparencyLevel(m_playerTransparency);
+    m_playerRacket->setTransparencyLevel((float)m_playerTransparency);
 
     
     /////////////////////////////////////////////////////////////////////////
@@ -318,9 +318,9 @@ GfxScene::GfxScene(Application& app) :
     m_opponentRacket->rotateExtrinsicEulerAnglesDeg(-40, 0, 0, C_EULER_ORDER_XYZ);
     
     cMaterial mat;
-    mat.m_ambient.set(0.8, 0.8, 0.8);
-    mat.m_diffuse.set(1.0, 1.0, 1.0);
-    mat.m_specular.set(1.0, 1.0, 1.0);
+    mat.m_ambient.set( 0.8f, 0.8f, 0.8f);
+    mat.m_diffuse.set( 1.0f, 1.0f, 1.0f);
+    mat.m_specular.set(1.0f, 1.0f, 1.0f);
     m_opponentRacket->setMaterial(mat, true);
     m_opponentRacket->computeAllNormals();
     

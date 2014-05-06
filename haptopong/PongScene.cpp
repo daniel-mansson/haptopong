@@ -14,7 +14,7 @@ PongScene::PongScene(Application& app) :
     m_world = std::make_shared<chai3d::cWorld>();
     
     // set the background color of the environment
-    m_world->m_backgroundColor.setGrayLevel(0.6);
+    m_world->m_backgroundColor.setGrayLevel(0.6f);
     
     createCamera();
     
@@ -199,9 +199,9 @@ void PongScene::createLight() {
     dirLight->setDir(-7 , 5, -3);
     
     // set lighting conditions
-    dirLight->m_ambient.set(0.4, 0.4, 0.4);
-    dirLight->m_diffuse.set(0.45, 0.45, 0.45);
-    dirLight->m_specular.set(0.2, 0.2, 0.2);
+    dirLight->m_ambient.set(0.4f, 0.4f, 0.4f);
+    dirLight->m_diffuse.set(0.45f, 0.45f, 0.45f);
+    dirLight->m_specular.set(0.2f, 0.2f, 0.2f);
     
     
     // create a spot light source
@@ -229,9 +229,9 @@ void PongScene::createLight() {
     spotLight->setCutOffAngleDeg(25);
     
     // set lighting conditions
-    spotLight->m_ambient.set(0.0, 0.0, 0.0);
-    spotLight->m_diffuse.set(0.9, 0.9, 0.9);
-    spotLight->m_specular.set(0.7, 0.7, 0.7);
+    spotLight->m_ambient.set(0.0f, 0.0f, 0.0f);
+    spotLight->m_diffuse.set(0.9f, 0.9f, 0.9f);
+    spotLight->m_specular.set(0.7f, 0.7f, 0.7f);
 }
 
 void PongScene::createTable()
