@@ -34,7 +34,7 @@ PongScene::PongScene(Application& app) :
 	ldir.normalize();
     light->setDir(ldir); 
 	 
-	//Create physics
+	//Create dynamics world, default settings
 	btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
 	btCollisionDispatcher* dispatcher = new	btCollisionDispatcher(collisionConfiguration);
 	btBroadphaseInterface* overlappingPairCache = new btDbvtBroadphase();
@@ -43,6 +43,8 @@ PongScene::PongScene(Application& app) :
 	m_dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher,overlappingPairCache,solver,collisionConfiguration);
 	m_dynamicsWorld->setGravity(btVector3(0, 0, -10));
 
+	createTable();
+	/*
 
 	m_groundShape = new btBoxShape(btVector3(btScalar(0.5),btScalar(2),btScalar(0.5)));
 
@@ -100,7 +102,7 @@ PongScene::PongScene(Application& app) :
 	}
 	
 	m_sphere = new cShapeSphere(1.0);
-	m_world->addChild(m_sphere);
+	m_world->addChild(m_sphere);*/
 }
 
 PongScene::~PongScene(void)
@@ -160,4 +162,43 @@ void PongScene::onKeyDown(unsigned char key, int x, int y)
 		m_sphereBody->activate();
 		m_sphereBody->applyImpulse(btVector3(0,0,5), m_sphereBody->getCenterOfMassPosition());
 	}
+}
+
+void PongScene::createTable()
+{
+	    // create cMultiMesh
+    cMultiMesh* table = new cMultiMesh();
+    
+    // load an object file
+    bool fileload;
+    fileload = table->loadFromFile("../gfx/table.obj");
+    
+    if (!fileload)
+    {
+        std::cout << "Error - 3D Model failed to load correctly" << std::endl;
+        std::exit(EXIT_FAILURE);
+    }
+    
+    // add gfx objects to world
+    m_world->addChild(table);
+    
+    // Since we don't need to see our polygons from both sides, we enable culling.
+    table->setUseCulling(true);
+    
+    // enable display list for faster graphic rendering ???
+    table->setUseDisplayList(true, true);
+    
+    // create texture
+    cTexture2dPtr table_texture = cTexture2d::create();
+    table_texture->setWrapMode(GL_REPEAT);
+    fileload = table_texture->loadFromFile("../gfx/table_diffuse.png");
+    if (!fileload)
+    {
+        std::cout << "Error - Texture image failed to load correctly." << std::endl;
+        std::exit(EXIT_FAILURE);
+    }
+    
+    table->setTexture(table_texture);
+    table->setUseTexture(true, true);
+    
 }

@@ -16,3 +16,23 @@ Racket::Racket(void) :
 Racket::~Racket(void)
 {
 }
+
+void Racket::render(float timeStep)
+{
+
+}
+
+void Racket::updateLogic(float timeStep)
+{
+
+}
+
+void Racket::updateHaptics(float timeStep)
+{
+
+}
+
+void Racket::onCollision(const btCollisionResult& collision)
+{
+
+}

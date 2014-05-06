@@ -1,12 +1,21 @@
 #pragma once
 
+#include "GameObject.h"
 #include "BallProperties.h"
 
-class Ball
+class Ball : public GameObject
 {
 public:
 	Ball(void);
 	~Ball(void);
+
+	virtual GameObjectType getType() const { return BALL; };
+	
+	virtual void render(float timeStep);
+	virtual void updateLogic(float timeStep);
+	virtual void updateHaptics(float timeStep);
+
+	virtual void onCollision(const btCollisionResult& collision);
 
 	void setProperties(const BallProperties& properties) { m_properties = properties; }
 		

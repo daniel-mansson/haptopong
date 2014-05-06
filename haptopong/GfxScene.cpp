@@ -6,7 +6,8 @@
 using namespace chai3d;
 
 GfxScene::GfxScene(Application& app) :
-Scene(app)
+	Scene(app),
+	m_playerTransparency(0.5)
 {
     /////////////////////////////////////////////////////////////////////////
     // WORLD & CAMERA

@@ -28,6 +28,9 @@
     <Filter Include="Util">
       <UniqueIdentifier>{63ea87c7-d8f0-43b4-b495-fb379d884fe0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pong\GameObjects">
+      <UniqueIdentifier>{2cf19410-a193-4a54-a0ac-beed63f3220e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -55,12 +58,6 @@
     <ClCompile Include="BallProperties.cpp">
       <Filter>Pong</Filter>
     </ClCompile>
-    <ClCompile Include="Ball.cpp">
-      <Filter>Pong</Filter>
-    </ClCompile>
-    <ClCompile Include="Racket.cpp">
-      <Filter>Pong</Filter>
-    </ClCompile>
     <ClCompile Include="CollisionResponse.cpp">
       <Filter>Pong\Collision</Filter>
     </ClCompile>
@@ -72,6 +69,21 @@
     </ClCompile>
     <ClCompile Include="NetworkScene.cpp">
       <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="GfxScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Ball.cpp">
+      <Filter>Pong\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Pong\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Racket.cpp">
+      <Filter>Pong\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Table.cpp">
+      <Filter>Pong\GameObjects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -99,12 +111,6 @@
     <ClInclude Include="BallProperties.h">
       <Filter>Pong</Filter>
     </ClInclude>
-    <ClInclude Include="Racket.h">
-      <Filter>Pong</Filter>
-    </ClInclude>
-    <ClInclude Include="Ball.h">
-      <Filter>Pong</Filter>
-    </ClInclude>
     <ClInclude Include="CollisionResponse.h">
       <Filter>Pong\Collision</Filter>
     </ClInclude>
@@ -119,6 +125,24 @@
     </ClInclude>
     <ClInclude Include="Util.h">
       <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="GfxScene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Ball.h">
+      <Filter>Pong\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Pong\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Racket.h">
+      <Filter>Pong\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Table.h">
+      <Filter>Pong\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectType.h">
+      <Filter>Pong\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

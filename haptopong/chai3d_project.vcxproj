@@ -99,6 +99,8 @@
     <ClCompile Include="Ball.cpp" />
     <ClCompile Include="BallProperties.cpp" />
     <ClCompile Include="CollisionResponse.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GfxScene.cpp" />
     <ClCompile Include="LinearResponse.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuScene.cpp" />
@@ -108,6 +110,7 @@
     <ClCompile Include="Racket.cpp" />
     <ClCompile Include="RacketProperties.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="Table.cpp" />
     <ClCompile Include="TestHapticCollisionScene.cpp" />
     <ClCompile Include="TestScene.cpp" />
   </ItemGroup>
@@ -116,6 +119,9 @@
     <ClInclude Include="Ball.h" />
     <ClInclude Include="BallProperties.h" />
     <ClInclude Include="CollisionResponse.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameObjectType.h" />
+    <ClInclude Include="GfxScene.h" />
     <ClInclude Include="LinearResponse.h" />
     <ClInclude Include="MenuScene.h" />
     <ClInclude Include="NetworkScene.h" />
@@ -124,6 +130,7 @@
     <ClInclude Include="Racket.h" />
     <ClInclude Include="RacketProperties.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="Table.h" />
     <ClInclude Include="TestHapticCollisionScene.h" />
     <ClInclude Include="TestScene.h" />
     <ClInclude Include="Util.h" />

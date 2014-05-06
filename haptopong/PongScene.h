@@ -1,6 +1,10 @@
 #pragma once
 #include "Scene.h"
 
+#include "Table.h"
+#include "Ball.h"
+#include "Racket.h"
+
 class PongScene : public Scene
 {
 public:
@@ -31,5 +35,9 @@ private:
 	btRigidBody* m_sphereBody;
 	chai3d::cShapeSphere* m_sphere;
 	chai3d::cShapeBox* m_ground;
+	
+	TablePtr m_table;
+
+	void createTable();
 };
 

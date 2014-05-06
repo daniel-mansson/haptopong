@@ -49,3 +49,23 @@ Ball::Ball(void) :
 Ball::~Ball(void)
 {
 }
+
+void Ball::render(float timeStep)
+{
+
+}
+
+void Ball::updateLogic(float timeStep)
+{
+
+}
+
+void Ball::updateHaptics(float timeStep)
+{
+
+}
+
+void Ball::onCollision(const btCollisionResult& collision)
+{
+
+}

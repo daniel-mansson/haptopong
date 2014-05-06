@@ -1,13 +1,22 @@
 #pragma once
 
+#include "GameObject.h"
 #include "RacketProperties.h"
 
-class Racket
+class Racket : public GameObject
 {
 public:
 	Racket(void);
 	~Racket(void);
 	
+	virtual GameObjectType getType() const { return RACKET; }
+
+	virtual void render(float timeStep);
+	virtual void updateLogic(float timeStep);
+	virtual void updateHaptics(float timeStep);
+
+	virtual void onCollision(const btCollisionResult& collision);
+
 	void setProperties(const RacketProperties& properties) { m_properties = properties; }
 
 	//Setters for testing (should be updated by the physics engine later)

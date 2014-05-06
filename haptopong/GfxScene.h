@@ -30,6 +30,6 @@ private:
     chai3d::cHapticDeviceHandler* m_handler;
     chai3d::cGenericHapticDevicePtr m_hapticDevice;
     chai3d::cToolCursor* m_tool;
-    double m_playerTransparency = 0.5;
+    double m_playerTransparency;
 };
 
