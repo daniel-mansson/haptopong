@@ -68,6 +68,7 @@ void Ball::updateLogic(float timeStep)
 	angVel.safeNormalize();
 	vel.safeNormalize();
 
+	//Not really correct, some kind of dot product is missing
 	m_body->applyCentralForce(0.01f * angVelLen * angVel.cross(vel));
 }
 
