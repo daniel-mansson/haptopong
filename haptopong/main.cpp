@@ -2,6 +2,7 @@
 #include "Application.h"
 
 #include "MenuScene.h"
+#include "PongScene.h"
 
 int main(int argc, char* argv[])
 {
@@ -13,7 +14,7 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	app.pushScene(MenuScene::create(app));
+	app.pushScene(PongScene::create(app));
 	app.run();
 
     return 0;

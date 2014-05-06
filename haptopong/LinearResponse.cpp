@@ -17,12 +17,12 @@ LinearResponse::LinearResponse(const Racket& racket, const Ball& ball) :
 	m_duration = m_racket.getProperties().getElasticity() + m_ball.getProperties().getElasticity();	
 	m_normal = m_racket.getNormal();
 	
-	m_tangent = m_ball.getAngularVelocity();
+	m_tangent = Util::Vec(m_ball.getAngularVelocity());
 	double angle = m_tangent.length();
 	if(angle >= C_SMALL)
 		m_tangent /= angle;
 
-	m_magnitude = cDot(m_normal, m_ball.getVelocity() - m_racket.getVelocity());
+	m_magnitude = cDot(m_normal, Util::Vec(m_ball.getVelocity()) - m_racket.getVelocity());
 	m_magnitudeTangent = angle;
 }
 

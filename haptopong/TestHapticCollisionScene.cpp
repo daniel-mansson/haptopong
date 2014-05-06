@@ -9,7 +9,8 @@ using namespace chai3d;
 TestHapticCollisionScene::TestHapticCollisionScene(Application& app) :
 	Scene(app),
 	m_collision(nullptr),
-	m_force(false)
+	m_force(false),
+	m_ball(nullptr, nullptr)
 {
 	m_hapticDevice = m_app.getHapticDevice();
 
@@ -128,8 +129,8 @@ void TestHapticCollisionScene::onKeyDown(unsigned char key, int x, int y)
 			m_racket.setNormal(cVector3d(1, 0, 0));
 			m_racket.setVelocity(cVector3d(20, 0, 0));
 
-			m_ball.setVelocity(cVector3d(-5, 0, 0));
-			m_ball.setAngularVelocity(cVector3d(0,0,0));
+			m_ball.setVelocity(btVector3(-5, 0, 0));
+			m_ball.setAngularVelocity(btVector3(0,0,0));
 			m_ball.setProperties(BallProperties());
 
 			m_collision = CollisionResponsePtr(new LinearResponse(m_racket, m_ball));
@@ -140,8 +141,8 @@ void TestHapticCollisionScene::onKeyDown(unsigned char key, int x, int y)
 			m_racket.setNormal(cVector3d(1, 0, 0));
 			m_racket.setVelocity(cVector3d(20, 0, 0));
 
-			m_ball.setVelocity(cVector3d(-5, 0, 0));
-			m_ball.setAngularVelocity(cVector3d(0, 10, 0));
+			m_ball.setVelocity(btVector3(-5, 0, 0));
+			m_ball.setAngularVelocity(btVector3(0, 10, 0));
 			m_ball.setProperties(BallProperties());
 
 			m_collision = CollisionResponsePtr(new LinearResponse(m_racket, m_ball));
@@ -152,8 +153,8 @@ void TestHapticCollisionScene::onKeyDown(unsigned char key, int x, int y)
 			m_racket.setNormal(cVector3d(1, 0, 0));
 			m_racket.setVelocity(cVector3d(22, 0, 0));
 
-			m_ball.setVelocity(cVector3d(-7, 0, 0));
-			m_ball.setAngularVelocity(cVector3d(0,0,0));
+			m_ball.setVelocity(btVector3(-7, 0, 0));
+			m_ball.setAngularVelocity(btVector3(0,0,0));
 			BallProperties p;
 			p.setElasticity(0);
 			m_ball.setProperties(p);

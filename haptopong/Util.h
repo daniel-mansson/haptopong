@@ -12,4 +12,9 @@ public:
 	{
 		return chai3d::cVector3d((double)vec.x(), (double)vec.y(), (double)vec.z());
 	}
+
+	static float RandRange(float min, float max)
+	{
+		return min + (max - min) * ((float)rand() / (float)RAND_MAX);
+	}
 };

@@ -30,16 +30,15 @@ private:
 	btDiscreteDynamicsWorld* m_dynamicsWorld;
 	
 	btCollisionShape* m_groundShape;
-	btCollisionShape* m_sphereShape;
 	btRigidBody* m_groundBody;
-	btRigidBody* m_sphereBody;
-	chai3d::cShapeSphere* m_sphere;
 	chai3d::cShapeBox* m_ground;
 	
 	TablePtr m_table;
+	BallPtr m_ball;
     
 	void createCamera();
     void createLight();
 	void createTable();
+	void createBall();
 };
 
