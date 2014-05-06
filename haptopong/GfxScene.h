@@ -31,5 +31,6 @@ private:
     chai3d::cGenericHapticDevicePtr m_hapticDevice;
     chai3d::cToolCursor* m_tool;
     double m_playerTransparency;
+	chai3d::cShapeSphere* m_ball;
 };
 
