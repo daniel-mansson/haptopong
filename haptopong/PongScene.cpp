@@ -168,6 +168,20 @@ void PongScene::onKeyDown(unsigned char key, int x, int y)
 		m_ball->setVelocity(btVector3(4, Util::RandRange(-2, 2), 3.3f));
 		m_ball->setAngularVelocity(btVector3(0, 0, -300 * m_ball->getVelocity().y()));
 	}
+	if(key == 'e')
+	{
+		m_ball->stop();
+		m_ball->setPosition(btVector3(2, 0, 0.7f));
+		m_ball->setVelocity(btVector3(-4, Util::RandRange(-1, 1), -1.0f));
+		m_ball->setAngularVelocity(btVector3(0, 1400, 0));
+	}
+	if(key == 'd')
+	{
+		m_ball->stop();
+		m_ball->setPosition(btVector3(2, 0, 0.3f));
+		m_ball->setVelocity(btVector3(-4, Util::RandRange(-1, 1), 3.3f));
+		m_ball->setAngularVelocity(btVector3(0, -300, 0));
+	}
 }
 
 void PongScene::createCamera() {
@@ -329,6 +343,7 @@ void PongScene::createBall()
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass,myMotionState,sphereShape,localInertia);
 	btRigidBody* ballBody = new btRigidBody(rbInfo);
 	ballBody->setRestitution(0.9f);
+	ballBody->setDamping(0.001f, 0.5f);
 
 	m_dynamicsWorld->addRigidBody(ballBody);
 
@@ -336,4 +351,5 @@ void PongScene::createBall()
 	m_world->addChild(ball);
 
 	m_ball = BallPtr(new Ball(ball, ballBody));
+	
 }

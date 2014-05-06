@@ -68,9 +68,7 @@ void Ball::updateLogic(float timeStep)
 	angVel.safeNormalize();
 	vel.safeNormalize();
 
-	btVector3 cross = angVel.cross(vel);
-	m_body->applyCentralForce(0.01f * angVelLen * cross);
-
+	m_body->applyCentralForce(0.01f * angVelLen * angVel.cross(vel));
 }
 
 void Ball::updateHaptics(float timeStep)
