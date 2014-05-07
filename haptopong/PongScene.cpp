@@ -220,6 +220,7 @@ void PongScene::onSpecialDown(int key, int x, int y)
             m_camera->set(cVector3d (1.4, 0.8, 0.17),    // camera position (eye)
                           cVector3d (1.4, 0.0, 0.01),    // look at position (target)
                           cVector3d (0.0, 0.0, 1.0));    // direction of the (up) vector
+            break;
         case GLUT_KEY_UP:
             m_camera->set(cVector3d (2.47, 0.0, 0.95),   // camera position (eye)
                           cVector3d (0.0, 0.0, 0.01),    // look at position (target)
