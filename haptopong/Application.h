@@ -68,12 +68,14 @@ private:
 	// Callbacks
 	void resizeWindow(int w, int h);
 	void keySelect(unsigned char key, int x, int y);
+	void specialSelect(int key, int x, int y);
 	void updateGraphics(void);
 	void graphicsTimer(int data);
 	void updateHaptics();
 	
 	static void callbackResizeWindow(int w, int h);
 	static void callbackKeySelect(unsigned char key, int x, int y);
+	static void callbackSpecialSelect(int key, int x, int y);
 	static void callbackUpdateGraphics(void);
 	static void callbackGraphicsTimer(int data);
 	static void updateHapticsThread();

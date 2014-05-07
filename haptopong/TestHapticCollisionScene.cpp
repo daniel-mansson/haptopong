@@ -164,3 +164,7 @@ void TestHapticCollisionScene::onKeyDown(unsigned char key, int x, int y)
 		break;
 	}
 }
+
+void TestHapticCollisionScene::onSpecialDown(int key, int x, int y)
+{
+}

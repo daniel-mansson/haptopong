@@ -94,3 +94,7 @@ void TestScene::updateHaptics(const double& timeStep)
 void TestScene::onKeyDown(unsigned char key, int x, int y)
 {
 }
+
+void TestScene::onSpecialDown(int key, int x, int y)
+{
+}

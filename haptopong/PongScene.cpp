@@ -185,13 +185,47 @@ void PongScene::onKeyDown(unsigned char key, int x, int y)
 		m_ball->setVelocity(btVector3(-4, Util::RandRange(-1, 1), 3.3f));
 		m_ball->setAngularVelocity(btVector3(0, -300, 0));
 	}
-    if(key == 'a')
+    if(key == 'q')
 	{
 		m_ball->stop();
 		m_ball->setPosition(btVector3(2, 0, 0.3f));
 		m_ball->setVelocity(btVector3(-2, -0.9, 4.5f));
 		m_ball->setAngularVelocity(btVector3(0, 0, 00 * m_ball->getVelocity().y()));
 	}
+    if(key == 'a')
+	{
+		m_ball->stop();
+		m_ball->setPosition(btVector3(2, 0, 0.3f));
+		m_ball->setVelocity(btVector3(-1.3, Util::RandRange(-0.5, 0.5), 2.1f));
+		m_ball->setAngularVelocity(btVector3(0, 0, 00 * m_ball->getVelocity().y()));
+	}
+    if(key == '<')
+	{
+		m_ball->stop();
+		m_ball->setPosition(btVector3(2, 0, 0.3f));
+		m_ball->setVelocity(btVector3(-1.3, -0.1, 2.f));
+		m_ball->setAngularVelocity(btVector3(0, 0, 00 * m_ball->getVelocity().y()));
+	}
+}
+
+void PongScene::onSpecialDown(int key, int x, int y)
+{
+    switch (key) {
+        case GLUT_KEY_LEFT:
+            m_camera->set(cVector3d (0.02, -1.5, 0.3),   // camera position (eye)
+                          cVector3d (0.0, 0.0, 0.01),    // look at position (target)
+                          cVector3d (0.0, 0.0, 1.0));    // direction of the (up) vector
+            break;
+        case GLUT_KEY_RIGHT:
+            m_camera->set(cVector3d (1.4, 0.8, 0.17),    // camera position (eye)
+                          cVector3d (1.4, 0.0, 0.01),    // look at position (target)
+                          cVector3d (0.0, 0.0, 1.0));    // direction of the (up) vector
+        case GLUT_KEY_UP:
+            m_camera->set(cVector3d (2.47, 0.0, 0.95),   // camera position (eye)
+                          cVector3d (0.0, 0.0, 0.01),    // look at position (target)
+                          cVector3d (0.0, 0.0, 1.0));    // direction of the (up) vector
+            break;
+    }
 }
 
 void PongScene::createCamera()
@@ -201,9 +235,9 @@ void PongScene::createCamera()
 	m_world->addChild(m_camera);
 
 	// position and orient the camera
-	m_camera->set(cVector3d (2.47, 0.0, 0.95),    // camera position (eye)
-		cVector3d (0.0, 0.0, 0.01),    // look at position (target)
-		cVector3d (0.0, 0.0, 1.0));   // direction of the (up) vector
+	m_camera->set(cVector3d (2.47, 0.0, 0.95),   // camera position (eye)
+                  cVector3d (0.0, 0.0, 0.01),    // look at position (target)
+		          cVector3d (0.0, 0.0, 1.0));    // direction of the (up) vector
 
 	// set the near and far clipping planes of the camera
 	m_camera->setClippingPlanes(0.01, 100.0);
@@ -336,7 +370,8 @@ void PongScene::createTable()
     
     btTransform groundTransform;
 	groundTransform.setIdentity();
-	{
+	
+    {
 		btScalar mass(0.);
         
 		//rigidbody is dynamic if and only if mass is non zero, otherwise static
@@ -359,7 +394,6 @@ void PongScene::createTable()
 	m_ground = new cShapeBox(2.74, 1.52, 0.10);
 	m_ground->setEnabled(false);
 	m_world->addChild(m_ground);
-    
     
 	m_table = std::make_shared<Table>(table, m_groundBody);
 }
@@ -424,7 +458,8 @@ void PongScene::createNet()
     
     btTransform netTransform;
 	netTransform.setIdentity();
-	{
+	
+    {
 		btScalar mass(0.);
         
 		//rigidbody is dynamic if and only if mass is non zero, otherwise static
@@ -437,17 +472,16 @@ void PongScene::createNet()
 		//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
 		btDefaultMotionState* myMotionState = new btDefaultMotionState(netTransform);
 		btRigidBody::btRigidBodyConstructionInfo rbInfo(mass,myMotionState,m_netShape,localInertia);
-		m_groundBody = new btRigidBody(rbInfo);
-		m_groundBody->setRestitution(0.9f);
+		m_netBody = new btRigidBody(rbInfo);
+		m_netBody->setRestitution(0.9f);
         
 		//add the body to the dynamics world
-		//m_dynamicsWorld->addRigidBody(m_netBody);
+		m_dynamicsWorld->addRigidBody(m_netBody);
 	}
     
 	m_ground = new cShapeBox(2.74, 1.52, 0.10);
 	m_ground->setEnabled(false);
 	m_world->addChild(m_ground);
-    
     
 	m_net = std::make_shared<Net>(net, m_netBody);
 }
