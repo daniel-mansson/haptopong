@@ -4,5 +4,6 @@ enum GameObjectType
 {
 	BALL,
 	RACKET,
-	TABLE
+	TABLE,
+    NET
 };

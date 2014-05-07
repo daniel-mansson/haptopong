@@ -17,4 +17,29 @@ public:
 	{
 		return min + (max - min) * ((float)rand() / (float)RAND_MAX);
 	}
+    
+    static btCollisionShape* CollisionShape(chai3d::cMultiMesh* mesh)
+    {
+        // convert cshape to btCollisionShape
+        btTriangleMesh* trimesh = new btTriangleMesh();
+        
+        chai3d::cVertexArrayPtr vertices = mesh->getMesh(0)->m_triangles->m_vertices;
+        chai3d::cTriangleArrayPtr triangles = mesh->getMesh(0)->m_triangles;
+        unsigned numTriangles = mesh->getMesh(0)->getNumTriangles();
+        
+        mesh->getMesh(0)->computeGlobalPositions(true);
+        
+        // convert every triangle
+        for (unsigned i = 0; i < numTriangles; ++i)
+        {
+            unsigned int index0 = triangles->getVertexIndex0(i);
+            unsigned int index1 = triangles->getVertexIndex1(i);
+            unsigned int index2 = triangles->getVertexIndex2(i);
+            
+            //trimesh->addTriangle(Util::Vec(vertices->getGlobalPos(index0)), Util::Vec(vertices->getGlobalPos(index1)), Util::Vec(vertices->getGlobalPos(index2)));
+            trimesh->addTriangle(Util::Vec(vertices->getLocalPos(index0)), Util::Vec(vertices->getLocalPos(index1)), Util::Vec(vertices->getLocalPos(index2)));
+        }
+        
+        return new btConvexTriangleMeshShape(trimesh);
+    }
 };

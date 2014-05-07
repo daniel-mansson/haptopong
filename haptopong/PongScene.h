@@ -2,6 +2,7 @@
 #include "Scene.h"
 
 #include "Table.h"
+#include "Net.h"
 #include "Ball.h"
 #include "Racket.h"
 
@@ -32,13 +33,18 @@ private:
 	btCollisionShape* m_groundShape;
 	btRigidBody* m_groundBody;
 	chai3d::cShapeBox* m_ground;
+    
+    btCollisionShape* m_netShape;
+	btRigidBody* m_netBody;
 	
 	TablePtr m_table;
+	NetPtr m_net;
 	BallPtr m_ball;
     
 	void createCamera();
     void createLight();
 	void createTable();
+	void createNet();
 	void createBall();
 };
 

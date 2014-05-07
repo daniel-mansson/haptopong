@@ -29,15 +29,14 @@ PongScene::PongScene(Application& app) :
 	m_dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher,overlappingPairCache,solver,collisionConfiguration);
 	m_dynamicsWorld->setGravity(btVector3(0, 0, -10));
 
-
-
 	createTable();
+    createNet();
 	createBall();
-
-
-	//m_groundShape = new btBoxShape(btVector3(btScalar(2.74*0.5),btScalar(1.52*0.5),btScalar(0.10*0.5)));
-
     
+
+    /*
+	m_groundShape = new btBoxShape(btVector3(btScalar(2.74*0.5),btScalar(1.52*0.5),btScalar(0.10*0.5)));
+   
 	btTransform groundTransform;
 	groundTransform.setIdentity();
 	{
@@ -63,7 +62,9 @@ PongScene::PongScene(Application& app) :
 	m_ground = new cShapeBox(2.74, 1.52, 0.10);
 	m_ground->setEnabled(false);
 	m_world->addChild(m_ground);
-    
+    */
+     
+     
 	/*
 	{
 	//create a dynamic rigidbody
@@ -184,9 +185,17 @@ void PongScene::onKeyDown(unsigned char key, int x, int y)
 		m_ball->setVelocity(btVector3(-4, Util::RandRange(-1, 1), 3.3f));
 		m_ball->setAngularVelocity(btVector3(0, -300, 0));
 	}
+    if(key == 'a')
+	{
+		m_ball->stop();
+		m_ball->setPosition(btVector3(2, 0, 0.3f));
+		m_ball->setVelocity(btVector3(-2, -0.9, 4.5f));
+		m_ball->setAngularVelocity(btVector3(0, 0, 00 * m_ball->getVelocity().y()));
+	}
 }
 
-void PongScene::createCamera() {
+void PongScene::createCamera()
+{
 	// create a camera and insert it into the virtual world
 	m_camera = new chai3d::cCamera(m_world.get());
 	m_world->addChild(m_camera);
@@ -216,8 +225,12 @@ void PongScene::createCamera() {
 	m_camera->setUseShadowCasting(true);
 }
 
-void PongScene::createLight() {
-	// create a directional light source
+void PongScene::createLight()
+{
+	/////////////////////////////////////////////////////////////////////////
+    // create a directional light source
+    /////////////////////////////////////////////////////////////////////////
+    
 	chai3d::cDirectionalLight *dirLight = new cDirectionalLight(m_world.get());
 
 	// insert light source inside world
@@ -234,8 +247,10 @@ void PongScene::createLight() {
 	dirLight->m_diffuse.set(0.45f, 0.45f, 0.45f);
 	dirLight->m_specular.set(0.2f, 0.2f, 0.2f);
 
-
+    /////////////////////////////////////////////////////////////////////////
 	// create a spot light source
+    /////////////////////////////////////////////////////////////////////////
+    
 	cSpotLight *spotLight = new cSpotLight(m_world.get());
 
 	// attach light to camera
@@ -267,12 +282,13 @@ void PongScene::createLight() {
 
 void PongScene::createTable()
 {
-    // load visual shape
+    /////////////////////////////////////////////////////////////////////////
+    // create visual shape
+    /////////////////////////////////////////////////////////////////////////
     
 	cMultiMesh* table = new cMultiMesh();
 
-	bool fileload;
-	fileload = table->loadFromFile("../gfx/table.obj");
+	bool fileload = table->loadFromFile("../gfx/table.obj");
 
 	if (!fileload)
 	{
@@ -301,8 +317,9 @@ void PongScene::createTable()
 	table->setTexture(table_texture);
 	table->setUseTexture(true, true);
 	
-    
-    // load physics body
+    /////////////////////////////////////////////////////////////////////////
+    // create physics body
+    /////////////////////////////////////////////////////////////////////////
     
     cMultiMesh* tableBody = new cMultiMesh();
 
@@ -313,18 +330,126 @@ void PongScene::createTable()
         std::cout << "Error - 3D Model failed to load correctly" << std::endl;
         std::exit(EXIT_FAILURE);
     }
-    
-    btTriangleMesh* trimesh = new btTriangleMesh();
-    
-    for (int i = 0; i < (int)tableBody->getMesh(0)->getNumTriangles(); ++i) {
-        cVertexArrayPtr vertices = tableBody->getMesh(0)->m_triangles->m_vertices;
 
-        trimesh->addTriangle(Util::Vec(vertices->m_localPos[0]), Util::Vec(vertices->m_localPos[1]), Util::Vec(vertices->m_localPos[2]));
-    } 
+    m_groundShape = Util::CollisionShape(tableBody);
+    //m_groundShape = new btBoxShape(btVector3(btScalar(2.74*0.5),btScalar(1.52*0.5),btScalar(0.10*0.5)));
+    
+    btTransform groundTransform;
+	groundTransform.setIdentity();
+	{
+		btScalar mass(0.);
+        
+		//rigidbody is dynamic if and only if mass is non zero, otherwise static
+		bool isDynamic = (mass != 0.f);
+        
+		btVector3 localInertia(0,0,0);
+		if (isDynamic)
+			m_groundShape->calculateLocalInertia(mass,localInertia);
+        
+		//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+		btDefaultMotionState* myMotionState = new btDefaultMotionState(groundTransform);
+		btRigidBody::btRigidBodyConstructionInfo rbInfo(mass,myMotionState,m_groundShape,localInertia);
+		m_groundBody = new btRigidBody(rbInfo);
+		m_groundBody->setRestitution(0.9f);
+        
+		//add the body to the dynamics world
+		m_dynamicsWorld->addRigidBody(m_groundBody);
+	}
+    
+	m_ground = new cShapeBox(2.74, 1.52, 0.10);
+	m_ground->setEnabled(false);
+	m_world->addChild(m_ground);
+    
+    
+	m_table = std::make_shared<Table>(table, m_groundBody);
+}
 
+void PongScene::createNet()
+{
+    /////////////////////////////////////////////////////////////////////////
+    // create visual shape
+    /////////////////////////////////////////////////////////////////////////
+    
+	cMultiMesh* net = new cMultiMesh();
+    
+	bool fileload = net->loadFromFile("../gfx/net.obj");
+    
+	if (!fileload)
+	{
+		std::cout << "Error - 3D Model failed to load correctly" << std::endl;
+		std::exit(EXIT_FAILURE);
+	}
+    
+	m_world->addChild(net);
+    
+	// enable culling to disable rendering of the inside
+	net->setUseCulling(true);
+    
+	// enable display list for faster graphic rendering (recompute if translated)
+	net->setUseDisplayList(true, true);
+    
+	// create texture
+	cTexture2dPtr net_texture = cTexture2d::create();
+	net_texture->setWrapMode(GL_REPEAT);
+	fileload = net_texture->loadFromFile("../gfx/net_diffuse.png");
+	if (!fileload)
+	{
+		std::cout << "Error - Texture image failed to load correctly." << std::endl;
+		std::exit(EXIT_FAILURE);
+	}
+    
+	net->getMesh(0)->setTexture(net_texture);
+	net->getMesh(0)->setUseTexture(true, true);
+    
+    // enable transparency for this object
+    net->getMesh(0)->m_texture->m_image->setTransparentColor(30, 30, 30, 0);
+    net->getMesh(0)->setUseTransparency(true);
+
+	
+    /////////////////////////////////////////////////////////////////////////
+    // create physics body
+    /////////////////////////////////////////////////////////////////////////
+    
+    cMultiMesh* netBody = new cMultiMesh();
+    
+    fileload = netBody->loadFromFile("../gfx/net_body.obj");
+    
+    if (!fileload)
+    {
+        std::cout << "Error - 3D Model failed to load correctly" << std::endl;
+        std::exit(EXIT_FAILURE);
+    }
+    
+    m_netShape = Util::CollisionShape(netBody);
+    
+    btTransform netTransform;
+	netTransform.setIdentity();
+	{
+		btScalar mass(0.);
+        
+		//rigidbody is dynamic if and only if mass is non zero, otherwise static
+		bool isDynamic = (mass != 0.f);
+        
+		btVector3 localInertia(0,0,0);
+		if (isDynamic)
+			m_netShape->calculateLocalInertia(mass,localInertia);
+        
+		//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+		btDefaultMotionState* myMotionState = new btDefaultMotionState(netTransform);
+		btRigidBody::btRigidBodyConstructionInfo rbInfo(mass,myMotionState,m_netShape,localInertia);
+		m_groundBody = new btRigidBody(rbInfo);
+		m_groundBody->setRestitution(0.9f);
+        
+		//add the body to the dynamics world
+		//m_dynamicsWorld->addRigidBody(m_netBody);
+	}
+    
+	m_ground = new cShapeBox(2.74, 1.52, 0.10);
+	m_ground->setEnabled(false);
+	m_world->addChild(m_ground);
     
     
-	m_table = std::make_shared<Table>(table, nullptr);
+	m_net = std::make_shared<Net>(net, m_netBody);
 }
 
 void PongScene::createBall()
