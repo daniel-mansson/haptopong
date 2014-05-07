@@ -35,8 +35,9 @@ PongScene::PongScene(Application& app) :
 	createBall();
 
 
-	m_groundShape = new btBoxShape(btVector3(btScalar(2.74*0.5),btScalar(1.52*0.5),btScalar(0.10*0.5)));
+	//m_groundShape = new btBoxShape(btVector3(btScalar(2.74*0.5),btScalar(1.52*0.5),btScalar(0.10*0.5)));
 
+    
 	btTransform groundTransform;
 	groundTransform.setIdentity();
 	{
@@ -55,13 +56,14 @@ PongScene::PongScene(Application& app) :
 		m_groundBody = new btRigidBody(rbInfo);
 		m_groundBody->setRestitution(0.9f);
 
-
 		//add the body to the dynamics world
 		m_dynamicsWorld->addRigidBody(m_groundBody);
 	}
+    
 	m_ground = new cShapeBox(2.74, 1.52, 0.10);
 	m_ground->setEnabled(false);
 	m_world->addChild(m_ground);
+    
 	/*
 	{
 	//create a dynamic rigidbody
@@ -265,10 +267,10 @@ void PongScene::createLight() {
 
 void PongScene::createTable()
 {
-	// create cMultiMesh
+    // load visual shape
+    
 	cMultiMesh* table = new cMultiMesh();
 
-	// load an object file
 	bool fileload;
 	fileload = table->loadFromFile("../gfx/table.obj");
 
@@ -278,13 +280,12 @@ void PongScene::createTable()
 		std::exit(EXIT_FAILURE);
 	}
 
-	// add gfx objects to world
 	m_world->addChild(table);
 
-	// Since we don't need to see our polygons from both sides, we enable culling.
+	// enable culling to disable rendering of the inside
 	table->setUseCulling(true);
 
-	// enable display list for faster graphic rendering (need tp recompute if tranlated?)
+	// enable display list for faster graphic rendering (recompute if translated)
 	table->setUseDisplayList(true, true);
 
 	// create texture
@@ -299,9 +300,10 @@ void PongScene::createTable()
 
 	table->setTexture(table_texture);
 	table->setUseTexture(true, true);
-
-	m_table = std::make_shared<Table>(table, nullptr);
 	
+    
+    // load physics body
+    
     cMultiMesh* tableBody = new cMultiMesh();
 
     fileload = tableBody->loadFromFile("../gfx/table_body.obj");
@@ -319,6 +321,10 @@ void PongScene::createTable()
 
         trimesh->addTriangle(Util::Vec(vertices->m_localPos[0]), Util::Vec(vertices->m_localPos[1]), Util::Vec(vertices->m_localPos[2]));
     } 
+
+    
+    
+	m_table = std::make_shared<Table>(table, nullptr);
 }
 
 void PongScene::createBall()
