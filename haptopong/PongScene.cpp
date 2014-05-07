@@ -211,9 +211,14 @@ void PongScene::onKeyDown(unsigned char key, int x, int y)
 void PongScene::onSpecialDown(int key, int x, int y)
 {
     switch (key) {
-        case GLUT_KEY_LEFT:
-            m_camera->set(cVector3d (0.02, -1.5, 0.3),   // camera position (eye)
+        case GLUT_KEY_DOWN:
+            m_camera->set(cVector3d (0.02, -1.6, 0.07),   // camera position (eye)
                           cVector3d (0.0, 0.0, 0.01),    // look at position (target)
+                          cVector3d (0.0, 0.0, 1.0));    // direction of the (up) vector
+            break;
+        case GLUT_KEY_LEFT:
+            m_camera->set(cVector3d (0.02, -1.5, 0.2),   // camera position (eye)
+                          cVector3d (0.0, 0.0, 0.02),    // look at position (target)
                           cVector3d (0.0, 0.0, 1.0));    // direction of the (up) vector
             break;
         case GLUT_KEY_RIGHT:

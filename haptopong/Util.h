@@ -27,7 +27,9 @@ public:
         chai3d::cTriangleArrayPtr triangles = mesh->getMesh(0)->m_triangles;
         unsigned numTriangles = mesh->getMesh(0)->getNumTriangles();
         
-        mesh->getMesh(0)->computeGlobalPositions(true);
+        chai3d::cVector3d pos; pos.zero();
+        chai3d::cMatrix3d rot; rot.identity();
+        mesh->getMesh(0)->computeGlobalPositions(false, pos, rot);
         
         // convert every triangle
         for (unsigned i = 0; i < numTriangles; ++i)
@@ -36,8 +38,8 @@ public:
             unsigned int index1 = triangles->getVertexIndex1(i);
             unsigned int index2 = triangles->getVertexIndex2(i);
             
-            //trimesh->addTriangle(Util::Vec(vertices->getGlobalPos(index0)), Util::Vec(vertices->getGlobalPos(index1)), Util::Vec(vertices->getGlobalPos(index2)));
-            trimesh->addTriangle(Util::Vec(vertices->getLocalPos(index0)), Util::Vec(vertices->getLocalPos(index1)), Util::Vec(vertices->getLocalPos(index2)));
+            trimesh->addTriangle(Util::Vec(vertices->getGlobalPos(index0)), Util::Vec(vertices->getGlobalPos(index1)), Util::Vec(vertices->getGlobalPos(index2)));
+            //trimesh->addTriangle(Util::Vec(vertices->getLocalPos(index0)), Util::Vec(vertices->getLocalPos(index1)), Util::Vec(vertices->getLocalPos(index2)));
         }
         
         return new btConvexTriangleMeshShape(trimesh);
