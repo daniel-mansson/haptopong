@@ -59,12 +59,8 @@ public:
         if (tcount)
         {
             btTriangleMesh* trimesh = new btTriangleMesh();
-            
-            //btVector3 localScaling(1.f, 1.f, 0.4f);
-            //btVector3 localOffset(-0.f, -0.f, -0.038f);
-            
-            int i;
-            for (i=0; i<wo.mTriCount; i++)
+
+            for (int i=0; i<wo.mTriCount; i++)
             {
                 int index0 = wo.mIndices[i*3];
                 int index1 = wo.mIndices[i*3+1];
@@ -74,23 +70,10 @@ public:
                 btVector3 vertex1(wo.mVertices[index1*3], wo.mVertices[index1*3+1], wo.mVertices[index1*3+2]);
                 btVector3 vertex2(wo.mVertices[index2*3], wo.mVertices[index2*3+1], wo.mVertices[index2*3+2]);
                 
-                //vertex0 *= localScaling;
-                //vertex1 *= localScaling;
-                //vertex2 *= localScaling;
-                
-                //vertex0 += localOffset;
-                //vertex1 += localOffset;
-                //vertex2 += localOffset;
-                
                 trimesh->addTriangle(vertex0,vertex1,vertex2, false);
             }
             
             /*
-            btTriangleMesh* trimesh = new btTriangleMesh();
-            for ( i=0;i<numTriangles;i++)
-            {
-                trimesh->addTriangle(triangles[i].vertex0,triangles[i].vertex1,triangles[i].vertex2);
-            }
             btCollisionShape* shape = 0;
             if (movingDynamic)
             {
@@ -104,43 +87,9 @@ public:
             }
             */
             
-            //btBvhTriangleMeshShape *shape = new btBvhTriangleMeshShape(trimesh,true);
             btConvexTriangleMeshShape *shape = new btConvexTriangleMeshShape(trimesh);
             shape->setMargin(0.0);
             return shape;
-            
-            //return new btBvhTriangleMeshShape(trimesh, true);
-            //return new btConvexTriangleMeshShape(trimesh);
-            
-            /*
-            btConvexShape* tmpConvexShape = new btConvexTriangleMeshShape(trimesh);
-            
-            //create a hull approximation
-            btShapeHull* hull = new btShapeHull(tmpConvexShape);
-            btScalar margin = tmpConvexShape->getMargin();
-            hull->buildHull(margin);
-            tmpConvexShape->setUserPointer(hull);
-            
-            btConvexHullShape* convexShape = new btConvexHullShape();
-            bool updateLocalAabb = false;
-            
-            for (i=0;i<hull->numVertices();i++)
-            {
-                convexShape->addPoint(hull->getVertexPointer()[i],updateLocalAabb);
-            }
-            convexShape->recalcLocalAabb();
-            
-            delete tmpConvexShape;
-            delete hull;
-            
-            return convexShape;
-            */
-            /*
-            bool useQuantization = true;
-            btCollisionShape* concaveShape = new btBvhTriangleMeshShape(trimesh,useQuantization);
-            
-            return concaveShape;
-            */
         }
         
         return nullptr;

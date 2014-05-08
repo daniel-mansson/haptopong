@@ -191,21 +191,21 @@ void PongScene::onKeyDown(unsigned char key, int x, int y)
 	{
 		m_ball->stop();
 		m_ball->setPosition(btVector3(2, 0, 0.3f));
-		m_ball->setVelocity(btVector3(-2, -0.9, 4.5f));
+		m_ball->setVelocity(btVector3(-2.1, -0.9, 4.5f));
 		m_ball->setAngularVelocity(btVector3(0, 0, 00 * m_ball->getVelocity().y()));
 	}
     if(key == 'a')
 	{
 		m_ball->stop();
 		m_ball->setPosition(btVector3(1.5, 0, 0.1f));
-		m_ball->setVelocity(btVector3(-0.5, Util::RandRange(-0.5, 0.5), 2.1f));
+		m_ball->setVelocity(btVector3(-1, Util::RandRange(-0.5, 0.5), 2.0f));
 		m_ball->setAngularVelocity(btVector3(0, 0, 00 * m_ball->getVelocity().y()));
 	}
     if(key == '<')
 	{
 		m_ball->stop();
 		m_ball->setPosition(btVector3(2, 0, 0.3f));
-		m_ball->setVelocity(btVector3(-1.3, -0.1, 2.f));
+		m_ball->setVelocity(btVector3(Util::RandRange(-2, -1), -0.1, 2.f));
 		m_ball->setAngularVelocity(btVector3(0, 0, 00 * m_ball->getVelocity().y()));
 	}
 }
@@ -364,7 +364,6 @@ void PongScene::createTable()
     /////////////////////////////////////////////////////////////////////////
     
     m_groundShape = Util::LoadCollisionShape("../gfx/table_body.obj");
-    //m_groundShape = new btBoxShape(btVector3(btScalar(2.74*0.5),btScalar(1.52*0.5),btScalar(0.10*0.5)));
     
     btTransform groundTransform;
 	groundTransform.setIdentity();
@@ -400,7 +399,7 @@ void PongScene::createNet()
     
 	cMultiMesh* net = new cMultiMesh();
     
-	bool fileload = net->loadFromFile("../gfx/file.obj");
+	bool fileload = net->loadFromFile("../gfx/net.obj");
     
 	if (!fileload)
 	{
@@ -427,31 +426,18 @@ void PongScene::createNet()
 	}
     
 	net->getMesh(0)->setTexture(net_texture);
-	//net->getMesh(0)->setUseTexture(true, true);
+	net->getMesh(0)->setUseTexture(true, true);
     
     // enable transparency for this object
-    //net->getMesh(0)->m_texture->m_image->setTransparentColor(30, 30, 30, 0);
-    //net->getMesh(0)->setUseTransparency(true);
+    net->getMesh(0)->m_texture->m_image->setTransparentColor(30, 30, 30, 0);
+    net->getMesh(0)->setUseTransparency(true);
 
 	
     /////////////////////////////////////////////////////////////////////////
     // create physics body
     /////////////////////////////////////////////////////////////////////////
-    
-    /*
-    cMultiMesh* netBody = new cMultiMesh();
-    
-    fileload = netBody->loadFromFile("../gfx/net_body.obj");
-    
-    if (!fileload)
-    {
-        std::cout << "Error - 3D Model failed to load correctly" << std::endl;
-        std::exit(EXIT_FAILURE);
-    }
-    */
-     
-    //m_netShape = Util::CollisionShape(netBody);
-    m_netShape = Util::LoadCollisionShape("../gfx/file.obj");
+
+    m_netShape = Util::LoadCollisionShape("../gfx/net_body.obj");
     
     btTransform netTransform;
 	netTransform.setIdentity();
