@@ -16,6 +16,9 @@
 
 //Bullet physics engine
 #include <btBulletDynamicsCommon.h>
+#include <cd_wavefront.h>
+#include <ConvexBuilder.h>
+#include <BulletCollision/CollisionShapes/btShapeHull.h>
 
 #include "Util.h"
 

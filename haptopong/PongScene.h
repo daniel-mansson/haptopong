@@ -33,7 +33,7 @@ private:
 	
 	btCollisionShape* m_groundShape;
 	btRigidBody* m_groundBody;
-	chai3d::cShapeBox* m_ground;
+	//chai3d::cShapeBox* m_ground;
     
     btCollisionShape* m_netShape;
 	btRigidBody* m_netBody;

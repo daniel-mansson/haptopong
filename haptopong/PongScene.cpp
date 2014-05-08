@@ -123,10 +123,12 @@ void PongScene::render(const double& timeStep)
 	//pState->getWorldTransform(transform);	
 	//m_sphere->setLocalPos(Util::Vec(transform.getOrigin()));
 
+    /*
 	btMotionState* pState = m_groundBody->getMotionState();
 	pState->getWorldTransform(transform);	
 	m_ground->setLocalPos(Util::Vec(transform.getOrigin()));
-
+    */
+     
 	m_ball->render((float)timeStep);
 
 	m_camera->renderView(m_app.getWindowWidth(), m_app.getWindowHeight());
@@ -195,8 +197,8 @@ void PongScene::onKeyDown(unsigned char key, int x, int y)
     if(key == 'a')
 	{
 		m_ball->stop();
-		m_ball->setPosition(btVector3(2, 0, 0.3f));
-		m_ball->setVelocity(btVector3(-1.3, Util::RandRange(-0.5, 0.5), 2.1f));
+		m_ball->setPosition(btVector3(1.5, 0, 0.1f));
+		m_ball->setVelocity(btVector3(-0.5, Util::RandRange(-0.5, 0.5), 2.1f));
 		m_ball->setAngularVelocity(btVector3(0, 0, 00 * m_ball->getVelocity().y()));
 	}
     if(key == '<')
@@ -212,8 +214,8 @@ void PongScene::onSpecialDown(int key, int x, int y)
 {
     switch (key) {
         case GLUT_KEY_DOWN:
-            m_camera->set(cVector3d (0.02, -1.6, 0.07),   // camera position (eye)
-                          cVector3d (0.0, 0.0, 0.01),    // look at position (target)
+            m_camera->set(cVector3d (0.02, -1.4, 0.055),   // camera position (eye)
+                          cVector3d (0.0, 0.0, 0.055),    // look at position (target)
                           cVector3d (0.0, 0.0, 1.0));    // direction of the (up) vector
             break;
         case GLUT_KEY_LEFT:
@@ -361,17 +363,7 @@ void PongScene::createTable()
     // create physics body
     /////////////////////////////////////////////////////////////////////////
     
-    cMultiMesh* tableBody = new cMultiMesh();
-
-    fileload = tableBody->loadFromFile("../gfx/table_body.obj");
-    
-    if (!fileload)
-    {
-        std::cout << "Error - 3D Model failed to load correctly" << std::endl;
-        std::exit(EXIT_FAILURE);
-    }
-
-    m_groundShape = Util::CollisionShape(tableBody);
+    m_groundShape = Util::LoadCollisionShape("../gfx/table_body.obj");
     //m_groundShape = new btBoxShape(btVector3(btScalar(2.74*0.5),btScalar(1.52*0.5),btScalar(0.10*0.5)));
     
     btTransform groundTransform;
@@ -397,10 +389,6 @@ void PongScene::createTable()
 		m_dynamicsWorld->addRigidBody(m_groundBody);
 	}
     
-	m_ground = new cShapeBox(2.74, 1.52, 0.10);
-	m_ground->setEnabled(false);
-	m_world->addChild(m_ground);
-    
 	m_table = std::make_shared<Table>(table, m_groundBody);
 }
 
@@ -412,7 +400,7 @@ void PongScene::createNet()
     
 	cMultiMesh* net = new cMultiMesh();
     
-	bool fileload = net->loadFromFile("../gfx/net.obj");
+	bool fileload = net->loadFromFile("../gfx/file.obj");
     
 	if (!fileload)
 	{
@@ -439,17 +427,18 @@ void PongScene::createNet()
 	}
     
 	net->getMesh(0)->setTexture(net_texture);
-	net->getMesh(0)->setUseTexture(true, true);
+	//net->getMesh(0)->setUseTexture(true, true);
     
     // enable transparency for this object
-    net->getMesh(0)->m_texture->m_image->setTransparentColor(30, 30, 30, 0);
-    net->getMesh(0)->setUseTransparency(true);
+    //net->getMesh(0)->m_texture->m_image->setTransparentColor(30, 30, 30, 0);
+    //net->getMesh(0)->setUseTransparency(true);
 
 	
     /////////////////////////////////////////////////////////////////////////
     // create physics body
     /////////////////////////////////////////////////////////////////////////
     
+    /*
     cMultiMesh* netBody = new cMultiMesh();
     
     fileload = netBody->loadFromFile("../gfx/net_body.obj");
@@ -459,8 +448,10 @@ void PongScene::createNet()
         std::cout << "Error - 3D Model failed to load correctly" << std::endl;
         std::exit(EXIT_FAILURE);
     }
-    
-    m_netShape = Util::CollisionShape(netBody);
+    */
+     
+    //m_netShape = Util::CollisionShape(netBody);
+    m_netShape = Util::LoadCollisionShape("../gfx/file.obj");
     
     btTransform netTransform;
 	netTransform.setIdentity();
@@ -484,10 +475,6 @@ void PongScene::createNet()
 		//add the body to the dynamics world
 		m_dynamicsWorld->addRigidBody(m_netBody);
 	}
-    
-	m_ground = new cShapeBox(2.74, 1.52, 0.10);
-	m_ground->setEnabled(false);
-	m_world->addChild(m_ground);
     
 	m_net = std::make_shared<Net>(net, m_netBody);
 }
