@@ -102,7 +102,6 @@ PongScene::PongScene(Application& app) :
 
 PongScene::~PongScene(void)
 {
-
 }
 
 void PongScene::enter(ScenePtr from)
@@ -123,12 +122,8 @@ void PongScene::render(const double& timeStep)
 	//pState->getWorldTransform(transform);	
 	//m_sphere->setLocalPos(Util::Vec(transform.getOrigin()));
 
-    /*
-	btMotionState* pState = m_groundBody->getMotionState();
-	pState->getWorldTransform(transform);	
-	m_ground->setLocalPos(Util::Vec(transform.getOrigin()));
-    */
-     
+	m_table->render((float)timeStep);
+    m_net->render((float)timeStep);
 	m_ball->render((float)timeStep);
 
 	m_camera->renderView(m_app.getWindowWidth(), m_app.getWindowHeight());
@@ -137,6 +132,8 @@ void PongScene::render(const double& timeStep)
 
 void PongScene::updateLogic(const double& timeStep)
 {
+    m_table->updateLogic((float)timeStep);
+    m_net->updateLogic((float)timeStep);
 	m_ball->updateLogic((float)timeStep);
 	m_dynamicsWorld->stepSimulation((btScalar)timeStep, 10);
 }
@@ -370,33 +367,12 @@ void PongScene::createTable()
     // create physics body
     /////////////////////////////////////////////////////////////////////////
     
-    m_groundShape = Util::LoadCollisionShape("../gfx/table_body.obj");
-    //m_groundShape = new btBoxShape(btVector3(btScalar(2.74*0.5),btScalar(1.52*0.5),btScalar(0.10*0.5)));
+    m_tableCollisionShape = std::shared_ptr<btCollisionShape>(Util::LoadCollisionShape("../gfx/table_body.obj"));
+    //m_tableShape = new btBoxShape(btVector3(btScalar(2.74*0.5),btScalar(1.52*0.5),btScalar(0.10*0.5)));
     
-    btTransform groundTransform;
-	groundTransform.setIdentity();
-	
-    {
-		btScalar mass(0.);
-        
-		//rigidbody is dynamic if and only if mass is non zero, otherwise static
-		bool isDynamic = (mass != 0.f);
-        
-		btVector3 localInertia(0,0,0);
-		if (isDynamic)
-			m_groundShape->calculateLocalInertia(mass,localInertia);
-        
-		//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
-		btDefaultMotionState* myMotionState = new btDefaultMotionState(groundTransform);
-		btRigidBody::btRigidBodyConstructionInfo rbInfo(mass,myMotionState,m_groundShape,localInertia);
-		m_groundBody = new btRigidBody(rbInfo);
-		m_groundBody->setRestitution(0.9f);
-        
-		//add the body to the dynamics world
-		m_dynamicsWorld->addRigidBody(m_groundBody);
-	}
-    
-	m_table = std::make_shared<Table>(table, m_groundBody);
+	m_table = std::make_shared<Table>(table, m_tableCollisionShape.get());
+
+    m_dynamicsWorld->addRigidBody(m_table->getBody());
 }
 
 void PongScene::createNet()
@@ -440,37 +416,15 @@ void PongScene::createNet()
     net->getMesh(0)->m_texture->m_image->setTransparentColor(30, 30, 30, 0);
     net->getMesh(0)->setUseTransparency(true);
 
-	
     /////////////////////////////////////////////////////////////////////////
     // create physics body
     /////////////////////////////////////////////////////////////////////////
 
-    m_netShape = Util::LoadCollisionShape("../gfx/net_body.obj");
+    m_netCollisionShape = std::shared_ptr<btCollisionShape>(Util::LoadCollisionShape("../gfx/net_body.obj"));
     
-    btTransform netTransform;
-	netTransform.setIdentity();
-	
-    {
-		btScalar mass(0.);
-        
-		//rigidbody is dynamic if and only if mass is non zero, otherwise static
-		bool isDynamic = (mass != 0.f);
-        
-		btVector3 localInertia(0,0,0);
-		if (isDynamic)
-			m_netShape->calculateLocalInertia(mass,localInertia);
-        
-		//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
-		btDefaultMotionState* myMotionState = new btDefaultMotionState(netTransform);
-		btRigidBody::btRigidBodyConstructionInfo rbInfo(mass,myMotionState,m_netShape,localInertia);
-		m_netBody = new btRigidBody(rbInfo);
-		m_netBody->setRestitution(0.9f);
-        
-		//add the body to the dynamics world
-		m_dynamicsWorld->addRigidBody(m_netBody);
-	}
+	m_net = std::make_shared<Net>(net, m_netCollisionShape.get());
     
-	m_net = std::make_shared<Net>(net, m_netBody);
+    m_dynamicsWorld->addRigidBody(m_net->getBody());
 }
 
 void PongScene::createBall()
@@ -480,10 +434,10 @@ void PongScene::createBall()
 	cShapeSphere* ballShape = new cShapeSphere((double)properties.getRadius());
     
 	m_world->addChild(ballShape);
+    
+	m_ballCollisionShape = std::make_shared<btSphereShape>(btScalar(properties.getRadius()));
 
-	btCollisionShape* ballCollisionShape = new btSphereShape(btScalar(properties.getRadius()));
-
-	m_ball = std::make_shared<Ball>(ballShape, ballCollisionShape, properties);
+	m_ball = std::make_shared<Ball>(ballShape, m_ballCollisionShape.get(), properties);
 	
     m_dynamicsWorld->addRigidBody(m_ball->getBody());
 }

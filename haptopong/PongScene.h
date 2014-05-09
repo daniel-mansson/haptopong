@@ -31,12 +31,9 @@ private:
 	
 	btDiscreteDynamicsWorld* m_dynamicsWorld;
 	
-	btCollisionShape* m_groundShape;
-	btRigidBody* m_groundBody;
-	//chai3d::cShapeBox* m_ground;
-    
-    btCollisionShape* m_netShape;
-	btRigidBody* m_netBody;
+	btCollisionShapePtr m_tableCollisionShape;
+    btCollisionShapePtr m_netCollisionShape;
+    btCollisionShapePtr m_ballCollisionShape;
 	
 	TablePtr m_table;
 	NetPtr m_net;

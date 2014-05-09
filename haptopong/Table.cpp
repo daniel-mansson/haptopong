@@ -2,12 +2,27 @@
 #include "Table.h"
 
 
-Table::Table(chai3d::cMultiMesh* mesh, btRigidBody* body) :
-	m_mesh(mesh),
-	m_body(body)
+Table::Table(chai3d::cMultiMesh* shape, btCollisionShape* collisionShape) :
+	m_shape(shape)
 {
+    btTransform groundTransform;
+	groundTransform.setIdentity();
+	
+    btScalar mass(0.);
+        
+    //rigidbody is dynamic if and only if mass is non zero, otherwise static
+    bool isDynamic = (mass != 0.f);
+    
+    btVector3 localInertia(0,0,0);
+    if (isDynamic)
+        collisionShape->calculateLocalInertia(mass,localInertia);
+    
+    //using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+    btDefaultMotionState* myMotionState = new btDefaultMotionState(groundTransform);
+    btRigidBody::btRigidBodyConstructionInfo rbInfo(mass,myMotionState,collisionShape, localInertia);
+    m_body = std::make_shared<btRigidBody>(rbInfo);
+    m_body->setRestitution(0.9f);
 }
-
 
 Table::~Table(void)
 {
@@ -15,7 +30,10 @@ Table::~Table(void)
 
 void Table::render(float timeStep)
 {
-
+    btTransform transform;
+    btMotionState* pState = m_body->getMotionState();
+	pState->getWorldTransform(transform);
+	m_shape->setLocalPos(Util::Vec(transform.getOrigin()));
 }
 
 void Table::updateLogic(float timeStep)
@@ -31,4 +49,12 @@ void Table::updateHaptics(float timeStep)
 void Table::onCollision(const btCollisionResult& collision)
 {
 
+}
+
+btRigidBody* Table::getBody() const {
+    return m_body.get();
+}
+
+chai3d::cMultiMesh* Table::getShape() const {
+    return m_shape;
 }

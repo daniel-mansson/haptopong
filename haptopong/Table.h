@@ -5,7 +5,7 @@
 class Table : public GameObject
 {
 public:
-	Table(chai3d::cMultiMesh* mesh, btRigidBody* body);
+	Table(chai3d::cMultiMesh* shape, btCollisionShape* collisionShape);
 	~Table(void);
 	
 	virtual GameObjectType getType() const { return TABLE; };
@@ -16,12 +16,13 @@ public:
 
 	virtual void onCollision(const btCollisionResult& collision);
     
-    std::string s;
+    btRigidBody* getBody() const;
+    chai3d::cMultiMesh* getShape() const;
 
 private:
 
-	chai3d::cMultiMesh* m_mesh;
-	btRigidBody* m_body;
+	chai3d::cMultiMesh* m_shape;
+	btRigidBodyPtr m_body;
 };
 
 typedef std::shared_ptr<Table> TablePtr;

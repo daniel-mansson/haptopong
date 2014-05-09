@@ -46,7 +46,7 @@ private:
 
 	BallProperties m_properties;
 	
-	btRigidBody* m_body;
+	btRigidBodyPtr m_body;
 	chai3d::cShapeSphere* m_shape;
     
 	const btMotionState* m_motionState;

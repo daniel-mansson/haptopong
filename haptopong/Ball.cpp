@@ -28,9 +28,9 @@ Ball::Ball(chai3d::cShapeSphere* shape, btCollisionShape* collisionShape, const 
 	startTransform.setOrigin(btVector3(0,0,1));
     
 	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
-	btRigidBody::btRigidBodyConstructionInfo rbInfo(m_properties.getWeight(), myMotionState, collisionShape,localInertia);
+	btRigidBody::btRigidBodyConstructionInfo rbInfo(m_properties.getWeight(), myMotionState, collisionShape, localInertia);
 	
-    m_body = new btRigidBody(rbInfo);
+    m_body = std::make_shared<btRigidBody>(rbInfo);
 	m_body->setRestitution(m_properties.getRestitution());
 	m_body->setDamping(m_properties.getLinDamping(), m_properties.getLinDamping());
     
@@ -68,7 +68,6 @@ Ball::Ball(chai3d::cShapeSphere* shape, btCollisionShape* collisionShape, const 
 	if(m_body != nullptr)
 		m_motionState = m_body->getMotionState();
 }
-
 
 Ball::~Ball(void)
 {
@@ -143,7 +142,7 @@ const btVector3& Ball::getAngularVelocity() const
 }
 
 btRigidBody* Ball::getBody() const {
-    return m_body;
+    return m_body.get();
 }
 
 chai3d::cShapeSphere* Ball::getShape() const {

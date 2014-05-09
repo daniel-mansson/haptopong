@@ -31,3 +31,6 @@ namespace chai3d
 	typedef std::shared_ptr<cWorld> cWorldPtr;
 	typedef std::shared_ptr<cFont> cFontPtr;
 };
+
+typedef std::shared_ptr<btRigidBody> btRigidBodyPtr;
+typedef std::shared_ptr<btCollisionShape> btCollisionShapePtr;

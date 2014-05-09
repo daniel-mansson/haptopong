@@ -5,7 +5,7 @@
 class Net : public GameObject
 {
 public:
-	Net(chai3d::cMultiMesh* mesh, btRigidBody* body);
+	Net(chai3d::cMultiMesh* shape, btCollisionShape* collisionShape);
 	~Net(void);
 	
 	virtual GameObjectType getType() const { return NET; };
@@ -16,12 +16,13 @@ public:
     
 	virtual void onCollision(const btCollisionResult& collision);
     
-    std::string s;
+    btRigidBody* getBody() const;
+    chai3d::cMultiMesh* getShape() const;
     
 private:
     
-	chai3d::cMultiMesh* m_mesh;
-	btRigidBody* m_body;
+	chai3d::cMultiMesh* m_shape;
+	btRigidBodyPtr m_body;
 };
 
 typedef std::shared_ptr<Net> NetPtr;
