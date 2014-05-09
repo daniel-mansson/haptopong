@@ -231,7 +231,7 @@ void PongScene::onSpecialDown(int key, int x, int y)
                           cVector3d (0.0, 0.0, 1.0));    // direction of the (up) vector
             break;
         case GLUT_KEY_RIGHT:
-            m_camera->set(cVector3d (1.4, 0.8, 0.17),    // camera position (eye)
+            m_camera->set(cVector3d (1.4, 1.2, 0.17),    // camera position (eye)
                           cVector3d (1.4, 0.0, 0.01),    // look at position (target)
                           cVector3d (0.0, 0.0, 1.0));    // direction of the (up) vector
             break;
@@ -475,33 +475,17 @@ void PongScene::createNet()
 
 void PongScene::createBall()
 {
-	float radius = 0.02f;
+    BallProperties properties;
+    
+	cShapeSphere* ballShape = new cShapeSphere((double)properties.getRadius());
+    
+	m_world->addChild(ballShape);
 
-	btCollisionShape* sphereShape = new btSphereShape(btScalar(radius));
+	btCollisionShape* ballCollisionShape = new btSphereShape(btScalar(properties.getRadius()));
 
-	btTransform startTransform;
-	startTransform.setIdentity();
-
-	btScalar mass(1.f);
-	bool isDynamic = (mass != 0.f);
-
-	btVector3 localInertia(0,0,0);
-	if (isDynamic)
-		sphereShape->calculateLocalInertia(mass,localInertia);
-
-	startTransform.setOrigin(btVector3(0,0,1));
-
-	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
-	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass,myMotionState,sphereShape,localInertia);
-	btRigidBody* ballBody = new btRigidBody(rbInfo);
-	ballBody->setRestitution(0.9f);
-	ballBody->setDamping(0.001f, 0.5f);
-
-	m_dynamicsWorld->addRigidBody(ballBody);
-
-	cShapeSphere* ball = new cShapeSphere((double)radius);
-	m_world->addChild(ball);
-
-	m_ball = BallPtr(new Ball(ball, ballBody));
+	m_ball = std::make_shared<Ball>(ballShape, ballCollisionShape, properties);
 	
+    m_dynamicsWorld->addRigidBody(m_ball->getBody());
 }
+
+

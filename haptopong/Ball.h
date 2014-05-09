@@ -6,7 +6,7 @@
 class Ball : public GameObject
 {
 public:
-	Ball(chai3d::cShapeSphere* shape, btRigidBody* body);
+	Ball(chai3d::cShapeSphere* shape, btCollisionShape* collisionShape, const BallProperties &properties = BallProperties());
 	~Ball(void);
 
 	virtual GameObjectType getType() const { return BALL; };
@@ -28,8 +28,10 @@ public:
 
 	const btVector3& getPosition() const;
 	const btVector3& getVelocity() const;
-	const btVector3& getAngularVelocity() const;	
-
+	const btVector3& getAngularVelocity() const;
+	
+    btRigidBody* getBody() const;
+    chai3d::cShapeSphere* getShape() const;
 	
 	void setBernulli(const chai3d::cVector3d& bernoulli) { m_bernoulli = bernoulli; }
 	void setResistance(const chai3d::cVector3d& resistance) { m_resistance = resistance; }
@@ -44,10 +46,9 @@ private:
 
 	BallProperties m_properties;
 	
-
-	chai3d::cShapeSphere* m_shape;
 	btRigidBody* m_body;
-
+	chai3d::cShapeSphere* m_shape;
+    
 	const btMotionState* m_motionState;
 	btTransform m_transform;
 };
