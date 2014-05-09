@@ -208,6 +208,13 @@ void PongScene::onKeyDown(unsigned char key, int x, int y)
 		m_ball->setVelocity(btVector3(Util::RandRange(-2, -1), -0.1, 2.f));
 		m_ball->setAngularVelocity(btVector3(0, 0, 00 * m_ball->getVelocity().y()));
 	}
+    if(key == 'z')
+	{
+		m_ball->stop();
+		m_ball->setPosition(btVector3(1.27, 0.65, 0.1f));
+		m_ball->setVelocity(btVector3(0.04, 0.04, 0.0));
+		m_ball->setAngularVelocity(btVector3(0, 0, 0));
+	}
 }
 
 void PongScene::onSpecialDown(int key, int x, int y)
@@ -364,6 +371,7 @@ void PongScene::createTable()
     /////////////////////////////////////////////////////////////////////////
     
     m_groundShape = Util::LoadCollisionShape("../gfx/table_body.obj");
+    //m_groundShape = new btBoxShape(btVector3(btScalar(2.74*0.5),btScalar(1.52*0.5),btScalar(0.10*0.5)));
     
     btTransform groundTransform;
 	groundTransform.setIdentity();

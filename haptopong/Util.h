@@ -42,10 +42,11 @@ public:
             //trimesh->addTriangle(Util::Vec(vertices->getLocalPos(index0)), Util::Vec(vertices->getLocalPos(index1)), Util::Vec(vertices->getLocalPos(index2)));
         }
         
-        //btConvexTriangleMeshShape* convexShape = new btConvexTriangleMeshShape(trimesh, true);
+        btConvexTriangleMeshShape* shape = new btConvexTriangleMeshShape(trimesh, true);
+        shape->setMargin((btScalar)0.);
         
-        bool useQuantization = false;
-        btCollisionShape* shape = new btBvhTriangleMeshShape(trimesh, useQuantization);
+        //bool useQuantization = false;
+        //btCollisionShape* shape = new btBvhTriangleMeshShape(trimesh, useQuantization);
         
         return shape;
     }
@@ -88,7 +89,8 @@ public:
             */
             
             btConvexTriangleMeshShape *shape = new btConvexTriangleMeshShape(trimesh);
-            shape->setMargin(0.0);
+            shape->setMargin((btScalar)0.);
+            
             return shape;
         }
         
