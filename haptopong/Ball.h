@@ -6,7 +6,7 @@
 class Ball : public GameObject
 {
 public:
-	Ball(chai3d::cShapeSphere* shape, btCollisionShape* collisionShape, const BallProperties &properties = BallProperties());
+	Ball(chai3d::cShapeSphere* shape, btCollisionShape* collisionShape, const BallProperties &properties = BallProperties(), const btTransform &startTransform = btTransform(btMatrix3x3::getIdentity()));
 	~Ball(void);
 
 	virtual GameObjectType getType() const { return BALL; };
@@ -45,7 +45,6 @@ private:
 	chai3d::cVector3d m_angularVelocity;
 
 	BallProperties m_properties;
-	
 	btRigidBodyPtr m_body;
 	chai3d::cShapeSphere* m_shape;
     

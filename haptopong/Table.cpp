@@ -5,8 +5,8 @@
 Table::Table(chai3d::cMultiMesh* shape, btCollisionShape* collisionShape) :
 	m_shape(shape)
 {
-    btTransform groundTransform;
-	groundTransform.setIdentity();
+    btTransform startTransform;
+	startTransform.setIdentity();
 	
     btScalar mass(0.);
         
@@ -18,10 +18,14 @@ Table::Table(chai3d::cMultiMesh* shape, btCollisionShape* collisionShape) :
         collisionShape->calculateLocalInertia(mass,localInertia);
     
     //using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
-    btDefaultMotionState* myMotionState = new btDefaultMotionState(groundTransform);
+    btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
     btRigidBody::btRigidBodyConstructionInfo rbInfo(mass,myMotionState,collisionShape, localInertia);
     m_body = std::make_shared<btRigidBody>(rbInfo);
     m_body->setRestitution(0.9f);
+    
+    
+    //m_body->setCcdMotionThreshold(0.f);
+    //m_body->setCcdSweptSphereRadius(0.f);
 }
 
 Table::~Table(void)
@@ -30,10 +34,12 @@ Table::~Table(void)
 
 void Table::render(float timeStep)
 {
+    /*
     btTransform transform;
     btMotionState* pState = m_body->getMotionState();
 	pState->getWorldTransform(transform);
 	m_shape->setLocalPos(Util::Vec(transform.getOrigin()));
+    */
 }
 
 void Table::updateLogic(float timeStep)

@@ -6,7 +6,7 @@
 class Racket : public GameObject
 {
 public:
-	Racket(void);
+	Racket(chai3d::cMultiMesh* shape, btCollisionShape* collisionShape, const RacketProperties &properties = RacketProperties(), const btTransform &startTransform = btTransform(btMatrix3x3::getIdentity()));
 	~Racket(void);
 	
 	virtual GameObjectType getType() const { return RACKET; }
@@ -28,11 +28,17 @@ public:
 	const chai3d::cVector3d& getNormal() const { return m_normal; }
 	const chai3d::cVector3d& getVelocity() const { return m_velocity; }
 	const chai3d::cVector3d& getVForce() const { return m_force; }
+    
+    btRigidBody* getBody() const;
+    chai3d::cMultiMesh* getShape() const;
 
 private:
 	chai3d::cVector3d m_normal;
 	chai3d::cVector3d m_velocity;
 	chai3d::cVector3d m_force;
 	RacketProperties m_properties;
+	chai3d::cMultiMesh* m_shape;
+    btRigidBodyPtr m_body;
 };
 
+typedef std::shared_ptr<Racket> RacketPtr;

@@ -34,15 +34,19 @@ private:
 	btCollisionShapePtr m_tableCollisionShape;
     btCollisionShapePtr m_netCollisionShape;
     btCollisionShapePtr m_ballCollisionShape;
+    btCollisionShapePtr m_racketsCollisionShape;
 	
 	TablePtr m_table;
 	NetPtr m_net;
 	BallPtr m_ball;
+    RacketPtr m_playerRacket;
+    RacketPtr m_opponentRacket;
     
 	void createCamera();
     void createLight();
 	void createTable();
 	void createNet();
 	void createBall();
+	void createRackets();
 };
 

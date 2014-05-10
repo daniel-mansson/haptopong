@@ -4,35 +4,32 @@
 
 using namespace chai3d;
 
-Ball::Ball(chai3d::cShapeSphere* shape, btCollisionShape* collisionShape, const BallProperties &properties) :
+Ball::Ball(chai3d::cShapeSphere* shape, btCollisionShape* collisionShape, const BallProperties &properties, const btTransform &startTransform) :
 	m_bernoulli(0, 0, 0),
 	m_resistance(0, 0, 0),
 	m_velocity(0, 0, 0),
 	m_angularVelocity(0, 0, 0),
 	m_shape(shape),
     m_properties(properties)
-{
-    // setup rigid body
-
-    btTransform startTransform;
-	startTransform.setIdentity();
-    
-    m_properties.setWeight(1.); // strange behaviour if mass is too low
-    
-    bool isDynamic = (m_properties.getWeight() != 0.f);
+{   
+    //btScalar mass = m_properties.getWeight();
+    btScalar mass(1.f);
+	bool isDynamic = (mass != 0.f);
     
 	btVector3 localInertia(0,0,0);
 	if (isDynamic)
-		collisionShape->calculateLocalInertia(m_properties.getWeight(), localInertia);
-    
-	startTransform.setOrigin(btVector3(0,0,1));
+		collisionShape->calculateLocalInertia(mass, localInertia);
     
 	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
-	btRigidBody::btRigidBodyConstructionInfo rbInfo(m_properties.getWeight(), myMotionState, collisionShape, localInertia);
+	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, collisionShape, localInertia);
 	
     m_body = std::make_shared<btRigidBody>(rbInfo);
 	m_body->setRestitution(m_properties.getRestitution());
-	m_body->setDamping(m_properties.getLinDamping(), m_properties.getLinDamping());
+	m_body->setDamping((float)m_properties.getLinDamping(), (float)m_properties.getAngDamping());
+    
+    
+    //m_body->setCcdMotionThreshold(m_properties.getRadius()*0.9);
+    //m_body->setCcdSweptSphereRadius(m_properties.getRadius()*0.9);
     
     
     
@@ -79,8 +76,6 @@ void Ball::render(float timeStep)
 
 	m_shape->setLocalPos(Util::Vec(m_transform.getOrigin()));
 	m_shape->setLocalRot(cMatrix3d(Util::Vec(m_transform.getRotation().getAxis()), m_transform.getRotation().getAngle()));
-
-    std::cout << m_shape->getLocalPos().z() << std::endl;
 }
 
 void Ball::updateLogic(float timeStep)

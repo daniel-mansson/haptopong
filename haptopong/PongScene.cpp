@@ -32,6 +32,7 @@ PongScene::PongScene(Application& app) :
 	createTable();
     createNet();
 	createBall();
+    createRackets();
     
 
     /*
@@ -125,6 +126,7 @@ void PongScene::render(const double& timeStep)
 	m_table->render((float)timeStep);
     m_net->render((float)timeStep);
 	m_ball->render((float)timeStep);
+	m_playerRacket->render((float)timeStep);
 
 	m_camera->renderView(m_app.getWindowWidth(), m_app.getWindowHeight());
 
@@ -135,7 +137,13 @@ void PongScene::updateLogic(const double& timeStep)
     m_table->updateLogic((float)timeStep);
     m_net->updateLogic((float)timeStep);
 	m_ball->updateLogic((float)timeStep);
-	m_dynamicsWorld->stepSimulation((btScalar)timeStep, 10);
+	m_playerRacket->updateLogic((float)timeStep);
+    
+    //m_dynamicsWorld->stepSimulation((btScalar)timeStep, 10);
+	//m_dynamicsWorld->stepSimulation((btScalar)timeStep, 5, btScalar(1.)/btScalar(120.));
+	m_dynamicsWorld->stepSimulation((btScalar)timeStep, 10, btScalar(1.)/btScalar(500.));
+    
+    //std::cout << "render hz: " << 1/timeStep << std::endl;
 }
 
 void PongScene::updateHaptics(const double& timeStep)
@@ -144,9 +152,9 @@ void PongScene::updateHaptics(const double& timeStep)
 	m_app.getHapticDevice()->getPosition(pos);
 
 	pos *= 100;
-	double mag = cClamp((pos.x() + 3.5) * 1.5, 2.0, 20.0); 
+	/*double mag = cClamp((pos.x() + 3.5) * 1.5, 2.0, 20.0);
 
-	/*m_camera->set( cVector3d (mag * cCosRad(pos.y()* 0.5), mag * cSinRad(pos.y() * 0.5), pos.z() * 1.7),    // camera position (eye)
+	m_camera->set( cVector3d (mag * cCosRad(pos.y()* 0.5), mag * cSinRad(pos.y() * 0.5), pos.z() * 1.7),    // camera position (eye)
 	cVector3d (0.0, 0.0, 0.0),    // look at position (target)
 	cVector3d (0.0, 0.0, 1.0));   // direction of the (up) vector
 	*/
@@ -212,6 +220,13 @@ void PongScene::onKeyDown(unsigned char key, int x, int y)
 		m_ball->setVelocity(btVector3(0.04, 0.04, 0.0));
 		m_ball->setAngularVelocity(btVector3(0, 0, 0));
 	}
+    if(key == 'r')
+	{
+		m_ball->stop();
+		m_ball->setPosition(btVector3(1.4, 0.06, 0.58f));
+		m_ball->setVelocity(btVector3(5., 0., 0.));
+		m_ball->setAngularVelocity(btVector3(0, 0, 0));
+	}
 }
 
 void PongScene::onSpecialDown(int key, int x, int y)
@@ -223,8 +238,8 @@ void PongScene::onSpecialDown(int key, int x, int y)
                           cVector3d (0.0, 0.0, 1.0));    // direction of the (up) vector
             break;
         case GLUT_KEY_LEFT:
-            m_camera->set(cVector3d (0.02, -1.5, 0.2),   // camera position (eye)
-                          cVector3d (0.0, 0.0, 0.02),    // look at position (target)
+            m_camera->set(cVector3d (1.7, 0.15, 0.6),   // camera position (eye)
+                          cVector3d (2.0, 0.0, 0.6),    // look at position (target)
                           cVector3d (0.0, 0.0, 1.0));    // direction of the (up) vector
             break;
         case GLUT_KEY_RIGHT:
@@ -297,7 +312,7 @@ void PongScene::createLight()
 	// create a spot light source
     /////////////////////////////////////////////////////////////////////////
     
-	cSpotLight *spotLight = new cSpotLight(m_world.get());
+	chai3d::cSpotLight* spotLight = new cSpotLight(m_world.get());
 
 	// attach light to camera
 	//m_world->addChild(spotLight);
@@ -316,6 +331,9 @@ void PongScene::createLight()
 
 	// set the resolution of the shadow map
 	spotLight->m_shadowMap->setResolutionMedium();
+    
+    //spotLight->setShadowMapProperties(3, 10);
+    //spotLight->m_shadowMap->m_r
 
 	// set light cone half angle
 	spotLight->setCutOffAngleDeg(25);
@@ -436,10 +454,62 @@ void PongScene::createBall()
 	m_world->addChild(ballShape);
     
 	m_ballCollisionShape = std::make_shared<btSphereShape>(btScalar(properties.getRadius()));
-
-	m_ball = std::make_shared<Ball>(ballShape, m_ballCollisionShape.get(), properties);
-	
+    
+    btTransform startTransform;
+	startTransform.setIdentity();
+    startTransform.setOrigin(btVector3(0,0,1));
+    
+	m_ball = std::make_shared<Ball>(ballShape, m_ballCollisionShape.get(), properties, startTransform);
+    
     m_dynamicsWorld->addRigidBody(m_ball->getBody());
+}
+
+void PongScene::createRackets()
+{
+    /////////////////////////////////////////////////////////////////////////
+    // create visual shapes
+    /////////////////////////////////////////////////////////////////////////
+    
+    // create a new mesh.
+    cMultiMesh* playerRacket = new cMultiMesh();
+    
+    // load an object file
+    bool fileload = playerRacket->loadFromFile("../gfx/racket.obj");
+    if (!fileload)
+    {
+        std::cout << "Error - 3D Model failed to load correctly" << std::endl;
+        std::exit(EXIT_FAILURE);
+    }
+    
+    // set material
+    cMaterial mat;
+    mat.m_ambient.set( 0.9f, 0.9f, 0.9f);
+    mat.m_diffuse.set( 1.0f, 1.0f, 1.0f);
+    mat.m_specular.set(1.0f, 1.0f, 1.0f);
+    //playerRacket->setMaterial(mat, true);
+    
+    // set transparency
+    playerRacket->setUseTransparency(true);
+    playerRacket->setTransparencyLevel(0.5f);
+    
+    m_world->addChild(playerRacket);
+    
+    /////////////////////////////////////////////////////////////////////////
+    // create physics bodys
+    /////////////////////////////////////////////////////////////////////////
+    
+    RacketProperties properties;
+    
+    m_racketsCollisionShape = std::shared_ptr<btCollisionShape>(Util::LoadCollisionShape("../gfx/racket_body.obj"));
+    
+    btTransform startTransform;
+	startTransform.setIdentity();
+    startTransform.setOrigin(btVector3(1.9, 0, 0.6));
+    startTransform.setRotation(btQuaternion(0, 40*0.0174532925, 0));
+    
+    m_playerRacket = std::make_shared<Racket>(playerRacket, m_racketsCollisionShape.get(), properties, startTransform);
+
+    m_dynamicsWorld->addRigidBody(m_playerRacket->getBody());
 }
 
 

@@ -5,8 +5,8 @@
 Net::Net(chai3d::cMultiMesh* shape, btCollisionShape* collisionShape) :
 m_shape(shape)
 {
-    btTransform groundTransform;
-	groundTransform.setIdentity();
+    btTransform startTransform;
+	startTransform.setIdentity();
 	
     btScalar mass(0.);
     
@@ -18,7 +18,7 @@ m_shape(shape)
         collisionShape->calculateLocalInertia(mass,localInertia);
     
     //using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
-    btDefaultMotionState* myMotionState = new btDefaultMotionState(groundTransform);
+    btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
     btRigidBody::btRigidBodyConstructionInfo rbInfo(mass,myMotionState,collisionShape, localInertia);
     m_body = std::make_shared<btRigidBody>(rbInfo);
     m_body->setRestitution(0.9f);
@@ -30,7 +30,12 @@ Net::~Net(void)
 
 void Net::render(float timeStep)
 {
-    
+    /*
+    btTransform transform;
+    btMotionState* pState = m_body->getMotionState();
+	pState->getWorldTransform(transform);
+	m_shape->setLocalPos(Util::Vec(transform.getOrigin()));
+    */
 }
 
 void Net::updateLogic(float timeStep)
