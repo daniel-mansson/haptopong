@@ -5,6 +5,7 @@
 #include "Net.h"
 #include "Ball.h"
 #include "Racket.h"
+#include "CustomCamera.h"
 
 class PongScene : public Scene
 {
@@ -27,7 +28,7 @@ public:
 private:
 	 
 	chai3d::cWorldPtr m_world;
-	chai3d::cCamera* m_camera;
+    CustomCamera* m_camera;
 	
 	btDiscreteDynamicsWorld* m_dynamicsWorld;
 	

@@ -1,8 +1,7 @@
 #include "pch.h"
 #include "PongScene.h"
-
 #include "Application.h"
-
+#include "ShadowlessMesh.h"
 #include <ode/ode.h>
 
 using namespace chai3d;
@@ -17,7 +16,6 @@ PongScene::PongScene(Application& app) :
 	m_world->m_backgroundColor.setGrayLevel(0.6f);
 
 	createCamera();
-
 	createLight();
 
 	//Create dynamics world, default settings
@@ -236,6 +234,9 @@ void PongScene::onSpecialDown(int key, int x, int y)
             m_camera->set(cVector3d (0.02, -1.4, 0.055),   // camera position (eye)
                           cVector3d (0.0, 0.0, 0.055),    // look at position (target)
                           cVector3d (0.0, 0.0, 1.0));    // direction of the (up) vector
+            m_camera->set(cVector3d (-2.47, 0.0, 0.95),   // camera position (eye)
+                          cVector3d (0.0, 0.0, 0.01),    // look at position (target)
+                          cVector3d (0.0, 0.0, 1.0));    // direction of the (up) vector
             break;
         case GLUT_KEY_LEFT:
             m_camera->set(cVector3d (1.7, 0.15, 0.6),   // camera position (eye)
@@ -258,7 +259,7 @@ void PongScene::onSpecialDown(int key, int x, int y)
 void PongScene::createCamera()
 {
 	// create a camera and insert it into the virtual world
-	m_camera = new chai3d::cCamera(m_world.get());
+	m_camera = new CustomCamera(m_world.get());
 	m_world->addChild(m_camera);
 
 	// position and orient the camera
@@ -307,6 +308,8 @@ void PongScene::createLight()
 	dirLight->m_ambient.set(0.4f, 0.4f, 0.4f);
 	dirLight->m_diffuse.set(0.45f, 0.45f, 0.45f);
 	dirLight->m_specular.set(0.2f, 0.2f, 0.2f);
+    
+    //dirLight->setUseTwoSideLightModel(false);
 
     /////////////////////////////////////////////////////////////////////////
 	// create a spot light source
@@ -333,7 +336,6 @@ void PongScene::createLight()
 	spotLight->m_shadowMap->setResolutionMedium();
     
     //spotLight->setShadowMapProperties(3, 10);
-    //spotLight->m_shadowMap->m_r
 
 	// set light cone half angle
 	spotLight->setCutOffAngleDeg(25);
@@ -342,6 +344,8 @@ void PongScene::createLight()
 	spotLight->m_ambient.set(0.0f, 0.0f, 0.0f);
 	spotLight->m_diffuse.set(0.9f, 0.9f, 0.9f);
 	spotLight->m_specular.set(0.7f, 0.7f, 0.7f);
+    
+    //spotLight->setUseTwoSideLightModel(false);
 }
 
 void PongScene::createTable()
@@ -471,7 +475,8 @@ void PongScene::createRackets()
     /////////////////////////////////////////////////////////////////////////
     
     // create a new mesh.
-    cMultiMesh* playerRacket = new cMultiMesh();
+    //cMultiMesh* playerRacket = new cMultiMesh();
+    ShadowlessMesh* playerRacket = new ShadowlessMesh();
     
     // load an object file
     bool fileload = playerRacket->loadFromFile("../gfx/racket.obj");
@@ -491,6 +496,8 @@ void PongScene::createRackets()
     // set transparency
     playerRacket->setUseTransparency(true);
     playerRacket->setTransparencyLevel(0.5f);
+    
+    //playerRacket->setUseCulling(true);
     
     m_world->addChild(playerRacket);
     
