@@ -2,27 +2,27 @@
 
 #include "GameObject.h"
 
-class Table : public GameObject
+class Net : public GameObject
 {
 public:
-	Table(chai3d::cMultiMesh* shape, btCollisionShape* collisionShape);
-	~Table(void);
+	Net(chai3d::cMultiMesh* shape, btCollisionShape* collisionShape);
+	~Net(void);
 	
-	virtual GameObjectType getType() const { return TABLE; };
-
+	virtual GameObjectType getType() const { return NET; };
+    
 	virtual void render(float timeStep);
 	virtual void updateLogic(float timeStep);
 	virtual void updateHaptics(float timeStep);
-
+    
 	virtual void onCollision(const btCollisionResult& collision);
     
     btRigidBody* getBody() const;
     chai3d::cMultiMesh* getShape() const;
-
+    
 private:
-
+    
 	chai3d::cMultiMesh* m_shape;
 	btRigidBodyPtr m_body;
 };
 
-typedef std::shared_ptr<Table> TablePtr;
+typedef std::shared_ptr<Net> NetPtr;

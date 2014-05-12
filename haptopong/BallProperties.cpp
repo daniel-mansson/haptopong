@@ -9,7 +9,9 @@ BallProperties::BallProperties(void) :
 	m_radius(0.02),
 	m_area(0.0013),
 	m_volume(0.000034),
-	m_gravity(9.8)
+	m_gravity(9.8),
+    m_linDamping(0.001),
+    m_angDamping(0.5)
 {
 }
 

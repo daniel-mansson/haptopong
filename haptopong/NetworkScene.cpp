@@ -217,6 +217,9 @@ void NetworkScene::onKeyDown(unsigned char key, int x, int y)
 	}
 }
 
+void NetworkScene::onSpecialDown(int key, int x, int y)
+{
+}
 
 void NetworkScene::print(const std::string& text)
 {

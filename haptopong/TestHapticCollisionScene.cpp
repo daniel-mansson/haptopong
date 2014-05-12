@@ -10,7 +10,8 @@ TestHapticCollisionScene::TestHapticCollisionScene(Application& app) :
 	Scene(app),
 	m_collision(nullptr),
 	m_force(false),
-	m_ball(nullptr, nullptr)
+	m_ball(nullptr, nullptr),
+    m_racket(nullptr, nullptr)
 {
 	m_hapticDevice = m_app.getHapticDevice();
 
@@ -163,4 +164,8 @@ void TestHapticCollisionScene::onKeyDown(unsigned char key, int x, int y)
 		}
 		break;
 	}
+}
+
+void TestHapticCollisionScene::onSpecialDown(int key, int x, int y)
+{
 }

@@ -24,6 +24,9 @@ public:
 
 	// Called when a keyboard button is pressed
 	virtual void onKeyDown(unsigned char key, int x, int y) = 0;
+    
+    // Called when a special keyboard button is pressed (e.g directional keys)
+    virtual void onSpecialDown(int key, int x, int y) = 0;
 
 protected:
 	Application& m_app;

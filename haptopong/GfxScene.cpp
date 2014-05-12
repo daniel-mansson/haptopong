@@ -368,3 +368,7 @@ void GfxScene::onKeyDown(unsigned char key, int x, int y)
 {
 }
 
+void GfxScene::onSpecialDown(int key, int x, int y)
+{
+}
+

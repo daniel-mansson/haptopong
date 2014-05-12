@@ -149,3 +149,7 @@ void MenuScene::onKeyDown(unsigned char key, int x, int y)
 		break;
 	}
 }
+
+void MenuScene::onSpecialDown(int key, int x, int y)
+{
+}

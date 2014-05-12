@@ -55,6 +55,7 @@ bool Application::initialize(const std::string& title, int* argc, char** argv)
 	// setup GLUT options
 	glutDisplayFunc(callbackUpdateGraphics);
 	glutKeyboardFunc(callbackKeySelect);
+    glutSpecialFunc(callbackSpecialSelect);
 	glutReshapeFunc(callbackResizeWindow);
 	glutSetWindowTitle(title.c_str());
     #ifndef MACOSX
@@ -130,6 +131,12 @@ void Application::keySelect(unsigned char key, int x, int y)
 
 	if(!m_sceneStack.empty())
 		m_sceneStack.back()->onKeyDown(key, x, y);
+}
+
+void Application::specialSelect(int key, int x, int y)
+{    
+	if(!m_sceneStack.empty())
+		m_sceneStack.back()->onSpecialDown(key, x, y);
 }
 
 void Application::updateGraphics(void)	
@@ -271,6 +278,11 @@ void Application::callbackResizeWindow(int w, int h)
 void Application::callbackKeySelect(unsigned char key, int x, int y)
 {
 	g_app->keySelect(key, x, y);
+}
+
+void Application::callbackSpecialSelect(int key, int x, int y)
+{
+    g_app->specialSelect(key, x, y);
 }
 
 void Application::callbackUpdateGraphics(void)

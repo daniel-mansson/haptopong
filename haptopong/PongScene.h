@@ -2,8 +2,10 @@
 #include "Scene.h"
 
 #include "Table.h"
+#include "Net.h"
 #include "Ball.h"
 #include "Racket.h"
+#include "CustomCamera.h"
 
 class PongScene : public Scene
 {
@@ -19,26 +21,33 @@ public:
 	void updateHaptics(const double& timeStep);
 
 	void onKeyDown(unsigned char key, int x, int y);
+    void onSpecialDown(int key, int x, int y);
 
 	static ScenePtr create(Application& app) { return ScenePtr(new PongScene(app)); }
 
 private:
 	 
 	chai3d::cWorldPtr m_world;
-	chai3d::cCamera* m_camera;
+    CustomCamera* m_camera;
 	
 	btDiscreteDynamicsWorld* m_dynamicsWorld;
 	
-	btCollisionShape* m_groundShape;
-	btRigidBody* m_groundBody;
-	chai3d::cShapeBox* m_ground;
+	btCollisionShapePtr m_tableCollisionShape;
+    btCollisionShapePtr m_netCollisionShape;
+    btCollisionShapePtr m_ballCollisionShape;
+    btCollisionShapePtr m_racketsCollisionShape;
 	
 	TablePtr m_table;
+	NetPtr m_net;
 	BallPtr m_ball;
+    RacketPtr m_playerRacket;
+    RacketPtr m_opponentRacket;
     
 	void createCamera();
     void createLight();
 	void createTable();
+	void createNet();
 	void createBall();
+	void createRackets();
 };
 

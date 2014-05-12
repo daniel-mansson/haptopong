@@ -1,15 +1,15 @@
 #include "pch.h"
-#include "Table.h"
+#include "Net.h"
 
 
-Table::Table(chai3d::cMultiMesh* shape, btCollisionShape* collisionShape) :
-	m_shape(shape)
+Net::Net(chai3d::cMultiMesh* shape, btCollisionShape* collisionShape) :
+m_shape(shape)
 {
     btTransform startTransform;
 	startTransform.setIdentity();
 	
     btScalar mass(0.);
-        
+    
     //rigidbody is dynamic if and only if mass is non zero, otherwise static
     bool isDynamic = (mass != 0.f);
     
@@ -22,17 +22,13 @@ Table::Table(chai3d::cMultiMesh* shape, btCollisionShape* collisionShape) :
     btRigidBody::btRigidBodyConstructionInfo rbInfo(mass,myMotionState,collisionShape, localInertia);
     m_body = std::make_shared<btRigidBody>(rbInfo);
     m_body->setRestitution(0.9f);
-    
-    
-    //m_body->setCcdMotionThreshold(0.f);
-    //m_body->setCcdSweptSphereRadius(0.f);
 }
 
-Table::~Table(void)
+Net::~Net(void)
 {
 }
 
-void Table::render(float timeStep)
+void Net::render(float timeStep)
 {
     /*
     btTransform transform;
@@ -42,25 +38,25 @@ void Table::render(float timeStep)
     */
 }
 
-void Table::updateLogic(float timeStep)
+void Net::updateLogic(float timeStep)
 {
-
+    
 }
 
-void Table::updateHaptics(float timeStep)
+void Net::updateHaptics(float timeStep)
 {
-
+    
 }
 
-void Table::onCollision(const btCollisionResult& collision)
+void Net::onCollision(const btCollisionResult& collision)
 {
-
+    
 }
 
-btRigidBody* Table::getBody() const {
+btRigidBody* Net::getBody() const {
     return m_body.get();
 }
 
-chai3d::cMultiMesh* Table::getShape() const {
+chai3d::cMultiMesh* Net::getShape() const {
     return m_shape;
 }

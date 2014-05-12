@@ -4,14 +4,35 @@
 
 using namespace chai3d;
 
-Ball::Ball(chai3d::cShapeSphere* shape, btRigidBody* body) : 
+Ball::Ball(chai3d::cShapeSphere* shape, btCollisionShape* collisionShape, const BallProperties &properties, const btTransform &startTransform) :
 	m_bernoulli(0, 0, 0),
 	m_resistance(0, 0, 0),
 	m_velocity(0, 0, 0),
 	m_angularVelocity(0, 0, 0),
 	m_shape(shape),
-	m_body(body)
-{
+    m_properties(properties)
+{   
+    //btScalar mass = m_properties.getWeight();
+    btScalar mass(1.f);
+	bool isDynamic = (mass != 0.f);
+    
+	btVector3 localInertia(0,0,0);
+	if (isDynamic)
+		collisionShape->calculateLocalInertia(mass, localInertia);
+    
+	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
+	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, collisionShape, localInertia);
+	
+    m_body = std::make_shared<btRigidBody>(rbInfo);
+	m_body->setRestitution(m_properties.getRestitution());
+	m_body->setDamping((float)m_properties.getLinDamping(), (float)m_properties.getAngDamping());
+    
+    
+    //m_body->setCcdMotionThreshold(m_properties.getRadius()*0.9);
+    //m_body->setCcdSweptSphereRadius(m_properties.getRadius()*0.9);
+    
+    
+    
 	//Regural movement(0.15[sec] is the updating time that is needed for integration)
 	//m_acceleration += m_force
 	//m_velocity += m_acceleration*0.15;
@@ -45,7 +66,6 @@ Ball::Ball(chai3d::cShapeSphere* shape, btRigidBody* body) :
 		m_motionState = m_body->getMotionState();
 }
 
-
 Ball::~Ball(void)
 {
 }
@@ -56,7 +76,6 @@ void Ball::render(float timeStep)
 
 	m_shape->setLocalPos(Util::Vec(m_transform.getOrigin()));
 	m_shape->setLocalRot(cMatrix3d(Util::Vec(m_transform.getRotation().getAxis()), m_transform.getRotation().getAngle()));
-
 }
 
 void Ball::updateLogic(float timeStep)
@@ -115,6 +134,14 @@ const btVector3& Ball::getVelocity() const
 const btVector3& Ball::getAngularVelocity() const
 {
 	return m_body->getAngularVelocity();
+}
+
+btRigidBody* Ball::getBody() const {
+    return m_body.get();
+}
+
+chai3d::cShapeSphere* Ball::getShape() const {
+    return m_shape;
 }
 
 void Ball::stop()
