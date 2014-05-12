@@ -6,6 +6,14 @@
 
 using namespace chai3d;
 
+
+bool OnContactProcessed(btManifoldPoint& cp,void* body0,void* body1)
+{
+	std::cout<<((GameObject*)((btRigidBody*)body0)->getUserPointer())->getType()<<"\t"<<((GameObject*)((btRigidBody*)body1)->getUserPointer())->getType()<<"\n";
+	
+	return false;
+}
+
 PongScene::PongScene(Application& app) :
 	Scene(app)
 {
@@ -23,7 +31,7 @@ PongScene::PongScene(Application& app) :
 	btCollisionDispatcher* dispatcher = new	btCollisionDispatcher(collisionConfiguration);
 	btBroadphaseInterface* overlappingPairCache = new btDbvtBroadphase();
 	btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
-
+	
 	m_dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher,overlappingPairCache,solver,collisionConfiguration);
 	m_dynamicsWorld->setGravity(btVector3(0, 0, -10));
 
@@ -32,6 +40,7 @@ PongScene::PongScene(Application& app) :
 	createBall();
     createRackets();
     
+	gContactProcessedCallback = &OnContactProcessed;
 
     /*
 	m_groundShape = new btBoxShape(btVector3(btScalar(2.74*0.5),btScalar(1.52*0.5),btScalar(0.10*0.5)));
@@ -142,6 +151,12 @@ void PongScene::updateLogic(const double& timeStep)
 	m_dynamicsWorld->stepSimulation((btScalar)timeStep, 10, btScalar(1.)/btScalar(500.));
     
     //std::cout << "render hz: " << 1/timeStep << std::endl;
+
+	
+/*	m_camera->set(cVector3d (2.47, (double)m_ball->getBody()->getCenterOfMassPosition().y(), (double)m_ball->getBody()->getCenterOfMassPosition().z() + 0.3),   // camera position (eye)
+                  cVector3d (0.0, 0.0, 0.01),    // look at position (target)
+		          cVector3d (0.0, 0.0, 1.0));    // direction of the (up) vector
+				  */
 }
 
 void PongScene::updateHaptics(const double& timeStep)
@@ -194,35 +209,35 @@ void PongScene::onKeyDown(unsigned char key, int x, int y)
 	{
 		m_ball->stop();
 		m_ball->setPosition(btVector3(2, 0, 0.3f));
-		m_ball->setVelocity(btVector3(-2.1, -0.9, 4.5f));
+		m_ball->setVelocity(btVector3(-2.1f, -0.9f, 4.5f));
 		m_ball->setAngularVelocity(btVector3(0, 0, 00 * m_ball->getVelocity().y()));
 	}
     if(key == 'a')
 	{
 		m_ball->stop();
 		m_ball->setPosition(btVector3(1.5, 0, 0.1f));
-		m_ball->setVelocity(btVector3(-1, Util::RandRange(-0.5, 0.5), 2.0f));
+		m_ball->setVelocity(btVector3(-1, Util::RandRange(-0.5f, 0.5f), 2.0f));
 		m_ball->setAngularVelocity(btVector3(0, 0, 00 * m_ball->getVelocity().y()));
 	}
     if(key == '<')
 	{
 		m_ball->stop();
 		m_ball->setPosition(btVector3(2, 0, 0.3f));
-		m_ball->setVelocity(btVector3(Util::RandRange(-2, -1), -0.1, 2.f));
+		m_ball->setVelocity(btVector3(Util::RandRange(-2, -1), -0.1f, 2.f));
 		m_ball->setAngularVelocity(btVector3(0, 0, 00 * m_ball->getVelocity().y()));
 	}
     if(key == 'z')
 	{
 		m_ball->stop();
-		m_ball->setPosition(btVector3(1.27, 0.65, 0.1f));
-		m_ball->setVelocity(btVector3(0.04, 0.04, 0.0));
+		m_ball->setPosition(btVector3(1.27f, 0.65f, 0.1f));
+		m_ball->setVelocity(btVector3(0.04f, 0.04f, 0.0));
 		m_ball->setAngularVelocity(btVector3(0, 0, 0));
 	}
     if(key == 'r')
 	{
 		m_ball->stop();
-		m_ball->setPosition(btVector3(1.4, 0.06, 0.58f));
-		m_ball->setVelocity(btVector3(5., 0., 0.));
+		m_ball->setPosition(btVector3(1.4f, 0.06f, 0.58f));
+		m_ball->setVelocity(btVector3(5.f, 0.f, 0.f));
 		m_ball->setAngularVelocity(btVector3(0, 0, 0));
 	}
 }
@@ -511,8 +526,8 @@ void PongScene::createRackets()
     
     btTransform startTransform;
 	startTransform.setIdentity();
-    startTransform.setOrigin(btVector3(1.9, 0, 0.6));
-    startTransform.setRotation(btQuaternion(0, 40*0.0174532925, 0));
+    startTransform.setOrigin(btVector3(1.9f, 0, 0.6f));
+    startTransform.setRotation(btQuaternion(0, 40*0.0174532925f, 0));
     
     m_playerRacket = std::make_shared<Racket>(playerRacket, m_racketsCollisionShape.get(), properties, startTransform);
 

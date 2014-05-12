@@ -22,6 +22,7 @@ Table::Table(chai3d::cMultiMesh* shape, btCollisionShape* collisionShape) :
     btRigidBody::btRigidBodyConstructionInfo rbInfo(mass,myMotionState,collisionShape, localInertia);
     m_body = std::make_shared<btRigidBody>(rbInfo);
     m_body->setRestitution(0.9f);
+	m_body->setUserPointer(this);
     
     
     //m_body->setCcdMotionThreshold(0.f);

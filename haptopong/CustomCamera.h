@@ -7,6 +7,8 @@ class CustomCamera : public chai3d::cCamera
 {
 public:
     using chai3d::cCamera::cCamera;
+	
+    CustomCamera(chai3d::cWorld* parent);
     
     virtual void renderView(const int a_windowWidth,
                             const int a_windowHeight,

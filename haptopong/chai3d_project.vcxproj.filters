@@ -85,6 +85,15 @@
     <ClCompile Include="Table.cpp">
       <Filter>Pong\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="CustomCamera.cpp">
+      <Filter>Pong</Filter>
+    </ClCompile>
+    <ClCompile Include="Net.cpp">
+      <Filter>Pong\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="ShadowlessMesh.cpp">
+      <Filter>Pong</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -143,6 +152,15 @@
     </ClInclude>
     <ClInclude Include="GameObjectType.h">
       <Filter>Pong\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomCamera.h">
+      <Filter>Pong</Filter>
+    </ClInclude>
+    <ClInclude Include="Net.h">
+      <Filter>Pong\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="ShadowlessMesh.h">
+      <Filter>Pong</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

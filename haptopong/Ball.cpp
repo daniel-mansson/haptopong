@@ -24,10 +24,12 @@ Ball::Ball(chai3d::cShapeSphere* shape, btCollisionShape* collisionShape, const 
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, collisionShape, localInertia);
 	
     m_body = std::make_shared<btRigidBody>(rbInfo);
-	m_body->setRestitution(m_properties.getRestitution());
+	m_body->setRestitution((btScalar)m_properties.getRestitution());
 	m_body->setDamping((float)m_properties.getLinDamping(), (float)m_properties.getAngDamping());
+	m_body->setUserPointer(this);
     
-    
+
+	setVelocity(btVector3(Util::RandRange(-0.2f, 0.2f), Util::RandRange(-0.2f, 0.2f), Util::RandRange(-0.2f, 0.2f)));
     //m_body->setCcdMotionThreshold(m_properties.getRadius()*0.9);
     //m_body->setCcdSweptSphereRadius(m_properties.getRadius()*0.9);
     

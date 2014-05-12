@@ -21,7 +21,8 @@ m_shape(shape)
     btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
     btRigidBody::btRigidBodyConstructionInfo rbInfo(mass,myMotionState,collisionShape, localInertia);
     m_body = std::make_shared<btRigidBody>(rbInfo);
-    m_body->setRestitution(0.9f);
+    m_body->setRestitution(0.0f);
+	m_body->setUserPointer(this);
 }
 
 Net::~Net(void)

@@ -5,6 +5,12 @@
 
 using namespace chai3d;
 
+CustomCamera::CustomCamera(cWorld* parent) :
+	cCamera(parent)
+{
+
+}
+
 void CustomCamera::renderView(const int a_windowWidth,
                          const int a_windowHeight,
                          const int a_displayContext,

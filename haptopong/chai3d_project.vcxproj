@@ -56,7 +56,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\depends\enet\include;..\depends\chai3d\include;..\depends\bullet\include;..\depends\CODE\include;..\depends\freeglut\include;..\depends\Eigen;..\depends\glew\include;..\depends\ODE\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\depends\enet\include;..\depends\chai3d\include;..\depends\bullet\include\ConvexDecomposition;..\depends\bullet\include;..\depends\CODE\include;..\depends\freeglut\include;..\depends\Eigen;..\depends\glew\include;..\depends\ODE\include</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
@@ -64,7 +64,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\depends\enet\lib;..\depends\bullet\lib\$(Configuration)\$(Platform);..\depends\CODE\lib\$(Configuration)\$(Platform);..\depends\glew\lib\$(Configuration)\$(Platform);..\depends\ODE\lib\$(Configuration)\$(Platform);..\depends\chai3d\lib\$(Configuration)\$(Platform);..\depends\freeglut\lib\$(Configuration)\$(Platform)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);chai3d.lib;freeglut.lib;glew.lib;ODE.lib;CODE.lib;BulletDynamics.lib;BulletCollision.lib;LinearMath.lib;enet.lib;ws2_32.lib;winmm.lib</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);chai3d.lib;freeglut.lib;glew.lib;ODE.lib;CODE.lib;BulletDynamics.lib;BulletCollision.lib;LinearMath.lib;enet.lib;ws2_32.lib;winmm.lib;ConvexDecomposition.lib</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <IgnoreAllDefaultLibraries>
       </IgnoreAllDefaultLibraries>
@@ -81,7 +81,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\depends\enet\include;..\depends\chai3d\include;..\depends\bullet\include;..\depends\CODE\include;..\depends\freeglut\include;..\depends\Eigen;..\depends\glew\include;..\depends\ODE\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\depends\enet\include;..\depends\chai3d\include;..\depends\bullet\include\ConvexDecomposition;..\depends\bullet\include;..\depends\CODE\include;..\depends\freeglut\include;..\depends\Eigen;..\depends\glew\include;..\depends\ODE\include</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -90,7 +90,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>..\depends\enet\lib;..\depends\bullet\lib\$(Configuration)\$(Platform);..\depends\CODE\lib\$(Configuration)\$(Platform);..\depends\glew\lib\$(Configuration)\$(Platform);..\depends\ODE\lib\$(Configuration)\$(Platform);..\depends\chai3d\lib\$(Configuration)\$(Platform);..\depends\freeglut\lib\$(Configuration)\$(Platform)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);chai3d.lib;freeglut.lib;glew.lib;ODE.lib;CODE.lib;BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;enet.lib;ws2_32.lib;winmm.lib</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);chai3d.lib;freeglut.lib;glew.lib;ODE.lib;CODE.lib;BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;enet.lib;ws2_32.lib;winmm.lib;ConvexDecomposition.lib</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
     </Link>
   </ItemDefinitionGroup>
@@ -99,17 +99,20 @@
     <ClCompile Include="Ball.cpp" />
     <ClCompile Include="BallProperties.cpp" />
     <ClCompile Include="CollisionResponse.cpp" />
+    <ClCompile Include="CustomCamera.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GfxScene.cpp" />
     <ClCompile Include="LinearResponse.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuScene.cpp" />
+    <ClCompile Include="Net.cpp" />
     <ClCompile Include="NetworkScene.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="PongScene.cpp" />
     <ClCompile Include="Racket.cpp" />
     <ClCompile Include="RacketProperties.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="ShadowlessMesh.cpp" />
     <ClCompile Include="Table.cpp" />
     <ClCompile Include="TestHapticCollisionScene.cpp" />
     <ClCompile Include="TestScene.cpp" />
@@ -119,17 +122,20 @@
     <ClInclude Include="Ball.h" />
     <ClInclude Include="BallProperties.h" />
     <ClInclude Include="CollisionResponse.h" />
+    <ClInclude Include="CustomCamera.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectType.h" />
     <ClInclude Include="GfxScene.h" />
     <ClInclude Include="LinearResponse.h" />
     <ClInclude Include="MenuScene.h" />
+    <ClInclude Include="Net.h" />
     <ClInclude Include="NetworkScene.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PongScene.h" />
     <ClInclude Include="Racket.h" />
     <ClInclude Include="RacketProperties.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="ShadowlessMesh.h" />
     <ClInclude Include="Table.h" />
     <ClInclude Include="TestHapticCollisionScene.h" />
     <ClInclude Include="TestScene.h" />
