@@ -1,6 +1,7 @@
 #pragma once
 #include "Scene.h"
 
+#include "PlayerId.h"
 #include "Table.h"
 #include "Net.h"
 #include "Ball.h"
@@ -24,6 +25,9 @@ public:
 
 	void onKeyDown(unsigned char key, int x, int y);
     void onSpecialDown(int key, int x, int y);
+	
+	void onNewRound(const Score& score, PlayerId nextServe, PlayerId prevWinner);
+	void onGameOver(const Score& score, PlayerId winner);
 
 	static ScenePtr create(Application& app) { return ScenePtr(new PongScene(app)); }
 

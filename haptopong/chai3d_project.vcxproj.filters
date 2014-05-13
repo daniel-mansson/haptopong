@@ -31,6 +31,12 @@
     <Filter Include="Pong\GameObjects">
       <UniqueIdentifier>{2cf19410-a193-4a54-a0ac-beed63f3220e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Rules&amp;Network">
+      <UniqueIdentifier>{28a3c315-6f24-4526-b9ae-4436e05864d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rules&amp;Network\GameRules">
+      <UniqueIdentifier>{92d907e7-48b8-4f38-8924-94ff4f0e3595}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -99,6 +105,18 @@
     </ClCompile>
     <ClCompile Include="BallEventManager.cpp">
       <Filter>Pong</Filter>
+    </ClCompile>
+    <ClCompile Include="GameRulesManager.cpp">
+      <Filter>Rules&amp;Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Score.cpp">
+      <Filter>Rules&amp;Network</Filter>
+    </ClCompile>
+    <ClCompile Include="GameRules.cpp">
+      <Filter>Rules&amp;Network\GameRules</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleCountGameRules.cpp">
+      <Filter>Rules&amp;Network\GameRules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -173,6 +191,21 @@
     </ClInclude>
     <ClInclude Include="BallEventManager.h">
       <Filter>Pong</Filter>
+    </ClInclude>
+    <ClInclude Include="GameRulesManager.h">
+      <Filter>Rules&amp;Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Score.h">
+      <Filter>Rules&amp;Network</Filter>
+    </ClInclude>
+    <ClInclude Include="GameRules.h">
+      <Filter>Rules&amp;Network\GameRules</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleCountGameRules.h">
+      <Filter>Rules&amp;Network\GameRules</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerId.h">
+      <Filter>Rules&amp;Network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

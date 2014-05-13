@@ -2,6 +2,8 @@
 
 #include "GameObject.h"
 #include "RacketProperties.h"
+#include "Score.h"
+#include "PlayerId.h"
 
 class Racket : public GameObject
 {
@@ -28,9 +30,15 @@ public:
 	const chai3d::cVector3d& getNormal() const { return m_normal; }
 	const chai3d::cVector3d& getVelocity() const { return m_velocity; }
 	const chai3d::cVector3d& getVForce() const { return m_force; }
+
+	void setMoveAreaScale(float scale) { m_moveAreaScale = scale; }
+	float getMoveAreaScale() const { return m_moveAreaScale; }
     
     btRigidBody* getBody() const;
     chai3d::cMultiMesh* getShape() const;
+
+	PlayerId getPlayerId() const { return m_playerId; }
+	void setPlayerId(PlayerId playerId) { m_playerId = playerId; }
 
 private:
 	chai3d::cVector3d m_normal;
@@ -39,6 +47,8 @@ private:
 	RacketProperties m_properties;
 	chai3d::cMultiMesh* m_shape;
     btRigidBodyPtr m_body;
+	float m_moveAreaScale;
+	PlayerId m_playerId;
 	
 	btTransform m_transform;
 	btVector3 m_origin;
