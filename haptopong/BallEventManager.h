@@ -5,6 +5,7 @@
 #include "Racket.h"
 #include "Net.h"
 #include "HapticResponseManager.h"
+#include "SoundPlayer.h"
 
 class BallEventManager
 {
@@ -17,8 +18,8 @@ public:
 	void OnRacketHit(btManifoldPoint& point, Racket& racket, Ball& ball);
 
 private:
-
 	HapticResponseManagerPtr m_hapticResponseMgr;
+    SoundPlayer* m_racketHit;
 };
 
 typedef std::shared_ptr<BallEventManager> BallEventManagerPtr;

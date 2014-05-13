@@ -39,7 +39,7 @@ bool OnContactProcessed(btManifoldPoint& point,void* body0,void* body1)
 PongScene::PongScene(Application& app) :
 	Scene(app)
 {
-	m_hapticResponseMgr = HapticResponseManagerPtr(new HapticResponseManager());
+    m_hapticResponseMgr = HapticResponseManagerPtr(new HapticResponseManager());
 
 	m_ballEventMgr = BallEventManagerPtr(new BallEventManager(m_hapticResponseMgr));
 	g_ballEventMgr = m_ballEventMgr;
@@ -515,10 +515,10 @@ void PongScene::createBall()
 	m_world->addChild(ballShape);
     
 	m_ballCollisionShape = std::make_shared<btSphereShape>(btScalar(properties.getRadius()));
-    	
+    
 	cTexture2dPtr net_texture = cTexture2d::create();
 	net_texture->setWrapMode(GL_REPEAT);
-	bool fileload = net_texture->loadFromFile("../gfx/net_diffuse.png");
+	bool fileload = net_texture->loadFromFile("../gfx/ball_diffuse.png");
 	if (!fileload)
 	{
 		std::cout << "Error - Texture image failed to load correctly." << std::endl;

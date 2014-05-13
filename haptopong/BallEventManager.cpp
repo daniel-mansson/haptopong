@@ -5,6 +5,7 @@
 BallEventManager::BallEventManager(HapticResponseManagerPtr hapticResponseMgr):
 	m_hapticResponseMgr(hapticResponseMgr)
 {
+    m_racketHit = new SoundPlayer("../sounds/racket.mp3");
 }
 
 
@@ -24,6 +25,8 @@ void BallEventManager::OnNetHit(btManifoldPoint& point, Net& net, Ball& ball)
 
 void BallEventManager::OnRacketHit(btManifoldPoint& point, Racket& racket, Ball& ball)
 {
+    m_racketHit->play();
+    
 	if(ball.isActive())
 	{
 		btVector3 vel = ball.getVelocity();

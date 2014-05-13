@@ -5,8 +5,8 @@
 class SoundPlayer
 {
 public:
-    SoundPlayer(const std::string& file);
-    void play() const;
+    SoundPlayer(const char* file);
+    void play();
     static DWORD CALLBACK MyStreamWriter(HSTREAM handle, void *buf, DWORD len, void *user);
     
 private:
@@ -14,6 +14,5 @@ private:
     BASS_CHANNELINFO m_infoBass;
     char *m_data;
     HSTREAM m_stream;
-    unsigned int m_pos = 0;
-    static SoundPlayer *ptr;
+    unsigned int m_pos;
 };

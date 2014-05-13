@@ -1,20 +1,18 @@
 #include "pch.h"
 #include "SoundPlayer.h"
 
-SoundPlayer *SoundPlayer::ptr = nullptr;
-
-SoundPlayer::SoundPlayer(const std::string& file) {
-    ptr = this;
-    
+SoundPlayer::SoundPlayer(const char* file) :
+m_pos(0)
+{
     // Initialize sound device and create audio stream
     BASS_Init(1,44100,0,0,NULL);
     
     // Load the data from the specified file
     HSTREAM file_stream = 1;
-    file_stream = BASS_StreamCreateFile(FALSE, "../sound/classic.mp3",0,0,BASS_STREAM_DECODE);
+    file_stream = BASS_StreamCreateFile(FALSE, file ,0,0,BASS_STREAM_DECODE);
     if (!file_stream)
     {
-        printf("Error - MP3 audio file failed to load correctly.\n");
+        printf("%s Error - MP3 audio file failed to load correctly.\n", file);
         std::exit(EXIT_FAILURE);
     }
     
@@ -28,15 +26,18 @@ SoundPlayer::SoundPlayer(const std::string& file) {
     BASS_ChannelGetData(file_stream, m_data, (unsigned int)m_streamLength);
     
     // Set playing to begin at the beginning of the loaded data
-    m_stream = BASS_StreamCreate(m_infoBass.freq, m_infoBass.chans, 0, &MyStreamWriter, 0);
+    m_stream = BASS_StreamCreate(m_infoBass.freq, m_infoBass.chans, 0, &MyStreamWriter, this);
 }
 
-void SoundPlayer::play() const {
-    
+void SoundPlayer::play() {
+    m_pos = 0;
+    BASS_ChannelPlay(m_stream, FALSE);
 }
 
 DWORD CALLBACK SoundPlayer::MyStreamWriter(HSTREAM handle, void *buf, DWORD len, void *user)
 {
+    SoundPlayer* ptr = (SoundPlayer*)user;
+    
     // Cast the buffer to a character array
     char *d=(char*)buf;
     
