@@ -500,7 +500,6 @@ void PongScene::createRackets()
         std::exit(EXIT_FAILURE);
     }
     
-    // set transparency
     playerRacket->setUseTransparency(true);
     playerRacket->setTransparencyLevel(0.5f);
     
@@ -508,7 +507,8 @@ void PongScene::createRackets()
     
     // opponent racket
     
-    ShadowlessMesh* opponentRacket = playerRacket->copy(false, false, true);
+    //ShadowlessMesh* opponentRacket = playerRacket->copy(false, false, true);
+    ShadowlessMesh* opponentRacket = new ShadowlessMesh();
     
     fileload = opponentRacket->loadFromFile("../gfx/racket.obj");
     if (!fileload)
@@ -516,6 +516,8 @@ void PongScene::createRackets()
         std::cout << "Error - 3D Model failed to load correctly" << std::endl;
         std::exit(EXIT_FAILURE);
     }
+    
+    opponentRacket->setUseTransparency(true);
     
     cMaterial mat;
     mat.m_ambient.set( 0.8f, 0.8f, 0.8f);
