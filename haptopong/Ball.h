@@ -13,7 +13,7 @@ public:
 	
 	virtual void render(float timeStep);
 	virtual void updateLogic(float timeStep);
-	virtual void updateHaptics(float timeStep);
+	virtual void updateHaptics(chai3d::cGenericHapticDevicePtr device, const double& timeStep);
 
 	virtual void onCollision(const btCollisionResult& collision);
 
@@ -38,6 +38,10 @@ public:
 	const chai3d::cVector3d& getBernoulli() const { return m_bernoulli; }
 	const chai3d::cVector3d& getResistance() const { return m_resistance; }
 
+	//A ball is active if it is moving towards the local player.
+	bool isActive() const { return m_isActive; }
+	void setActive(bool active) { m_isActive = active; }
+
 private:
 	chai3d::cVector3d m_bernoulli;
 	chai3d::cVector3d m_resistance;
@@ -50,6 +54,7 @@ private:
     
 	const btMotionState* m_motionState;
 	btTransform m_transform;
+	bool m_isActive;
 };
 
 typedef std::shared_ptr<Ball> BallPtr;

@@ -6,17 +6,44 @@
 
 using namespace chai3d;
 
+BallEventManagerPtr g_ballEventMgr = nullptr;
 
-bool OnContactProcessed(btManifoldPoint& cp,void* body0,void* body1)
+bool OnContactProcessed(btManifoldPoint& point,void* body0,void* body1)
 {
-	std::cout<<((GameObject*)((btRigidBody*)body0)->getUserPointer())->getType()<<"\t"<<((GameObject*)((btRigidBody*)body1)->getUserPointer())->getType()<<"\n";
+	GameObject* go0 = (GameObject*)((btRigidBody*)body0)->getUserPointer();
+	GameObject* go1 = (GameObject*)((btRigidBody*)body1)->getUserPointer();
+
+	if(go1->getType() == BALL)
+		std::swap(go0, go1);
+
+	if(go0->getType() == BALL)
+	{
+		switch(go1->getType())
+		{
+		case RACKET:
+			g_ballEventMgr->OnRacketHit(point, *(Racket*)go1, *(Ball*)go0);
+			break;
+		case NET:
+			g_ballEventMgr->OnNetHit(point, *(Net*)go1, *(Ball*)go0);
+			break;
+		case TABLE:
+			g_ballEventMgr->OnTableHit(point, *(Table*)go1, *(Ball*)go0);
+			break;
+		}
+	}
 	
-	return false;
+	//Return value is ignored by bullet in newer versions.
+	return true;
 }
 
 PongScene::PongScene(Application& app) :
 	Scene(app)
 {
+	m_hapticResponseMgr = HapticResponseManagerPtr(new HapticResponseManager());
+
+	m_ballEventMgr = BallEventManagerPtr(new BallEventManager(m_hapticResponseMgr));
+	g_ballEventMgr = m_ballEventMgr;
+
 	// create a new world.
 	m_world = std::make_shared<chai3d::cWorld>();
 
@@ -36,9 +63,9 @@ PongScene::PongScene(Application& app) :
 	m_dynamicsWorld->setGravity(btVector3(0, 0, -10));
 
 	createTable();
-    createNet();
 	createBall();
     createRackets();
+    createNet();
     
 	gContactProcessedCallback = &OnContactProcessed;
 
@@ -110,6 +137,7 @@ PongScene::PongScene(Application& app) :
 
 PongScene::~PongScene(void)
 {
+	g_ballEventMgr = nullptr;
 }
 
 void PongScene::enter(ScenePtr from)
@@ -161,18 +189,23 @@ void PongScene::updateLogic(const double& timeStep)
 
 void PongScene::updateHaptics(const double& timeStep)
 {
-	cVector3d pos;
+	/*cVector3d pos;
 	m_app.getHapticDevice()->getPosition(pos);
 
 	pos *= 100;
-	/*double mag = cClamp((pos.x() + 3.5) * 1.5, 2.0, 20.0);
+	double mag = cClamp((pos.x() + 3.5) * 1.5, 2.0, 20.0);
 
 	m_camera->set( cVector3d (mag * cCosRad(pos.y()* 0.5), mag * cSinRad(pos.y() * 0.5), pos.z() * 1.7),    // camera position (eye)
 	cVector3d (0.0, 0.0, 0.0),    // look at position (target)
 	cVector3d (0.0, 0.0, 1.0));   // direction of the (up) vector
 	*/
-	cVector3d zero(0,0,0);
-	m_app.getHapticDevice()->setForce(zero);
+	m_playerRacket->updateHaptics(m_app.getHapticDevice(), timeStep);
+
+	cVector3d force(0,0,0);
+
+	m_hapticResponseMgr->updateHaptics(timeStep, force);
+
+	m_app.getHapticDevice()->setForce(force);
 }
 
 void PongScene::onKeyDown(unsigned char key, int x, int y)
@@ -183,6 +216,7 @@ void PongScene::onKeyDown(unsigned char key, int x, int y)
 		m_ball->setPosition(btVector3(2, 0, 0.3f));
 		m_ball->setVelocity(btVector3(-4, Util::RandRange(-2, 2), 3.3f));
 		m_ball->setAngularVelocity(btVector3(0, 0, 300 * m_ball->getVelocity().y()));
+		m_ball->setActive(true);
 	}
 	if(key == 's')
 	{
@@ -190,6 +224,7 @@ void PongScene::onKeyDown(unsigned char key, int x, int y)
 		m_ball->setPosition(btVector3(-2, 0, 0.3f));
 		m_ball->setVelocity(btVector3(4, Util::RandRange(-2, 2), 3.3f));
 		m_ball->setAngularVelocity(btVector3(0, 0, -300 * m_ball->getVelocity().y()));
+		m_ball->setActive(true);
 	}
 	if(key == 'e')
 	{
@@ -197,6 +232,7 @@ void PongScene::onKeyDown(unsigned char key, int x, int y)
 		m_ball->setPosition(btVector3(2, 0, 0.7f));
 		m_ball->setVelocity(btVector3(-4, Util::RandRange(-1, 1), -1.0f));
 		m_ball->setAngularVelocity(btVector3(0, 1400, 0));
+		m_ball->setActive(true);
 	}
 	if(key == 'd')
 	{
@@ -204,6 +240,7 @@ void PongScene::onKeyDown(unsigned char key, int x, int y)
 		m_ball->setPosition(btVector3(2, 0, 0.3f));
 		m_ball->setVelocity(btVector3(-4, Util::RandRange(-1, 1), 3.3f));
 		m_ball->setAngularVelocity(btVector3(0, -300, 0));
+		m_ball->setActive(true);
 	}
     if(key == 'q')
 	{
@@ -211,6 +248,7 @@ void PongScene::onKeyDown(unsigned char key, int x, int y)
 		m_ball->setPosition(btVector3(2, 0, 0.3f));
 		m_ball->setVelocity(btVector3(-2.1f, -0.9f, 4.5f));
 		m_ball->setAngularVelocity(btVector3(0, 0, 00 * m_ball->getVelocity().y()));
+		m_ball->setActive(true);
 	}
     if(key == 'a')
 	{
@@ -218,6 +256,7 @@ void PongScene::onKeyDown(unsigned char key, int x, int y)
 		m_ball->setPosition(btVector3(1.5, 0, 0.1f));
 		m_ball->setVelocity(btVector3(-1, Util::RandRange(-0.5f, 0.5f), 2.0f));
 		m_ball->setAngularVelocity(btVector3(0, 0, 00 * m_ball->getVelocity().y()));
+		m_ball->setActive(true);
 	}
     if(key == '<')
 	{
@@ -225,6 +264,7 @@ void PongScene::onKeyDown(unsigned char key, int x, int y)
 		m_ball->setPosition(btVector3(2, 0, 0.3f));
 		m_ball->setVelocity(btVector3(Util::RandRange(-2, -1), -0.1f, 2.f));
 		m_ball->setAngularVelocity(btVector3(0, 0, 00 * m_ball->getVelocity().y()));
+		m_ball->setActive(true);
 	}
     if(key == 'z')
 	{
@@ -232,6 +272,7 @@ void PongScene::onKeyDown(unsigned char key, int x, int y)
 		m_ball->setPosition(btVector3(1.27f, 0.65f, 0.1f));
 		m_ball->setVelocity(btVector3(0.04f, 0.04f, 0.0));
 		m_ball->setAngularVelocity(btVector3(0, 0, 0));
+		m_ball->setActive(true);
 	}
     if(key == 'r')
 	{
@@ -239,6 +280,7 @@ void PongScene::onKeyDown(unsigned char key, int x, int y)
 		m_ball->setPosition(btVector3(1.4f, 0.06f, 0.58f));
 		m_ball->setVelocity(btVector3(5.f, 0.f, 0.f));
 		m_ball->setAngularVelocity(btVector3(0, 0, 0));
+		m_ball->setActive(true);
 	}
 }
 
@@ -473,7 +515,19 @@ void PongScene::createBall()
 	m_world->addChild(ballShape);
     
 	m_ballCollisionShape = std::make_shared<btSphereShape>(btScalar(properties.getRadius()));
+    	
+	cTexture2dPtr net_texture = cTexture2d::create();
+	net_texture->setWrapMode(GL_REPEAT);
+	bool fileload = net_texture->loadFromFile("../gfx/net_diffuse.png");
+	if (!fileload)
+	{
+		std::cout << "Error - Texture image failed to load correctly." << std::endl;
+		std::exit(EXIT_FAILURE);
+	}
     
+	ballShape->setTexture(net_texture);
+	ballShape->setUseTexture(true, true);
+
     btTransform startTransform;
 	startTransform.setIdentity();
     startTransform.setOrigin(btVector3(0,0,1));

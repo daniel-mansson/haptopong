@@ -44,7 +44,7 @@ void Net::updateLogic(float timeStep)
     
 }
 
-void Net::updateHaptics(float timeStep)
+void Net::updateHaptics(chai3d::cGenericHapticDevicePtr device, const double& timeStep)
 {
     
 }

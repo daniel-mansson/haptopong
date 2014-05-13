@@ -6,6 +6,8 @@
 #include "Ball.h"
 #include "Racket.h"
 #include "CustomCamera.h"
+#include "BallEventManager.h"
+#include "HapticResponseManager.h"
 
 class PongScene : public Scene
 {
@@ -42,6 +44,8 @@ private:
 	BallPtr m_ball;
     RacketPtr m_playerRacket;
     RacketPtr m_opponentRacket;
+	BallEventManagerPtr m_ballEventMgr;
+	HapticResponseManagerPtr m_hapticResponseMgr;
     
 	void createCamera();
     void createLight();

@@ -97,11 +97,13 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Ball.cpp" />
+    <ClCompile Include="BallEventManager.cpp" />
     <ClCompile Include="BallProperties.cpp" />
     <ClCompile Include="CollisionResponse.cpp" />
     <ClCompile Include="CustomCamera.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GfxScene.cpp" />
+    <ClCompile Include="HapticResponseManager.cpp" />
     <ClCompile Include="LinearResponse.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuScene.cpp" />
@@ -120,12 +122,14 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Ball.h" />
+    <ClInclude Include="BallEventManager.h" />
     <ClInclude Include="BallProperties.h" />
     <ClInclude Include="CollisionResponse.h" />
     <ClInclude Include="CustomCamera.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectType.h" />
     <ClInclude Include="GfxScene.h" />
+    <ClInclude Include="HapticResponseManager.h" />
     <ClInclude Include="LinearResponse.h" />
     <ClInclude Include="MenuScene.h" />
     <ClInclude Include="Net.h" />

@@ -23,6 +23,7 @@ Table::Table(chai3d::cMultiMesh* shape, btCollisionShape* collisionShape) :
     m_body = std::make_shared<btRigidBody>(rbInfo);
     m_body->setRestitution(0.9f);
 	m_body->setUserPointer(this);
+	m_body->setFriction(0.01f);
     
     
     //m_body->setCcdMotionThreshold(0.f);
@@ -48,7 +49,7 @@ void Table::updateLogic(float timeStep)
 
 }
 
-void Table::updateHaptics(float timeStep)
+void Table::updateHaptics(chai3d::cGenericHapticDevicePtr device, const double& timeStep)
 {
 
 }
