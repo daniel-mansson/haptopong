@@ -162,9 +162,9 @@ void PongScene::render(const double& timeStep)
     m_net->render((float)timeStep);
 	m_ball->render((float)timeStep);
 	m_playerRacket->render((float)timeStep);
+	m_opponentRacket->render((float)timeStep);
 
 	m_camera->renderView(m_app.getWindowWidth(), m_app.getWindowHeight());
-
 }
 
 void PongScene::updateLogic(const double& timeStep)
@@ -541,11 +541,10 @@ void PongScene::createRackets()
     // create visual shapes
     /////////////////////////////////////////////////////////////////////////
     
-    // create a new mesh.
-    //cMultiMesh* playerRacket = new cMultiMesh();
+    // player racket
+    
     ShadowlessMesh* playerRacket = new ShadowlessMesh();
     
-    // load an object file
     bool fileload = playerRacket->loadFromFile("../gfx/racket.obj");
     if (!fileload)
     {
@@ -553,24 +552,42 @@ void PongScene::createRackets()
         std::exit(EXIT_FAILURE);
     }
     
-    // set material
-    cMaterial mat;
-    mat.m_ambient.set( 0.9f, 0.9f, 0.9f);
-    mat.m_diffuse.set( 1.0f, 1.0f, 1.0f);
-    mat.m_specular.set(1.0f, 1.0f, 1.0f);
-    //playerRacket->setMaterial(mat, true);
-    
-    // set transparency
     playerRacket->setUseTransparency(true);
     playerRacket->setTransparencyLevel(0.5f);
     
-    //playerRacket->setUseCulling(true);
-    
     m_world->addChild(playerRacket);
+    
+    // opponent racket
+    
+    //ShadowlessMesh* opponentRacket = playerRacket->copy(false, false, true);
+    ShadowlessMesh* opponentRacket = new ShadowlessMesh();
+    
+    fileload = opponentRacket->loadFromFile("../gfx/racket.obj");
+    if (!fileload)
+    {
+        std::cout << "Error - 3D Model failed to load correctly" << std::endl;
+        std::exit(EXIT_FAILURE);
+    }
+    
+    opponentRacket->setUseTransparency(true);
+    
+    cMaterial mat;
+    mat.m_ambient.set( 0.8f, 0.8f, 0.8f);
+    mat.m_diffuse.set( 1.0f, 1.0f, 1.0f);
+    mat.m_specular.set(1.0f, 1.0f, 1.0f);
+    opponentRacket->setMaterial(mat, true);
+    opponentRacket->computeAllNormals();
+    
+    opponentRacket->setUseCulling(true);
+    
+    m_world->addChild(opponentRacket);
+    
     
     /////////////////////////////////////////////////////////////////////////
     // create physics bodys
     /////////////////////////////////////////////////////////////////////////
+    
+    // player racket
     
     RacketProperties properties;
     
@@ -584,6 +601,18 @@ void PongScene::createRackets()
     m_playerRacket = std::make_shared<Racket>(playerRacket, m_racketsCollisionShape.get(), properties, startTransform);
 
     m_dynamicsWorld->addRigidBody(m_playerRacket->getBody());
+    
+    // opponent racket
+    
+	startTransform.setIdentity();
+    startTransform.setOrigin(btVector3(-1.9f, 0, 0.6f));
+    startTransform.setRotation(btQuaternion(0, -40*0.0174532925f, 0));
+    
+    m_opponentRacket = std::make_shared<Racket>(opponentRacket, m_racketsCollisionShape.get(), properties, startTransform);
+    
+    m_dynamicsWorld->addRigidBody(m_opponentRacket->getBody());
+    
+    
 }
 
 
