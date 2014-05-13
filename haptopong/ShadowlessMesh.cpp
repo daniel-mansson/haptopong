@@ -24,3 +24,21 @@ void ShadowlessMesh::render(chai3d::cRenderOptions& a_options)
     cMultiMesh::render(newOptions);
 }
 
+ShadowlessMesh* ShadowlessMesh::copy(const bool a_duplicateMaterialData,
+                                     const bool a_duplicateTextureData,
+                                     const bool a_duplicateMeshData,
+                                     const bool a_buildCollisionDetector)
+{
+    // create multimesh object
+    ShadowlessMesh* obj = new ShadowlessMesh();
+    
+    // copy multimesh properties
+    copyMultiMeshProperties(obj,
+                            a_duplicateMaterialData,
+                            a_duplicateTextureData,
+                            a_duplicateMeshData,
+                            a_buildCollisionDetector);
+    
+    // return reult
+    return (obj);
+}
