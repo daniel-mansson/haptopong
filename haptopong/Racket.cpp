@@ -8,7 +8,9 @@ Racket::Racket(chai3d::cMultiMesh* shape, btCollisionShape* collisionShape, cons
 	m_velocity(0, 0, 0),
 	m_force(0, 0, 0),
     m_shape(shape),
-	m_hapticPos(0,0,0)
+	m_hapticPos(0,0,0),
+	m_moveAreaScale(10.0),
+	m_playerId(NO_PLAYER)
 {
     //btScalar mass = m_properties.getWeight();
     btScalar mass(0.f);  //!!!!!!!!!!
@@ -58,12 +60,10 @@ void Racket::render(float timeStep)
 void Racket::updateLogic(float timeStep)
 {
 	chai3d::cVector3d offset = m_hapticPos;
-	offset *= 10.0f;
+	offset *= m_moveAreaScale;
 	
 	m_transform.setOrigin(Util::Vec(offset) + m_origin);
 	m_body->getMotionState()->setWorldTransform(m_transform);
-
-	std::cout<<getVelocity().x() * 100000.0<<"\t"<<getVelocity().y() * 100000.0<<"\t"<<getVelocity().z() * 100000.0<<"\t"<<"\n"; 
 }
 
 void Racket::updateHaptics(chai3d::cGenericHapticDevicePtr device, const double& timeStep)
@@ -72,7 +72,7 @@ void Racket::updateHaptics(chai3d::cGenericHapticDevicePtr device, const double&
 
 	device->getPosition(m_hapticPos);
 	
-	m_velocity += 100.0 * timeStep * ((m_hapticPos - prev) - m_velocity);
+	m_velocity += 100.0 * timeStep * ((m_hapticPos - prev)/timeStep - m_velocity);
 }
 
 void Racket::onCollision(const btCollisionResult& collision)

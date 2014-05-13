@@ -24,7 +24,8 @@ LinearResponse::LinearResponse(const Racket& racket, const Ball& ball) :
 		m_tangent /= angle;
 
 
-	m_magnitude = -10.0f * cDot(m_normal, Util::Vec(m_ball.getVelocity()) - m_racket.getVelocity());
+	//std::cout<<m_racket.getVelocity() * m_racket.getMoveAreaScale()<<"\t"<< Util::Vec(m_ball.getVelocity())<<"\n"; 
+	m_magnitude = 5.0f * cDot(m_normal, Util::Vec(m_ball.getVelocity()) - 1.f*m_racket.getVelocity() * m_racket.getMoveAreaScale());
 	m_magnitudeTangent = 0.0f * angle;
 }
 

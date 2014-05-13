@@ -102,6 +102,8 @@
     <ClCompile Include="CollisionResponse.cpp" />
     <ClCompile Include="CustomCamera.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameRules.cpp" />
+    <ClCompile Include="GameRulesManager.cpp" />
     <ClCompile Include="GfxScene.cpp" />
     <ClCompile Include="HapticResponseManager.cpp" />
     <ClCompile Include="LinearResponse.cpp" />
@@ -114,7 +116,9 @@
     <ClCompile Include="Racket.cpp" />
     <ClCompile Include="RacketProperties.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="Score.cpp" />
     <ClCompile Include="ShadowlessMesh.cpp" />
+    <ClCompile Include="SimpleCountGameRules.cpp" />
     <ClCompile Include="Table.cpp" />
     <ClCompile Include="TestHapticCollisionScene.cpp" />
     <ClCompile Include="TestScene.cpp" />
@@ -128,6 +132,8 @@
     <ClInclude Include="CustomCamera.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectType.h" />
+    <ClInclude Include="GameRules.h" />
+    <ClInclude Include="GameRulesManager.h" />
     <ClInclude Include="GfxScene.h" />
     <ClInclude Include="HapticResponseManager.h" />
     <ClInclude Include="LinearResponse.h" />
@@ -135,11 +141,14 @@
     <ClInclude Include="Net.h" />
     <ClInclude Include="NetworkScene.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="PlayerId.h" />
     <ClInclude Include="PongScene.h" />
     <ClInclude Include="Racket.h" />
     <ClInclude Include="RacketProperties.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="Score.h" />
     <ClInclude Include="ShadowlessMesh.h" />
+    <ClInclude Include="SimpleCountGameRules.h" />
     <ClInclude Include="Table.h" />
     <ClInclude Include="TestHapticCollisionScene.h" />
     <ClInclude Include="TestScene.h" />

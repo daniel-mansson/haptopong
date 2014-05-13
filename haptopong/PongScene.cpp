@@ -207,6 +207,16 @@ void PongScene::updateHaptics(const double& timeStep)
 
 	m_app.getHapticDevice()->setForce(force);
 }
+	
+void PongScene::onNewRound(const Score& score, PlayerId nextServe, PlayerId prevWinner)
+{
+
+}
+
+void PongScene::onGameOver(const Score& score, PlayerId winner)
+{
+
+}
 
 void PongScene::onKeyDown(unsigned char key, int x, int y)
 {

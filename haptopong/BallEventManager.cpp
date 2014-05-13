@@ -15,12 +15,12 @@ BallEventManager::~BallEventManager(void)
 
 void BallEventManager::OnTableHit(btManifoldPoint& point, Table& table, Ball& ball)
 {
-	std::cout<<"Table hit!\n";
+	//std::cout<<"Table hit!\n";
 }
 
 void BallEventManager::OnNetHit(btManifoldPoint& point, Net& net, Ball& ball)
 {
-	std::cout<<"Net hit!\n";
+	//std::cout<<"Net hit!\n";
 }
 
 void BallEventManager::OnRacketHit(btManifoldPoint& point, Racket& racket, Ball& ball)
@@ -29,14 +29,23 @@ void BallEventManager::OnRacketHit(btManifoldPoint& point, Racket& racket, Ball&
     
 	if(ball.isActive())
 	{
-		btVector3 vel = ball.getVelocity();
-		vel[0] *= -1.0f;
-		vel[2] += 2.0f;
-		ball.setVelocity(vel);
-		ball.setActive(false);
+		btVector3 bvel = ball.getVelocity();
+		btVector3 rvel = Util::Vec(racket.getVelocity() * racket.getMoveAreaScale());
 
-		m_hapticResponseMgr->setCurrent(CollisionResponsePtr(new LinearResponse(racket, ball)));
+		float xvel = rvel[0] - bvel[0];
+		if(xvel < 0.0f)
+		{
+			m_hapticResponseMgr->setCurrent(CollisionResponsePtr(new LinearResponse(racket, ball)));
+		
+			//TODO: real forces
+			xvel *= (1.0f + point.m_combinedRestitution);	
+			bvel[0] += xvel;
+			bvel[2] += -xvel * 0.04f;
+			ball.setVelocity(bvel);
+
+			ball.setActive(false);
+		}
 	}
 
-	std::cout<<"Racket hit!\n";
+	//std::cout<<"Racket hit!\n";
 }
