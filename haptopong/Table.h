@@ -12,7 +12,7 @@ public:
 
 	virtual void render(float timeStep);
 	virtual void updateLogic(float timeStep);
-	virtual void updateHaptics(chai3d::cGenericHapticDevicePtr device, float timeStep);
+	virtual void updateHaptics(chai3d::cGenericHapticDevicePtr device, const double& timeStep);
 
 	virtual void onCollision(const btCollisionResult& collision);
     

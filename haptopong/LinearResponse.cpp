@@ -23,9 +23,11 @@ LinearResponse::LinearResponse(const Racket& racket, const Ball& ball) :
 	if(angle >= C_SMALL)
 		m_tangent /= angle;
 
-	m_magnitude = -50.0f * cDot(m_normal, Util::Vec(m_ball.getVelocity()) - m_racket.getVelocity());
+
+	m_magnitude = -10.0f * cDot(m_normal, Util::Vec(m_ball.getVelocity()) - m_racket.getVelocity());
 	m_magnitudeTangent = 0.0f * angle;
 }
+
 
 LinearResponse::~LinearResponse(void)
 {

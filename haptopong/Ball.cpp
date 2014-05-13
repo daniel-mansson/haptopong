@@ -28,6 +28,7 @@ Ball::Ball(chai3d::cShapeSphere* shape, btCollisionShape* collisionShape, const 
 	m_body->setRestitution((btScalar)m_properties.getRestitution());
 	m_body->setDamping((float)m_properties.getLinDamping(), (float)m_properties.getAngDamping());
 	m_body->setUserPointer(this);
+	m_body->setActivationState(DISABLE_DEACTIVATION);
     
 
 	setVelocity(btVector3(Util::RandRange(-0.2f, 0.2f), Util::RandRange(-0.2f, 0.2f), Util::RandRange(-0.2f, 0.2f)));
@@ -94,7 +95,7 @@ void Ball::updateLogic(float timeStep)
 	m_body->applyCentralForce(0.01f * angVelLen * angVel.cross(vel));
 }
 
-void Ball::updateHaptics(chai3d::cGenericHapticDevicePtr device, float timeStep)
+void Ball::updateHaptics(chai3d::cGenericHapticDevicePtr device, const double& timeStep)
 {
 
 }

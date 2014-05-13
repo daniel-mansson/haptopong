@@ -49,7 +49,7 @@ void Table::updateLogic(float timeStep)
 
 }
 
-void Table::updateHaptics(chai3d::cGenericHapticDevicePtr device, float timeStep)
+void Table::updateHaptics(chai3d::cGenericHapticDevicePtr device, const double& timeStep)
 {
 
 }

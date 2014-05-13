@@ -63,9 +63,9 @@ PongScene::PongScene(Application& app) :
 	m_dynamicsWorld->setGravity(btVector3(0, 0, -10));
 
 	createTable();
-    createNet();
 	createBall();
     createRackets();
+    createNet();
     
 	gContactProcessedCallback = &OnContactProcessed;
 
@@ -189,16 +189,18 @@ void PongScene::updateLogic(const double& timeStep)
 
 void PongScene::updateHaptics(const double& timeStep)
 {
-	cVector3d pos;
+	/*cVector3d pos;
 	m_app.getHapticDevice()->getPosition(pos);
 
 	pos *= 100;
-	/*double mag = cClamp((pos.x() + 3.5) * 1.5, 2.0, 20.0);
+	double mag = cClamp((pos.x() + 3.5) * 1.5, 2.0, 20.0);
 
 	m_camera->set( cVector3d (mag * cCosRad(pos.y()* 0.5), mag * cSinRad(pos.y() * 0.5), pos.z() * 1.7),    // camera position (eye)
 	cVector3d (0.0, 0.0, 0.0),    // look at position (target)
 	cVector3d (0.0, 0.0, 1.0));   // direction of the (up) vector
 	*/
+	m_playerRacket->updateHaptics(m_app.getHapticDevice(), timeStep);
+
 	cVector3d force(0,0,0);
 
 	m_hapticResponseMgr->updateHaptics(timeStep, force);
