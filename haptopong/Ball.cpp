@@ -10,7 +10,8 @@ Ball::Ball(chai3d::cShapeSphere* shape, btCollisionShape* collisionShape, const 
 	m_velocity(0, 0, 0),
 	m_angularVelocity(0, 0, 0),
 	m_shape(shape),
-    m_properties(properties)
+    m_properties(properties),
+	m_isActive(true)
 {   
     //btScalar mass = m_properties.getWeight();
     btScalar mass(1.f);
@@ -93,7 +94,7 @@ void Ball::updateLogic(float timeStep)
 	m_body->applyCentralForce(0.01f * angVelLen * angVel.cross(vel));
 }
 
-void Ball::updateHaptics(float timeStep)
+void Ball::updateHaptics(chai3d::cGenericHapticDevicePtr device, float timeStep)
 {
 
 }

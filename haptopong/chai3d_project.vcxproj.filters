@@ -94,6 +94,12 @@
     <ClCompile Include="ShadowlessMesh.cpp">
       <Filter>Pong</Filter>
     </ClCompile>
+    <ClCompile Include="BallEventManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HapticResponseManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -161,6 +167,12 @@
     </ClInclude>
     <ClInclude Include="ShadowlessMesh.h">
       <Filter>Pong</Filter>
+    </ClInclude>
+    <ClInclude Include="BallEventManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HapticResponseManager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

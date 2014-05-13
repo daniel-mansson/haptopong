@@ -4,7 +4,7 @@
 
 
 Racket::Racket(chai3d::cMultiMesh* shape, btCollisionShape* collisionShape, const RacketProperties &properties, const btTransform &startTransform) :
-	m_normal(1, 0, 0),
+	m_normal(-1, 0, 0),
 	m_velocity(0, 0, 0),
 	m_force(0, 0, 0),
     m_shape(shape)
@@ -21,7 +21,7 @@ Racket::Racket(chai3d::cMultiMesh* shape, btCollisionShape* collisionShape, cons
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, collisionShape, localInertia);
 	
     m_body = std::make_shared<btRigidBody>(rbInfo);
-	m_body->setRestitution(m_properties.getRestitution());
+	m_body->setRestitution((float)m_properties.getRestitution());
 	//m_body->setDamping((float)m_properties.getLinDamping(), (float)m_properties.getAngDamping());
 	m_body->setUserPointer(this);
 	m_body->setCollisionFlags(m_body->getCollisionFlags() |
@@ -52,9 +52,11 @@ void Racket::updateLogic(float timeStep)
 
 }
 
-void Racket::updateHaptics(float timeStep)
+void Racket::updateHaptics(chai3d::cGenericHapticDevicePtr device, float timeStep)
 {
-
+	chai3d::cVector3d pos;
+	device->getPosition(pos);
+	
 }
 
 void Racket::onCollision(const btCollisionResult& collision)

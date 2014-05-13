@@ -13,7 +13,7 @@ public:
 
 	virtual void render(float timeStep);
 	virtual void updateLogic(float timeStep);
-	virtual void updateHaptics(float timeStep);
+	virtual void updateHaptics(chai3d::cGenericHapticDevicePtr device, float timeStep);
 
 	virtual void onCollision(const btCollisionResult& collision);
 
@@ -39,6 +39,8 @@ private:
 	RacketProperties m_properties;
 	chai3d::cMultiMesh* m_shape;
     btRigidBodyPtr m_body;
+	
+	chai3d::cVector3d m_hapticPos;
 };
 
 typedef std::shared_ptr<Racket> RacketPtr;
