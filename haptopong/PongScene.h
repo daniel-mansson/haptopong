@@ -6,7 +6,6 @@
 #include "Net.h"
 #include "Ball.h"
 #include "Racket.h"
-#include "CustomCamera.h"
 #include "BallEventManager.h"
 #include "HapticResponseManager.h"
 
@@ -34,7 +33,7 @@ public:
 private:
 	 
 	chai3d::cWorldPtr m_world;
-    CustomCamera* m_camera;
+    chai3d::cCamera* m_camera;
 	
 	btDiscreteDynamicsWorld* m_dynamicsWorld;
 	
