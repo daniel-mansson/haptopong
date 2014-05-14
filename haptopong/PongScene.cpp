@@ -534,7 +534,7 @@ void PongScene::createBall()
     
 	cTexture2dPtr net_texture = cTexture2d::create();
 	net_texture->setWrapMode(GL_REPEAT);
-	bool fileload = net_texture->loadFromFile("../gfx/ball_diffuse.png");
+	bool fileload = net_texture->loadFromFile("../gfx/net_diffuse.png");
 	if (!fileload)
 	{
 		std::cout << "Error - Texture image failed to load correctly." << std::endl;

@@ -56,15 +56,15 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\depends\enet\include;..\depends\chai3d\include;..\depends\bullet\include\ConvexDecomposition;..\depends\bullet\include;..\depends\CODE\include;..\depends\freeglut\include;..\depends\Eigen;..\depends\glew\include;..\depends\ODE\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\depends\BASS\include;..\depends\enet\include;..\depends\chai3d\include;..\depends\bullet\include\ConvexDecomposition;..\depends\bullet\include;..\depends\CODE\include;..\depends\freeglut\include;..\depends\Eigen;..\depends\glew\include;..\depends\ODE\include</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\depends\enet\lib;..\depends\bullet\lib\$(Configuration)\$(Platform);..\depends\CODE\lib\$(Configuration)\$(Platform);..\depends\glew\lib\$(Configuration)\$(Platform);..\depends\ODE\lib\$(Configuration)\$(Platform);..\depends\chai3d\lib\$(Configuration)\$(Platform);..\depends\freeglut\lib\$(Configuration)\$(Platform)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);chai3d.lib;freeglut.lib;glew.lib;ODE.lib;CODE.lib;BulletDynamics.lib;BulletCollision.lib;LinearMath.lib;enet.lib;ws2_32.lib;winmm.lib;ConvexDecomposition.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\depends\BASS\lib\Win32;..\depends\enet\lib;..\depends\bullet\lib\$(Configuration)\$(Platform);..\depends\CODE\lib\$(Configuration)\$(Platform);..\depends\glew\lib\$(Configuration)\$(Platform);..\depends\ODE\lib\$(Configuration)\$(Platform);..\depends\chai3d\lib\$(Configuration)\$(Platform);..\depends\freeglut\lib\$(Configuration)\$(Platform)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);chai3d.lib;freeglut.lib;glew.lib;ODE.lib;CODE.lib;BulletDynamics.lib;BulletCollision.lib;LinearMath.lib;enet.lib;ws2_32.lib;winmm.lib;ConvexDecomposition.lib;bass_msvc.lib</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <IgnoreAllDefaultLibraries>
       </IgnoreAllDefaultLibraries>
@@ -81,7 +81,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\depends\enet\include;..\depends\chai3d\include;..\depends\bullet\include\ConvexDecomposition;..\depends\bullet\include;..\depends\CODE\include;..\depends\freeglut\include;..\depends\Eigen;..\depends\glew\include;..\depends\ODE\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\depends\BASS\include;..\depends\enet\include;..\depends\chai3d\include;..\depends\bullet\include\ConvexDecomposition;..\depends\bullet\include;..\depends\CODE\include;..\depends\freeglut\include;..\depends\Eigen;..\depends\glew\include;..\depends\ODE\include</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -89,8 +89,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>..\depends\enet\lib;..\depends\bullet\lib\$(Configuration)\$(Platform);..\depends\CODE\lib\$(Configuration)\$(Platform);..\depends\glew\lib\$(Configuration)\$(Platform);..\depends\ODE\lib\$(Configuration)\$(Platform);..\depends\chai3d\lib\$(Configuration)\$(Platform);..\depends\freeglut\lib\$(Configuration)\$(Platform)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);chai3d.lib;freeglut.lib;glew.lib;ODE.lib;CODE.lib;BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;enet.lib;ws2_32.lib;winmm.lib;ConvexDecomposition.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\depends\BASS\lib\Win32;..\depends\enet\lib;..\depends\bullet\lib\$(Configuration)\$(Platform);..\depends\CODE\lib\$(Configuration)\$(Platform);..\depends\glew\lib\$(Configuration)\$(Platform);..\depends\ODE\lib\$(Configuration)\$(Platform);..\depends\chai3d\lib\$(Configuration)\$(Platform);..\depends\freeglut\lib\$(Configuration)\$(Platform)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);chai3d.lib;freeglut.lib;glew.lib;ODE.lib;CODE.lib;BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;enet.lib;ws2_32.lib;winmm.lib;ConvexDecomposition.lib;bass_msvc.lib</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
     </Link>
   </ItemDefinitionGroup>
@@ -119,6 +119,7 @@
     <ClCompile Include="Score.cpp" />
     <ClCompile Include="ShadowlessMesh.cpp" />
     <ClCompile Include="SimpleCountGameRules.cpp" />
+    <ClCompile Include="SoundPlayer.cpp" />
     <ClCompile Include="Table.cpp" />
     <ClCompile Include="TestHapticCollisionScene.cpp" />
     <ClCompile Include="TestScene.cpp" />
@@ -149,6 +150,7 @@
     <ClInclude Include="Score.h" />
     <ClInclude Include="ShadowlessMesh.h" />
     <ClInclude Include="SimpleCountGameRules.h" />
+    <ClInclude Include="SoundPlayer.h" />
     <ClInclude Include="Table.h" />
     <ClInclude Include="TestHapticCollisionScene.h" />
     <ClInclude Include="TestScene.h" />

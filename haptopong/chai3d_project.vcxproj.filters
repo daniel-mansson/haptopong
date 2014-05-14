@@ -118,6 +118,9 @@
     <ClCompile Include="SimpleCountGameRules.cpp">
       <Filter>Rules&amp;Network\GameRules</Filter>
     </ClCompile>
+    <ClCompile Include="SoundPlayer.cpp">
+      <Filter>Pong</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -206,6 +209,9 @@
     </ClInclude>
     <ClInclude Include="PlayerId.h">
       <Filter>Rules&amp;Network</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundPlayer.h">
+      <Filter>Pong</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
