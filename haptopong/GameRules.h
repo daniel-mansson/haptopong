@@ -25,3 +25,4 @@ public:
 	virtual void onNewRound() = 0;
 };
 
+typedef std::shared_ptr<GameRules> GameRulesPtr;

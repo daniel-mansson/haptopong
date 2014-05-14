@@ -7,6 +7,7 @@
 
 #include <chai3d.h>
 #include <vector>
+#include <string>
 #include <iostream>
 #include <cstdlib>
 

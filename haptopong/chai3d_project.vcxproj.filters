@@ -37,6 +37,9 @@
     <Filter Include="Rules&amp;Network\GameRules">
       <UniqueIdentifier>{92d907e7-48b8-4f38-8924-94ff4f0e3595}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Rules&amp;Network\Messages">
+      <UniqueIdentifier>{f175b760-4f10-474d-b24e-1da716cd2c7e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -120,6 +123,18 @@
     </ClCompile>
     <ClCompile Include="SoundPlayer.cpp">
       <Filter>Pong</Filter>
+    </ClCompile>
+    <ClCompile Include="LocalRulesManager.cpp">
+      <Filter>Rules&amp;Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Message.cpp">
+      <Filter>Rules&amp;Network\Messages</Filter>
+    </ClCompile>
+    <ClCompile Include="Hello.cpp">
+      <Filter>Rules&amp;Network\Messages</Filter>
+    </ClCompile>
+    <ClCompile Include="Welcome.cpp">
+      <Filter>Rules&amp;Network\Messages</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -212,6 +227,18 @@
     </ClInclude>
     <ClInclude Include="SoundPlayer.h">
       <Filter>Pong</Filter>
+    </ClInclude>
+    <ClInclude Include="LocalRulesManager.h">
+      <Filter>Rules&amp;Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Message.h">
+      <Filter>Rules&amp;Network\Messages</Filter>
+    </ClInclude>
+    <ClInclude Include="Hello.h">
+      <Filter>Rules&amp;Network\Messages</Filter>
+    </ClInclude>
+    <ClInclude Include="Welcome.h">
+      <Filter>Rules&amp;Network\Messages</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
