@@ -77,7 +77,11 @@ bool Application::initialize(const std::string& title, int* argc, char** argv)
 
 	// calibrate device (if necessary)
 	m_hapticDevice->calibrate();
-
+		
+	if (enet_initialize () != 0)
+	{
+		fprintf (stderr, "An error occurred while initializing ENet.\n");
+	}
 
 	// create a thread which starts the main haptics rendering loop
 	cThread* hapticsThread = new cThread();
@@ -189,6 +193,8 @@ void Application::close()
 
 	// close haptic device
 	m_hapticDevice->close();
+
+	enet_deinitialize();
 
     #ifndef MACOSX
 	// shut down glut

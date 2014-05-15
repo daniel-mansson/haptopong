@@ -2,12 +2,12 @@
 #include "GameRulesManager.h"
 #include "GameRules.h"
 
-class LocalRulesManager :
+class RemoteRulesManager :
 	public GameRulesManager
 {
 public:
-	LocalRulesManager(GameRulesPtr gameRules, int port);
-	virtual ~LocalRulesManager(void);
+	RemoteRulesManager(GameRulesPtr gameRules, ENetAddress addr);
+	virtual ~RemoteRulesManager(void);
 	
 	virtual void initialize();
 
@@ -24,7 +24,7 @@ private:
 	
 	int m_port;
 	ENetAddress m_address;
-	ENetHost* m_server;
+	ENetHost* m_client;
 	ENetPeer* m_peer;
 	unsigned char* m_buffer;
 

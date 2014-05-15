@@ -37,8 +37,9 @@ bool OnContactProcessed(btManifoldPoint& point,void* body0,void* body1)
 	return true;
 }
 
-PongScene::PongScene(Application& app) :
-Scene(app)
+PongScene::PongScene(Application& app, GameRulesManagerPtr gameRules) :
+	Scene(app),
+	m_gameRules(gameRules)
 {
     m_hapticResponseMgr = HapticResponseManagerPtr(new HapticResponseManager());
     
@@ -100,6 +101,8 @@ Scene(app)
      m_world->addChild(m_ground);
      */
     
+	if(m_gameRules != nullptr)
+		m_gameRules->initialize();
     
 	/*
      {

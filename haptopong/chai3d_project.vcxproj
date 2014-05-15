@@ -54,7 +54,7 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>TESTING_NETWORK;_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>..\depends\BASS\include;..\depends\enet\include;..\depends\chai3d\include;..\depends\bullet\include\ConvexDecomposition;..\depends\bullet\include;..\depends\CODE\include;..\depends\freeglut\include;..\depends\Eigen;..\depends\glew\include;..\depends\ODE\include</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -106,7 +106,9 @@
     <ClCompile Include="GameRulesManager.cpp" />
     <ClCompile Include="GfxScene.cpp" />
     <ClCompile Include="HapticResponseManager.cpp" />
+    <ClCompile Include="Hello.cpp" />
     <ClCompile Include="LinearResponse.cpp" />
+    <ClCompile Include="LocalRulesManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuScene.cpp" />
     <ClCompile Include="Net.cpp" />
@@ -115,14 +117,17 @@
     <ClCompile Include="PongScene.cpp" />
     <ClCompile Include="Racket.cpp" />
     <ClCompile Include="RacketProperties.cpp" />
+    <ClCompile Include="RemoteRulesManager.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Score.cpp" />
     <ClCompile Include="ShadowlessMesh.cpp" />
     <ClCompile Include="SimpleCountGameRules.cpp" />
     <ClCompile Include="SoundPlayer.cpp" />
+    <ClCompile Include="Message.cpp" />
     <ClCompile Include="Table.cpp" />
     <ClCompile Include="TestHapticCollisionScene.cpp" />
     <ClCompile Include="TestScene.cpp" />
+    <ClCompile Include="Welcome.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -137,8 +142,11 @@
     <ClInclude Include="GameRulesManager.h" />
     <ClInclude Include="GfxScene.h" />
     <ClInclude Include="HapticResponseManager.h" />
+    <ClInclude Include="Hello.h" />
     <ClInclude Include="LinearResponse.h" />
+    <ClInclude Include="LocalRulesManager.h" />
     <ClInclude Include="MenuScene.h" />
+    <ClInclude Include="Message.h" />
     <ClInclude Include="Net.h" />
     <ClInclude Include="NetworkScene.h" />
     <ClInclude Include="pch.h" />
@@ -146,6 +154,7 @@
     <ClInclude Include="PongScene.h" />
     <ClInclude Include="Racket.h" />
     <ClInclude Include="RacketProperties.h" />
+    <ClInclude Include="RemoteRulesManager.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Score.h" />
     <ClInclude Include="ShadowlessMesh.h" />
@@ -155,6 +164,7 @@
     <ClInclude Include="TestHapticCollisionScene.h" />
     <ClInclude Include="TestScene.h" />
     <ClInclude Include="Util.h" />
+    <ClInclude Include="Welcome.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
