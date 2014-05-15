@@ -5,8 +5,8 @@
 class SoundPlayer
 {
 public:
-    SoundPlayer(const char* file);
-    void play();
+    SoundPlayer(const char* file, const unsigned &startPos);
+    void play(float frequency = 0);
     static DWORD CALLBACK MyStreamWriter(HSTREAM handle, void *buf, DWORD len, void *user);
     
 private:
@@ -15,4 +15,5 @@ private:
     char *m_data;
     HSTREAM m_stream;
     unsigned int m_pos;
+    unsigned int m_startpos;
 };

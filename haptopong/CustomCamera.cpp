@@ -508,7 +508,7 @@ void CustomCamera::renderView(const int a_windowWidth,
                 options.m_render_opaque_objects_only            = false;
                 options.m_render_transparent_back_faces_only    = false;
                 options.m_render_transparent_front_faces_only   = true;
-                options.m_rendering_shadow                      = false; // Disables shadows cast on this object!
+                options.m_rendering_shadow                      = false; // Disables shadows cast on transparent objects!
                 options.m_shadow_light_level                    = 1.0 - m_parentWorld->getShadowIntensity();
                 
                 // render 4th pass (transparent objects - front faces only - shadowed areas)
@@ -547,7 +547,7 @@ void CustomCamera::renderView(const int a_windowWidth,
                     
                     if (m_parentWorld != NULL)
                     {
-                       // m_parentWorld->renderSceneGraph(options);
+                       //m_parentWorld->renderSceneGraph(options); // transparency sorting problem fix B
                     }
                     
                     // restore states
