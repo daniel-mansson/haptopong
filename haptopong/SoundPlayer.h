@@ -1,6 +1,5 @@
 #pragma once
 
-#include <bass.h>
 
 class SoundPlayer
 {

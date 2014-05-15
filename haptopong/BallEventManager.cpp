@@ -5,8 +5,8 @@
 BallEventManager::BallEventManager(HapticResponseManagerPtr hapticResponseMgr):
 	m_hapticResponseMgr(hapticResponseMgr)
 {
-    m_tableHit = new SoundPlayer("../sounds/tennis_ball_hit_by_racket.mp3", 00);
-    m_racketHit = new SoundPlayer("../sounds/tennis_ball_hit_by_racket.mp3", 500);
+    m_tableHit = new SoundPlayer("../sounds/tennis_ball_hit_by_table.wav", 0);
+    m_racketHit = new SoundPlayer("../sounds/tennis_ball_hit_by_racket.wav", 0);
 }
 
 
@@ -32,7 +32,7 @@ void BallEventManager::OnRacketHit(btManifoldPoint& point, Racket& racket, Ball&
     
 	if(ball.isActive())
 	{
-        //m_racketHit->play(chai3d::cAbs(racket.getVelocity().length()) + 1);
+        m_racketHit->play(chai3d::cAbs(racket.getVelocity().length()) + 1);
         
 		btVector3 bvel = ball.getVelocity();
 		btVector3 rvel = Util::Vec(racket.getVelocity() * racket.getMoveAreaScale());
@@ -40,7 +40,7 @@ void BallEventManager::OnRacketHit(btManifoldPoint& point, Racket& racket, Ball&
 		float xvel = rvel[0] - bvel[0];
 		if(xvel < 0.0f)
 		{
-            std::cout << 
+            //std::cout << 
             
 			m_hapticResponseMgr->setCurrent(CollisionResponsePtr(new LinearResponse(racket, ball)));
 		

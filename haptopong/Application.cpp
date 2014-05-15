@@ -61,6 +61,9 @@ bool Application::initialize(const std::string& title, int* argc, char** argv)
     #ifndef MACOSX
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
     #endif
+	
+    // Initialize sound device and create audio stream
+    BASS_Init(1,44100,0,0,NULL);
     
 	// set fullscreen mode
 	if (m_fullscreen)

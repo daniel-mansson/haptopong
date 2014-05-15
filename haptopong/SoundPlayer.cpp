@@ -5,15 +5,13 @@ SoundPlayer::SoundPlayer(const char* file, const unsigned &startpos) :
 m_pos(0)
 //m_startpos(startpos)
 {
-    // Initialize sound device and create audio stream
-    BASS_Init(1,44100,0,0,NULL);
     
     // Load the data from the specified file
     HSTREAM file_stream = 1;
     file_stream = BASS_StreamCreateFile(FALSE, file ,startpos,0,BASS_STREAM_DECODE);
     if (!file_stream)
     {
-        printf("%s Error - MP3 audio file failed to load correctly.\n", file);
+        printf("%s Error - MP3 AUDIODESCRIPTION file failed to load correctly.\n", file);
         std::exit(EXIT_FAILURE);
     }
     
@@ -32,7 +30,7 @@ m_pos(0)
 
 void SoundPlayer::play(float frequency)
 {
-    BASS_ChannelSetAttribute(m_stream, BASS_ATTRIB_FREQ, (int)(m_infoBass.freq * frequency));
+    BASS_ChannelSetAttribute(m_stream, BASS_ATTRIB_FREQ, (float)(m_infoBass.freq * frequency));
     
     //m_pos = m_startpos;
     m_pos = 0;
