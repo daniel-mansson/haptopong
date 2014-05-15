@@ -210,6 +210,10 @@ void PongScene::updateHaptics(const double& timeStep)
 	m_hapticResponseMgr->updateHaptics(timeStep, force);
 
 	m_app.getHapticDevice()->setForce(force);
+
+#ifdef TESTING_NETWORK
+	//::Sleep(50);
+#endif
 }
 	
 void PongScene::onNewRound(const Score& score, PlayerId nextServe, PlayerId prevWinner)
