@@ -61,7 +61,7 @@ void GameRulesManager::updateMessages(unsigned char* buffer, int length)
 			i += msg->getSize();
 		}
 
-		memmove_s(m_msgBuffer, m_msgBufferMaxLength, m_msgBuffer + processed, m_msgBufferLength - processed);
+        memmove(m_msgBuffer, m_msgBuffer + processed, m_msgBufferLength - processed);
 		m_msgBufferLength -= processed;
 	}
 	else

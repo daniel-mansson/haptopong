@@ -11,6 +11,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <sstream>
+#include <cstring>
 
 #ifndef MACOSX
 #include <GL/freeglut.h>

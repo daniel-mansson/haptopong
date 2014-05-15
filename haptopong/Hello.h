@@ -13,7 +13,7 @@ public:
 			m_name.substr(15);
 
 		memset(m_data, 0, sizeof(char) * 16);
-		strcpy_s((char*)m_data, 16, m_name.c_str());
+		strcpy((char*)m_data, m_name.c_str());
 	}
 	
 	Hello()
