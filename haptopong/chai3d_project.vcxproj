@@ -97,6 +97,7 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Ball.cpp" />
+    <ClCompile Include="BallEvent.cpp" />
     <ClCompile Include="BallEventManager.cpp" />
     <ClCompile Include="BallProperties.cpp" />
     <ClCompile Include="CollisionResponse.cpp" />
@@ -124,14 +125,17 @@
     <ClCompile Include="SimpleCountGameRules.cpp" />
     <ClCompile Include="SoundPlayer.cpp" />
     <ClCompile Include="Message.cpp" />
+    <ClCompile Include="StepTimer.cpp" />
     <ClCompile Include="Table.cpp" />
     <ClCompile Include="TestHapticCollisionScene.cpp" />
     <ClCompile Include="TestScene.cpp" />
+    <ClCompile Include="UpdatePos.cpp" />
     <ClCompile Include="Welcome.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Ball.h" />
+    <ClInclude Include="BallEvent.h" />
     <ClInclude Include="BallEventManager.h" />
     <ClInclude Include="BallProperties.h" />
     <ClInclude Include="CollisionResponse.h" />
@@ -160,9 +164,11 @@
     <ClInclude Include="ShadowlessMesh.h" />
     <ClInclude Include="SimpleCountGameRules.h" />
     <ClInclude Include="SoundPlayer.h" />
+    <ClInclude Include="StepTimer.h" />
     <ClInclude Include="Table.h" />
     <ClInclude Include="TestHapticCollisionScene.h" />
     <ClInclude Include="TestScene.h" />
+    <ClInclude Include="UpdatePos.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="Welcome.h" />
   </ItemGroup>

@@ -1,8 +1,10 @@
 #include "pch.h"
 #include "GameRulesManager.h"
 #include "PongScene.h"
+
 #include "Hello.h"
 #include "Welcome.h"
+#include "UpdatePos.h"
 
 GameRulesManager::GameRulesManager() 
 {
@@ -47,6 +49,9 @@ void GameRulesManager::updateMessages(unsigned char* buffer, int length)
 				break;
 			case S_WELCOME:
 				msg = MessagePtr(new Welcome());
+				break;
+			case G_UPDATE_POS:
+				msg = MessagePtr(new UpdatePos());
 				break;
 			}
 

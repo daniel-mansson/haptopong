@@ -39,11 +39,12 @@ bool OnContactProcessed(btManifoldPoint& point,void* body0,void* body1)
 
 PongScene::PongScene(Application& app, GameRulesManagerPtr gameRules) :
 	Scene(app),
-	m_gameRules(gameRules)
+	m_gameRules(gameRules),
+	m_networkTimer(1.0 / 20.0)
 {
     m_hapticResponseMgr = HapticResponseManagerPtr(new HapticResponseManager());
     
-	m_ballEventMgr = BallEventManagerPtr(new BallEventManager(m_hapticResponseMgr));
+	m_ballEventMgr = BallEventManagerPtr(new BallEventManager(m_hapticResponseMgr, m_gameRules));
 	g_ballEventMgr = m_ballEventMgr;
     
 	// create a new world.
@@ -174,14 +175,30 @@ void PongScene::render(const double& timeStep)
 	m_opponentRacket->render((float)timeStep);
     
 	m_camera->renderView(m_app.getWindowWidth(), m_app.getWindowHeight());
+
+#ifdef TESTING_NETWORK
+	::Sleep(5);
+#endif
 }
 
 void PongScene::updateLogic(const double& timeStep)
 {
+	if(m_gameRules != nullptr)
+	{
+		m_gameRules->update(timeStep);
+
+		if(m_networkTimer.update(timeStep) > 0)
+		{
+			btVector3 pos = m_playerRacket->getPosition();
+			m_gameRules->updatePlayerPos(pos);
+		}
+	}
+
     m_table->updateLogic((float)timeStep);
     m_net->updateLogic((float)timeStep);
 	m_ball->updateLogic((float)timeStep);
 	m_playerRacket->updateLogic((float)timeStep);
+	m_opponentRacket->updateLogic((float)timeStep);
     
     //m_dynamicsWorld->stepSimulation((btScalar)timeStep, 10);
 	//m_dynamicsWorld->stepSimulation((btScalar)timeStep, 5, btScalar(1.)/btScalar(120.));
@@ -217,7 +234,7 @@ void PongScene::updateHaptics(const double& timeStep)
 	m_app.getHapticDevice()->setForce(force);
 
 #ifdef TESTING_NETWORK
-	//::Sleep(50);
+	::Sleep(10);
 #endif
 }
 	
@@ -229,6 +246,21 @@ void PongScene::onNewRound(const Score& score, PlayerId nextServe, PlayerId prev
 void PongScene::onGameOver(const Score& score, PlayerId winner)
 {
 
+}
+
+btVector3 PongScene::invert(const btVector3& vec)
+{
+	btVector3 res;
+	res[0] = -vec[0];
+	res[1] = -vec[1];
+	res[2] = vec[2];
+	return res;
+}
+
+void PongScene::updateOpponentPos(const btVector3& position)
+{
+	btVector3 pos = invert(position);
+	m_opponentRacket->setPosition(pos);
 }
 
 void PongScene::onKeyDown(unsigned char key, int x, int y)
@@ -631,6 +663,8 @@ void PongScene::createRackets()
     startTransform.setRotation(btQuaternion(0, 40*0.0174532925f, 0));
     
     m_playerRacket = std::make_shared<Racket>(playerRacket, m_racketsCollisionShape.get(), properties, startTransform);
+	if(m_gameRules != nullptr)
+		m_playerRacket->setPlayerId(m_gameRules->getPlayerId());
 
     m_dynamicsWorld->addRigidBody(m_playerRacket->getBody());
     
@@ -641,6 +675,8 @@ void PongScene::createRackets()
     startTransform.setRotation(btQuaternion(0, -40*0.0174532925f, 0));
     
     m_opponentRacket = std::make_shared<Racket>(opponentRacket, m_racketsCollisionShape.get(), properties, startTransform);
+	if(m_gameRules != nullptr)
+		m_opponentRacket->setPlayerId(m_gameRules->getOpponentId());
     
     m_dynamicsWorld->addRigidBody(m_opponentRacket->getBody());
     

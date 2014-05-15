@@ -9,6 +9,7 @@
 #include "BallEventManager.h"
 #include "HapticResponseManager.h"
 #include "GameRulesManager.h"
+#include "StepTimer.h"
 
 class PongScene : public Scene
 {
@@ -28,6 +29,9 @@ public:
 	
 	void onNewRound(const Score& score, PlayerId nextServe, PlayerId prevWinner);
 	void onGameOver(const Score& score, PlayerId winner);
+
+	void updateOpponentPos(const btVector3& position);
+	void updateBallState(const btTransform& transform, const btVector3& velocity, const btVector3& angularVelocity);
 	
 	static ScenePtr create(Application& app) { return ScenePtr(new PongScene(app, nullptr)); }
 	static ScenePtr create(Application& app, GameRulesManagerPtr gameRules) 
@@ -38,6 +42,8 @@ public:
 	}
 
 private:
+
+	btVector3 invert(const btVector3& vec);
 	 
 	chai3d::cWorldPtr m_world;
     chai3d::cCamera* m_camera;
@@ -56,6 +62,7 @@ private:
     RacketPtr m_opponentRacket;
 	BallEventManagerPtr m_ballEventMgr;
 	HapticResponseManagerPtr m_hapticResponseMgr;
+	StepTimer m_networkTimer;
     
 	void createCamera();
     void createLight();

@@ -139,6 +139,15 @@
     <ClCompile Include="RemoteRulesManager.cpp">
       <Filter>Rules&amp;Network</Filter>
     </ClCompile>
+    <ClCompile Include="UpdatePos.cpp">
+      <Filter>Rules&amp;Network\Messages</Filter>
+    </ClCompile>
+    <ClCompile Include="StepTimer.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="BallEvent.cpp">
+      <Filter>Rules&amp;Network\Messages</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -245,6 +254,15 @@
     </ClInclude>
     <ClInclude Include="RemoteRulesManager.h">
       <Filter>Rules&amp;Network</Filter>
+    </ClInclude>
+    <ClInclude Include="UpdatePos.h">
+      <Filter>Rules&amp;Network\Messages</Filter>
+    </ClInclude>
+    <ClInclude Include="StepTimer.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="BallEvent.h">
+      <Filter>Rules&amp;Network\Messages</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
