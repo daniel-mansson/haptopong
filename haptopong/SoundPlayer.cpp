@@ -28,14 +28,17 @@ m_pos(0)
     m_stream = BASS_StreamCreate(m_infoBass.freq, m_infoBass.chans, 0, &MyStreamWriter, this);
 }
 
-void SoundPlayer::play(float frequency)
+void SoundPlayer::play(float frequency, float volume)
 {
+    BASS_ChannelStop(m_stream);
+    
     BASS_ChannelSetAttribute(m_stream, BASS_ATTRIB_FREQ, (float)(m_infoBass.freq * frequency));
+    BASS_ChannelSetAttribute(m_stream, BASS_ATTRIB_VOL, chai3d::cClamp01(volume));
     
     //m_pos = m_startpos;
     m_pos = 0;
     
-    BASS_ChannelStop(m_stream);
+
     BASS_ChannelPlay(m_stream, FALSE);
 }
 

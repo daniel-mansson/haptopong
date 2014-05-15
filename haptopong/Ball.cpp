@@ -31,7 +31,7 @@ Ball::Ball(chai3d::cShapeSphere* shape, btCollisionShape* collisionShape, const 
 	m_body->setActivationState(DISABLE_DEACTIVATION);
     
 
-	setVelocity(btVector3(Util::RandRange(-0.2f, 0.2f), Util::RandRange(-0.2f, 0.2f), Util::RandRange(-0.2f, 0.2f)));
+	//setVelocity(btVector3(Util::RandRange(-0.2f, 0.2f), Util::RandRange(-0.2f, 0.2f), Util::RandRange(-0.2f, 0.2f)));
     //m_body->setCcdMotionThreshold(m_properties.getRadius()*0.9);
     //m_body->setCcdSweptSphereRadius(m_properties.getRadius()*0.9);
     

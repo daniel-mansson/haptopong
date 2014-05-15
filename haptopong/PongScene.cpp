@@ -546,7 +546,7 @@ void PongScene::createBall()
     
 	cTexture2dPtr net_texture = cTexture2d::create();
 	net_texture->setWrapMode(GL_REPEAT);
-	bool fileload = net_texture->loadFromFile("../gfx/net_diffuse.png");
+	bool fileload = net_texture->loadFromFile("../gfx/ball_diffuse.png");
 	if (!fileload)
 	{
 		std::cout << "Error - Texture image failed to load correctly." << std::endl;
@@ -559,7 +559,8 @@ void PongScene::createBall()
     btTransform startTransform;
 	startTransform.setIdentity();
     startTransform.setOrigin(btVector3(0,0,1));
-    //startTransform.setOrigin(btVector3(-1.75,0,0.65));
+    //startTransform.setOrigin(btVector3(1.75,0,0.65));
+    //startTransform.setOrigin(btVector3(2.2,0,0.9));
     
 	m_ball = std::make_shared<Ball>(ballShape, m_ballCollisionShape.get(), properties, startTransform);
     
