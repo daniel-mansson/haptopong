@@ -12,6 +12,7 @@
 #include <cstdlib>
 #include <sstream>
 #include <bass.h>
+#include <cstring>
 
 #ifndef MACOSX
 #include <GL/freeglut.h>
