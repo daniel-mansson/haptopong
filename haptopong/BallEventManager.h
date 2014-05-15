@@ -20,6 +20,7 @@ public:
 private:
 	HapticResponseManagerPtr m_hapticResponseMgr;
     SoundPlayer* m_racketHit;
+    SoundPlayer* m_tableHit;
 };
 
 typedef std::shared_ptr<BallEventManager> BallEventManagerPtr;

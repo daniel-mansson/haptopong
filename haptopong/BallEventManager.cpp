@@ -5,7 +5,8 @@
 BallEventManager::BallEventManager(HapticResponseManagerPtr hapticResponseMgr):
 	m_hapticResponseMgr(hapticResponseMgr)
 {
-    m_racketHit = new SoundPlayer("../sounds/racket.mp3");
+    m_tableHit = new SoundPlayer("../sounds/tennis_ball_hit_by_racket.mp3", 00);
+    m_racketHit = new SoundPlayer("../sounds/tennis_ball_hit_by_racket.mp3", 500);
 }
 
 
@@ -15,6 +16,8 @@ BallEventManager::~BallEventManager(void)
 
 void BallEventManager::OnTableHit(btManifoldPoint& point, Table& table, Ball& ball)
 {
+    if (chai3d::cAbs(ball.getVelocity().z()) > 0.2) m_tableHit->play();
+    
 	//std::cout<<"Table hit!\n";
 }
 
@@ -25,10 +28,12 @@ void BallEventManager::OnNetHit(btManifoldPoint& point, Net& net, Ball& ball)
 
 void BallEventManager::OnRacketHit(btManifoldPoint& point, Racket& racket, Ball& ball)
 {
-    m_racketHit->play();
+    std::cout << racket.getVelocity().length() << std::endl;
     
 	if(ball.isActive())
 	{
+        m_racketHit->play(chai3d::cAbs(racket.getVelocity().length()) + 1);
+        
 		btVector3 bvel = ball.getVelocity();
 		btVector3 rvel = Util::Vec(racket.getVelocity() * racket.getMoveAreaScale());
 

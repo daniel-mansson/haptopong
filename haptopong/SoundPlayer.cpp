@@ -1,15 +1,16 @@
 #include "pch.h"
 #include "SoundPlayer.h"
 
-SoundPlayer::SoundPlayer(const char* file) :
+SoundPlayer::SoundPlayer(const char* file, const unsigned &startpos) :
 m_pos(0)
+//m_startpos(startpos)
 {
     // Initialize sound device and create audio stream
     BASS_Init(1,44100,0,0,NULL);
     
     // Load the data from the specified file
     HSTREAM file_stream = 1;
-    file_stream = BASS_StreamCreateFile(FALSE, file ,0,0,BASS_STREAM_DECODE);
+    file_stream = BASS_StreamCreateFile(FALSE, file ,startpos,0,BASS_STREAM_DECODE);
     if (!file_stream)
     {
         printf("%s Error - MP3 audio file failed to load correctly.\n", file);
@@ -29,8 +30,14 @@ m_pos(0)
     m_stream = BASS_StreamCreate(m_infoBass.freq, m_infoBass.chans, 0, &MyStreamWriter, this);
 }
 
-void SoundPlayer::play() {
+void SoundPlayer::play(float frequency)
+{
+    BASS_ChannelSetAttribute(m_stream, BASS_ATTRIB_FREQ, (int)(m_infoBass.freq * frequency));
+    
+    //m_pos = m_startpos;
     m_pos = 0;
+    
+    BASS_ChannelStop(m_stream);
     BASS_ChannelPlay(m_stream, FALSE);
 }
 

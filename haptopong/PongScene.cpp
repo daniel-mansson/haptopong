@@ -139,6 +139,11 @@ Scene(app)
 PongScene::~PongScene(void)
 {
 	g_ballEventMgr = nullptr;
+    
+    #ifdef MACOSX
+    // osx texture deletion crash fix
+    m_world->removeChild(m_ball->getShape());
+    #endif
 }
 
 void PongScene::enter(ScenePtr from)
@@ -302,8 +307,8 @@ void PongScene::onSpecialDown(int key, int x, int y)
             m_camera->set(cVector3d (0.02, -1.4, 0.055),   // camera position (eye)
                           cVector3d (0.0, 0.0, 0.055),    // look at position (target)
                           cVector3d (0.0, 0.0, 1.0));    // direction of the (up) vector
-            m_camera->set(cVector3d (-2.47, 0.0, 0.95),   // camera position (eye)
-                          cVector3d (0.0, 0.0, 0.01),    // look at position (target)
+            m_camera->set(cVector3d (-1.5, 0.0, 0.6),   // camera position (eye)
+                          cVector3d (-2.0, 0.0, 0.6),    // look at position (target)
                           cVector3d (0.0, 0.0, 1.0));    // direction of the (up) vector
             break;
         case GLUT_KEY_LEFT:
@@ -542,11 +547,12 @@ void PongScene::createBall()
 	}
     
 	ballShape->setTexture(net_texture);
-	ballShape->setUseTexture(false, true);
+	ballShape->setUseTexture(true, true);
 
     btTransform startTransform;
 	startTransform.setIdentity();
     startTransform.setOrigin(btVector3(0,0,1));
+    //startTransform.setOrigin(btVector3(-1.75,0,0.65));
     
 	m_ball = std::make_shared<Ball>(ballShape, m_ballCollisionShape.get(), properties, startTransform);
     
@@ -589,8 +595,6 @@ void PongScene::createRackets()
         std::exit(EXIT_FAILURE);
     }
     
-    //opponentRacket->setUseTransparency(true);
-    
     cMaterial mat;
     mat.m_ambient.set( 0.5f, 0.5f, 0.5f);
     mat.m_diffuse.set( 0.5f, 0.5f, 0.5f);
@@ -627,7 +631,6 @@ void PongScene::createRackets()
     
 	startTransform.setIdentity();
     startTransform.setOrigin(btVector3(-1.9f, 0, 0.6f));
-    //startTransform.setOrigin(btVector3(+1.9f, 0.1, 0.88f));
     startTransform.setRotation(btQuaternion(0, -40*0.0174532925f, 0));
     
     m_opponentRacket = std::make_shared<Racket>(opponentRacket, m_racketsCollisionShape.get(), properties, startTransform);
