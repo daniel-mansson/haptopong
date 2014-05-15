@@ -586,7 +586,7 @@ void PongScene::createRackets()
     }
     
     playerRacket->setUseTransparency(true);
-    playerRacket->setTransparencyLevel(0.5f);
+    playerRacket->setTransparencyLevel(0.7f);
     
     m_world->addChild(playerRacket);
     
