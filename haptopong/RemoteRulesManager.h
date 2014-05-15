@@ -12,13 +12,20 @@ public:
 	virtual void initialize();
 
 	virtual void onBallHitTable(const Ball& ball, const Table& table);
-	virtual void onBallHitRacket(const Ball& ball, const Table& table);
-	virtual void onBallOut(const Ball& ball, const Table& table);
+	virtual void onBallHitRacket(const Ball& ball, const Racket& racket);
+	virtual void onBallOut(const Ball& ball);
 	
 	virtual void update(const double& timeStep);
+	virtual void updatePlayerPos(const btVector3& position);
 
 	virtual bool isWaiting() const { return m_isWaiting; }
+	
+	virtual PlayerId getPlayerId() const { return PLAYER_REMOTE; };
+	virtual PlayerId getOpponentId() const { return PLAYER_LOCAL; };
 private:
+
+	void sendMessage(MessagePtr msg, enet_uint32 reliability);
+
 	GameRulesPtr m_gameRules;
 	bool m_isWaiting;
 	

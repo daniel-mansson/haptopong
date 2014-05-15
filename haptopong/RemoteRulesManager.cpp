@@ -1,7 +1,10 @@
 #include "pch.h"
 #include "RemoteRulesManager.h"
 
+#include "PongScene.h"
 #include "Hello.h"
+#include "UpdatePos.h"
+#include "BallEvent.h"
 
 RemoteRulesManager::RemoteRulesManager(GameRulesPtr gameRules, ENetAddress addr) :
 	m_gameRules(gameRules),
@@ -20,7 +23,7 @@ void RemoteRulesManager::initialize()
 {
 	m_client = enet_host_create (NULL,
 		1, 2, 100000, 100000);
-	
+
 	if(m_client != nullptr) 
 	{
 		std::cout<<"Connecting to the server..."<<std::endl;
@@ -33,17 +36,20 @@ void RemoteRulesManager::initialize()
 
 void RemoteRulesManager::onBallHitTable(const Ball& ball, const Table& table)
 {
-
+	PlayerId id = ball.getPosition().x() < 0.0f ? getOpponentId() : getPlayerId();;
+	sendMessage(MessagePtr(new BallEvent(id, BallEvent::BALLEVENT_TABLE)), ENET_PACKET_FLAG_RELIABLE);
 }
 
-void RemoteRulesManager::onBallHitRacket(const Ball& ball, const Table& table)
+void RemoteRulesManager::onBallHitRacket(const Ball& ball, const Racket& racket)
 {
+	sendMessage(MessagePtr(new BallEvent(racket.getPlayerId(), BallEvent::BALLEVENT_RACKET)), ENET_PACKET_FLAG_RELIABLE);
 
+	//TODO: state update
 }
 
-void RemoteRulesManager::onBallOut(const Ball& ball, const Table& table)
+void RemoteRulesManager::onBallOut(const Ball& ball)
 {
-
+	sendMessage(MessagePtr(new BallEvent(NO_PLAYER, BallEvent::BALLEVENT_OUTSIDE)), ENET_PACKET_FLAG_RELIABLE);
 }
 
 void RemoteRulesManager::update(const double& timeStep)
@@ -59,14 +65,7 @@ void RemoteRulesManager::update(const double& timeStep)
 				unsigned char* buf = m_buffer;
 
 				MessagePtr hello = MessagePtr(new Hello("Client"));
-				hello->addToBuffer(buf);
-
-				ENetPacket * packet = enet_packet_create (m_buffer, 
-					hello->getSize(), 
-					ENET_PACKET_FLAG_RELIABLE);
-
-				enet_peer_send (m_peer, 0, packet);
-				enet_host_flush (m_client);
+				sendMessage(hello, ENET_PACKET_FLAG_RELIABLE);
 			}
 			break;
 
@@ -81,10 +80,14 @@ void RemoteRulesManager::update(const double& timeStep)
 					std::cout<<"GOT WELCOME "<<msg->getData()<<std::endl;
 					m_isWaiting = false;
 					break;
+				case G_UPDATE_POS:
+					m_pongScene->updateOpponentPos(((UpdatePos*)msg.get())->getPosition());
+					break;
 				}
 			}
+			m_messageQueue.clear();
 
-			std::cout<<"Got data: "<< (char*)event.packet->data << std::endl;
+			//std::cout<<"Got data: "<< event.packet->dataLength << std::endl;
 			break;
 
 		case ENET_EVENT_TYPE_DISCONNECT:
@@ -92,4 +95,29 @@ void RemoteRulesManager::update(const double& timeStep)
 			break;
 		}
 	}
+}
+
+void RemoteRulesManager::updatePlayerPos(const btVector3& position)
+{
+	if(isWaiting())
+		return;
+
+	unsigned char* buf = m_buffer;
+
+	MessagePtr msg = MessagePtr(new UpdatePos(position));
+	
+	sendMessage(msg, ENET_PACKET_FLAG_UNRELIABLE_FRAGMENT);
+}
+
+void RemoteRulesManager::sendMessage(MessagePtr msg, enet_uint32 reliability)
+{
+	unsigned char* buf = m_buffer;
+	msg->addToBuffer(buf);
+
+	ENetPacket * packet = enet_packet_create (m_buffer, 
+		msg->getSize(), 
+		reliability);
+
+	enet_peer_send (m_peer, 0, packet);
+	enet_host_flush (m_client);
 }

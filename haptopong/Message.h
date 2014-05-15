@@ -4,9 +4,11 @@ enum MessageType
 {
 	C_HELLO = 0,
 
-
-
-	S_WELCOME = 100
+	S_WELCOME = 100,
+	
+	G_HIT_BALL = 200,
+	G_UPDATE_POS = 201,
+	G_BALLEVENT = 202
 };
 
 class Message 

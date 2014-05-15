@@ -68,11 +68,32 @@ void Racket::updateLogic(float timeStep)
 
 void Racket::updateHaptics(chai3d::cGenericHapticDevicePtr device, const double& timeStep)
 {
+#ifdef TESTING_NETWORK
+	
+	chai3d::cVector3d prev = m_hapticPos;
+	
+	POINT p;
+	GetCursorPos(&p);
+
+	m_hapticPos(0) = 0.0;
+	m_hapticPos(1) = p.x * 0.0001 - 0.080;
+	m_hapticPos(2) = -p.y * 0.0001 + 0.080;
+
+	m_velocity += 100.0 * timeStep * ((m_hapticPos - prev)/timeStep - m_velocity);
+
+#else
 	chai3d::cVector3d prev = m_hapticPos;
 
 	device->getPosition(m_hapticPos);
 	
 	m_velocity += 100.0 * timeStep * ((m_hapticPos - prev)/timeStep - m_velocity);
+#endif
+
+}
+	
+void Racket::setPosition(const btVector3& position)
+{
+	m_hapticPos = Util::Vec(position);
 }
 
 void Racket::onCollision(const btCollisionResult& collision)

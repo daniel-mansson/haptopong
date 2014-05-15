@@ -6,11 +6,12 @@
 #include "Net.h"
 #include "HapticResponseManager.h"
 #include "SoundPlayer.h"
+#include "GameRulesManager.h"
 
 class BallEventManager
 {
 public:
-	BallEventManager(HapticResponseManagerPtr hapticResponseMgr);
+	BallEventManager(HapticResponseManagerPtr hapticResponseMgr, GameRulesManagerPtr gameRulesMgr);
 	~BallEventManager(void);
 	
 	void OnTableHit(btManifoldPoint& point, Table& table, Ball& ball);
@@ -19,6 +20,7 @@ public:
 
 private:
 	HapticResponseManagerPtr m_hapticResponseMgr;
+	GameRulesManagerPtr m_gameRulesMgr;
     SoundPlayer* m_racketHit;
     SoundPlayer* m_tableHit;
 };

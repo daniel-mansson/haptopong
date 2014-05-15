@@ -31,6 +31,9 @@ public:
 	const chai3d::cVector3d& getVelocity() const { return m_velocity; }
 	const chai3d::cVector3d& getVForce() const { return m_force; }
 
+	void setPosition(const btVector3& position);
+	const btVector3& getPosition() const { return Util::Vec(m_hapticPos); }
+
 	void setMoveAreaScale(float scale) { m_moveAreaScale = scale; }
 	float getMoveAreaScale() const { return m_moveAreaScale; }
     

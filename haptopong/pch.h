@@ -18,6 +18,10 @@
 #include <GL/freeglut.h>
 #endif
 
+#ifdef WIN32
+#include <Windows.h>
+#endif
+
 //Bullet physics engine
 #include <btBulletDynamicsCommon.h>
 #include <cd_wavefront.h>

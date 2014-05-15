@@ -109,6 +109,10 @@ void MenuScene::render(const double& timeStep)
 	m_subtitle->setLocalPos(5, 5, 0);
 
 	m_camera->renderView(m_app.getWindowWidth(), m_app.getWindowHeight());
+
+#ifdef WIN32
+	Sleep(5);
+#endif
 }
 
 void MenuScene::updateLogic(const double& timeStep)
@@ -118,7 +122,9 @@ void MenuScene::updateLogic(const double& timeStep)
 
 void MenuScene::updateHaptics(const double& timeStep)
 {
-
+#ifdef WIN32
+	Sleep(50);
+#endif
 }
 
 void MenuScene::onKeyDown(unsigned char key, int x, int y)
@@ -130,10 +136,11 @@ void MenuScene::onKeyDown(unsigned char key, int x, int y)
 			std::string line;
 			std::string linePort;
 			std::cout<<"Host: ";
-			std::getline(std::cin, line);
+			//std::getline(std::cin, line);
+			line = "127.0.0.1";
 			std::cout<<"Port: ";
-			std::getline(std::cin, linePort);
-
+			//std::getline(std::cin, linePort);
+			linePort = "1234";
 			ENetAddress addr; 
 			enet_address_set_host (&addr,line.c_str());
 			
@@ -148,7 +155,8 @@ void MenuScene::onKeyDown(unsigned char key, int x, int y)
 		{
 			int port = 0;
 			std::cout<<"Port: ";
-			std::cin >> port;
+			//std::cin >> port;
+			port = 1234;
 
 			auto gameRules = GameRulesPtr(new SimpleCountGameRules(20));
 			auto metaRules = GameRulesManagerPtr(new LocalRulesManager(gameRules, port));

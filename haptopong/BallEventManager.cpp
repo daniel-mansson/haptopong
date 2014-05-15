@@ -2,11 +2,12 @@
 #include "BallEventManager.h"
 #include "LinearResponse.h"
 
-BallEventManager::BallEventManager(HapticResponseManagerPtr hapticResponseMgr):
-	m_hapticResponseMgr(hapticResponseMgr)
+BallEventManager::BallEventManager(HapticResponseManagerPtr hapticResponseMgr, GameRulesManagerPtr gameRulesMgr) :
+	m_hapticResponseMgr(hapticResponseMgr),
+	m_gameRulesMgr(gameRulesMgr)
 {
-    m_tableHit = new SoundPlayer("../sounds/tennis_ball_hit_by_table.wav", 0);
-    m_racketHit = new SoundPlayer("../sounds/tennis_ball_hit_by_racket.wav", 0);
+	m_tableHit = new SoundPlayer("../sounds/tennis_ball_hit_by_table.wav", 0);
+	m_racketHit = new SoundPlayer("../sounds/tennis_ball_hit_by_racket.wav", 0);
 }
 
 
@@ -21,11 +22,14 @@ void BallEventManager::OnTableHit(btManifoldPoint& point, Table& table, Ball& ba
     if (chai3d::cAbs(ball.getVelocity().z()) > 0.2) m_tableHit->play(0, chai3d::cAbs(bzvel*0.3));
     
 	//std::cout<<"Table hit!\n";
+	if(m_gameRulesMgr != nullptr)
+		m_gameRulesMgr->onBallHitTable(ball, table);
 }
 
 void BallEventManager::OnNetHit(btManifoldPoint& point, Net& net, Ball& ball)
 {
 	//std::cout<<"Net hit!\n";
+
 }
 
 void BallEventManager::OnRacketHit(btManifoldPoint& point, Racket& racket, Ball& ball)
@@ -52,6 +56,9 @@ void BallEventManager::OnRacketHit(btManifoldPoint& point, Racket& racket, Ball&
 			ball.setVelocity(bvel);
 
 			ball.setActive(false);
+
+			if(m_gameRulesMgr != nullptr)
+				m_gameRulesMgr->onBallHitRacket(ball, racket);
 		}
 	}
 
