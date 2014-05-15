@@ -10,6 +10,7 @@
 #include <string>
 #include <iostream>
 #include <cstdlib>
+#include <sstream>
 
 #ifndef MACOSX
 #include <GL/freeglut.h>

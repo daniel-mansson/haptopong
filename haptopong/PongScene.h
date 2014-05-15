@@ -8,11 +8,12 @@
 #include "Racket.h"
 #include "BallEventManager.h"
 #include "HapticResponseManager.h"
+#include "GameRulesManager.h"
 
 class PongScene : public Scene
 {
 public:
-	PongScene(Application& app);
+	PongScene(Application& app, GameRulesManagerPtr gameRules);
 	~PongScene(void);
 
 	void enter(ScenePtr from);
@@ -27,8 +28,14 @@ public:
 	
 	void onNewRound(const Score& score, PlayerId nextServe, PlayerId prevWinner);
 	void onGameOver(const Score& score, PlayerId winner);
-
-	static ScenePtr create(Application& app) { return ScenePtr(new PongScene(app)); }
+	
+	static ScenePtr create(Application& app) { return ScenePtr(new PongScene(app, nullptr)); }
+	static ScenePtr create(Application& app, GameRulesManagerPtr gameRules) 
+	{ 
+		PongScene* scene = new PongScene(app, gameRules);
+		gameRules->setPongScene(scene);
+		return ScenePtr(scene); 
+	}
 
 private:
 	 
@@ -56,5 +63,7 @@ private:
 	void createNet();
 	void createBall();
 	void createRackets();
+
+	GameRulesManagerPtr m_gameRules;
 };
 

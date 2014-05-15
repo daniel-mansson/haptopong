@@ -136,6 +136,9 @@
     <ClCompile Include="Welcome.cpp">
       <Filter>Rules&amp;Network\Messages</Filter>
     </ClCompile>
+    <ClCompile Include="RemoteRulesManager.cpp">
+      <Filter>Rules&amp;Network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -239,6 +242,9 @@
     </ClInclude>
     <ClInclude Include="Welcome.h">
       <Filter>Rules&amp;Network\Messages</Filter>
+    </ClInclude>
+    <ClInclude Include="RemoteRulesManager.h">
+      <Filter>Rules&amp;Network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

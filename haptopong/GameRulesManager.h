@@ -11,7 +11,7 @@ class PongScene;
 class GameRulesManager
 {
 public:
-	GameRulesManager(PongScene& pongScene);
+	GameRulesManager();
 	virtual ~GameRulesManager(void);
 
 	virtual void initialize() = 0;
@@ -25,18 +25,21 @@ public:
 	
 	virtual void update(const double& timeStep) = 0;
 
+	void setPongScene(PongScene* pongScene) { m_pongScene = pongScene; }
+
 protected:
 	virtual void sendNewRound(const Score& score, PlayerId nextServe, PlayerId prevWinner);
 	virtual void sendGameOver(const Score& score, PlayerId winner);
 
-	virtual void updateMessages(char* buffer, int length);
+	virtual void updateMessages(unsigned char* buffer, int length);
 
 	std::vector<MessagePtr> m_messageQueue;
 	unsigned char* m_msgBuffer;
 	int m_msgBufferMaxLength;
 	int m_msgBufferLength;
 
-	PongScene& m_pongScene;
+	PongScene* m_pongScene;
 	std::string m_status;
 };
 
+typedef std::shared_ptr<GameRulesManager> GameRulesManagerPtr;

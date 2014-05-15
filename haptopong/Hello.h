@@ -16,6 +16,11 @@ public:
 		strcpy_s((char*)m_data, 16, m_name.c_str());
 	}
 	
+	Hello()
+	{
+		memset(m_data, 0, sizeof(char) * 16);
+	}
+
 	virtual int getSize() const
 	{
 		return 1 + 16;

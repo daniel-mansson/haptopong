@@ -54,7 +54,7 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>TESTING_NETWORK;_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>..\depends\BASS\include;..\depends\enet\include;..\depends\chai3d\include;..\depends\bullet\include\ConvexDecomposition;..\depends\bullet\include;..\depends\CODE\include;..\depends\freeglut\include;..\depends\Eigen;..\depends\glew\include;..\depends\ODE\include</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -117,6 +117,7 @@
     <ClCompile Include="PongScene.cpp" />
     <ClCompile Include="Racket.cpp" />
     <ClCompile Include="RacketProperties.cpp" />
+    <ClCompile Include="RemoteRulesManager.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Score.cpp" />
     <ClCompile Include="ShadowlessMesh.cpp" />
@@ -153,6 +154,7 @@
     <ClInclude Include="PongScene.h" />
     <ClInclude Include="Racket.h" />
     <ClInclude Include="RacketProperties.h" />
+    <ClInclude Include="RemoteRulesManager.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Score.h" />
     <ClInclude Include="ShadowlessMesh.h" />
