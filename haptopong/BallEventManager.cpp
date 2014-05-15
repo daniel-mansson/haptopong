@@ -5,7 +5,7 @@
 BallEventManager::BallEventManager(HapticResponseManagerPtr hapticResponseMgr):
 	m_hapticResponseMgr(hapticResponseMgr)
 {
-    m_tableHit = new SoundPlayer("../sounds/tennis_ball_hit_by_racket.mp3", 0);
+    m_tableHit = new SoundPlayer("../sounds/tennis_ball_hit_by_table.mp3", 0);
     m_racketHit = new SoundPlayer("../sounds/tennis_ball_hit_by_racket.mp3", 0);
 }
 
