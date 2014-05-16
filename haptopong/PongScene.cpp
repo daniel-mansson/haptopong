@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "ShadowlessMesh.h"
 #include "CustomCamera.h"
+#include "GlobalMoveAssistance.h"
 
 #include <ode/ode.h>
 
@@ -76,7 +77,7 @@ PongScene::PongScene(Application& app, GameRulesManagerPtr gameRules) :
 	createOutside();
 
 	gContactProcessedCallback = &OnContactProcessed;
-	
+
 	m_aimAssistance = AimAssistancePtr(new AimAssistance(m_ball, m_playerRacket, m_camera));
 	m_ballEventMgr->setAimAssistance(m_aimAssistance);
 
@@ -111,7 +112,7 @@ void PongScene::render(const double& timeStep)
 	//btMotionState* pState = m_sphereBody->getMotionState();
 	//pState->getWorldTransform(transform);
 	//m_sphere->setLocalPos(Util::Vec(transform.getOrigin()));
-	
+
 	m_aimAssistance->render(timeStep);
 	m_table->render((float)timeStep);
 	m_net->render((float)timeStep);
@@ -282,6 +283,22 @@ void PongScene::onKeyDown(unsigned char key, int x, int y)
 		m_ball->setAngularVelocity(btVector3(0, 0, 0));
 		m_ball->setActive(true);
 	}
+	
+	if(key == '1')
+	{
+		// position and orient the camera
+		m_camera->set(cVector3d (2.47, 0.0, 0.95),   // camera position (eye)
+			cVector3d (0.0, 0.0, 0.01),    // look at position (target)
+			cVector3d (0.0, 0.0, 1.0));    // direction of the (up) vector
+		m_playerRacket->setMoveAreaScale(10.0);
+		m_aimAssistance = AimAssistancePtr(new AimAssistance(m_ball, m_playerRacket, m_camera));
+		m_ballEventMgr->setAimAssistance(m_aimAssistance);
+	}
+	if(key == '2')
+	{
+		m_aimAssistance = AimAssistancePtr(new GlobalMoveAssistance(m_ball, m_playerRacket, m_camera));
+		m_ballEventMgr->setAimAssistance(m_aimAssistance);
+	}
 }
 
 void PongScene::onSpecialDown(int key, int x, int y)
@@ -430,7 +447,7 @@ void PongScene::createTable()
 
 	// enable culling to disable rendering of the inside
 	table->setUseCulling(true);
-	
+
 
 	// enable display list for faster graphic rendering (recompute if translated)
 	table->setUseDisplayList(true, true);
@@ -560,70 +577,70 @@ void PongScene::createOutside()
 
 void PongScene::createRackets()
 {
-    /////////////////////////////////////////////////////////////////////////
-    // create visual shapes
-    /////////////////////////////////////////////////////////////////////////
-    
-    // player racket
-    
-    //cMultiMesh* playerRacket = new cMultiMesh();
-    ShadowlessMesh* playerRacket = new ShadowlessMesh();
-    
-    bool fileload = playerRacket->loadFromFile("../gfx/racket.obj");
-    if (!fileload)
-    {
-        std::cout << "Error - 3D Model failed to load correctly" << std::endl;
-        std::exit(EXIT_FAILURE);
-    }
-    
-    cMaterial mat;
-    mat.m_ambient.set( 0.2f, 0.2f, 0.2f);
-    mat.m_diffuse.set( 1.0f, 1.0f, 1.0f);
-    mat.m_specular.set(1.0f, 1.0f, 1.0f);
-    playerRacket->setMaterial(mat, true);
-    //playerRacket->computeAllNormals();
-    
-    playerRacket->setUseTransparency(true);
-    playerRacket->setTransparencyLevel(0.6f);
-    
-    m_world->addChild(playerRacket);
-    
-    // opponent racket
-    
-    //ShadowlessMesh* opponentRacket = playerRacket->copy(false, false, true);
-    //ShadowlessMesh* opponentRacket = new ShadowlessMesh();
-    cMultiMesh* opponentRacket = new cMultiMesh();
-    
-    fileload = opponentRacket->loadFromFile("../gfx/racket.obj");
-    if (!fileload)
-    {
-        std::cout << "Error - 3D Model failed to load correctly" << std::endl;
-        std::exit(EXIT_FAILURE);
-    }
-    
-    mat;
-    mat.m_ambient.set( 0.5f, 0.5f, 0.5f);
-    mat.m_diffuse.set( 0.5f, 0.5f, 0.5f);
-    mat.m_specular.set(1.0f, 1.0f, 1.0f);
-    opponentRacket->setMaterial(mat, true);
-    //opponentRacket->computeAllNormals();
-    
-    opponentRacket->setUseCulling(true);
-    
-    m_world->addChild(opponentRacket);
-    
-    
-    /////////////////////////////////////////////////////////////////////////
-    // create physics bodys
-    /////////////////////////////////////////////////////////////////////////
-    
-    // player racket
-    
-    RacketProperties properties;
-    
-    m_racketsCollisionShape = std::shared_ptr<btCollisionShape>(Util::LoadCollisionShape("../gfx/racket_body.obj"));
-    
-    btTransform startTransform;
+	/////////////////////////////////////////////////////////////////////////
+	// create visual shapes
+	/////////////////////////////////////////////////////////////////////////
+
+	// player racket
+
+	//cMultiMesh* playerRacket = new cMultiMesh();
+	ShadowlessMesh* playerRacket = new ShadowlessMesh();
+
+	bool fileload = playerRacket->loadFromFile("../gfx/racket.obj");
+	if (!fileload)
+	{
+		std::cout << "Error - 3D Model failed to load correctly" << std::endl;
+		std::exit(EXIT_FAILURE);
+	}
+
+	cMaterial mat;
+	mat.m_ambient.set( 0.2f, 0.2f, 0.2f);
+	mat.m_diffuse.set( 1.0f, 1.0f, 1.0f);
+	mat.m_specular.set(1.0f, 1.0f, 1.0f);
+	playerRacket->setMaterial(mat, true);
+	//playerRacket->computeAllNormals();
+
+	playerRacket->setUseTransparency(true);
+	playerRacket->setTransparencyLevel(0.6f);
+
+	m_world->addChild(playerRacket);
+
+	// opponent racket
+
+	//ShadowlessMesh* opponentRacket = playerRacket->copy(false, false, true);
+	//ShadowlessMesh* opponentRacket = new ShadowlessMesh();
+	cMultiMesh* opponentRacket = new cMultiMesh();
+
+	fileload = opponentRacket->loadFromFile("../gfx/racket.obj");
+	if (!fileload)
+	{
+		std::cout << "Error - 3D Model failed to load correctly" << std::endl;
+		std::exit(EXIT_FAILURE);
+	}
+
+	mat;
+	mat.m_ambient.set( 0.5f, 0.5f, 0.5f);
+	mat.m_diffuse.set( 0.5f, 0.5f, 0.5f);
+	mat.m_specular.set(1.0f, 1.0f, 1.0f);
+	opponentRacket->setMaterial(mat, true);
+	//opponentRacket->computeAllNormals();
+
+	opponentRacket->setUseCulling(true);
+
+	m_world->addChild(opponentRacket);
+
+
+	/////////////////////////////////////////////////////////////////////////
+	// create physics bodys
+	/////////////////////////////////////////////////////////////////////////
+
+	// player racket
+
+	RacketProperties properties;
+
+	m_racketsCollisionShape = std::shared_ptr<btCollisionShape>(Util::LoadCollisionShape("../gfx/racket_body.obj"));
+
+	btTransform startTransform;
 	startTransform.setIdentity();
 	//startTransform.setOrigin(btVector3(2.1f, 0, 0.88f));
 	startTransform.setOrigin(btVector3(1.9f, 0, 0.6f));

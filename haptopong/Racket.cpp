@@ -35,10 +35,10 @@ Racket::Racket(chai3d::cMultiMesh* shape, btCollisionShape* collisionShape, cons
 	//0.000034 represents volume
 	double force = m_velocity*m_velocity*0.000034/2;
 
-	m_startPos = Util::Vec(m_body->getCenterOfMassPosition());
 
 	m_body->getMotionState()->getWorldTransform(m_transform);
 	m_origin = m_transform.getOrigin();
+	m_startPos = Util::Vec(m_origin);
 }
 
 
@@ -86,7 +86,8 @@ void Racket::updateHaptics(chai3d::cGenericHapticDevicePtr device, const double&
 
 	device->getPosition(m_hapticPos);
 	
-	m_velocity += 100.0 * timeStep * ((m_hapticPos - prev)/timeStep - m_velocity);
+	m_hapticVel = m_hapticPos - prev;
+	m_velocity += 100.0 * timeStep * (m_hapticVel / timeStep - m_velocity);
 #endif
 
 }

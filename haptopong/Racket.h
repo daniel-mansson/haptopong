@@ -33,6 +33,16 @@ public:
 
 	void setPosition(const btVector3& position);
 	const btVector3& getPosition() const { return Util::Vec(m_hapticPos); }
+	
+	const chai3d::cVector3d& getHapticPosition() const { return m_hapticPos; }
+	const chai3d::cVector3d& getHapticVelocity() const { return m_hapticVel; }
+	const chai3d::cVector3d& getHapticOffset() const { return m_offset; }
+	chai3d::cVector3d getHapticWorldPos() const
+	{
+		chai3d::cVector3d offset = m_hapticPos;
+		offset *= m_moveAreaScale;
+		return offset + m_startPos;
+	}
 
 	void setMoveAreaScale(float scale) { m_moveAreaScale = scale; }
 	float getMoveAreaScale() const { return m_moveAreaScale; }

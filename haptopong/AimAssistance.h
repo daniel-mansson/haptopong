@@ -15,7 +15,11 @@ public:
 
 	virtual void applyImpulseFromRacket(btManifoldPoint& point);
 
-private:
+protected:
+	
+	virtual void changeVel(const btVector3& target);
+
+	btVector3 adjustedVelocity(const btVector3& velocity, const btVector3& angularVel, float factor);
 
 	BallPtr m_ball;
 	RacketPtr m_racket;

@@ -109,6 +109,7 @@
     <ClCompile Include="GameRules.cpp" />
     <ClCompile Include="GameRulesManager.cpp" />
     <ClCompile Include="GfxScene.cpp" />
+    <ClCompile Include="GlobalMoveAssistance.cpp" />
     <ClCompile Include="HapticResponseManager.cpp" />
     <ClCompile Include="Hello.cpp" />
     <ClCompile Include="LinearResponse.cpp" />
@@ -151,6 +152,7 @@
     <ClInclude Include="GameRules.h" />
     <ClInclude Include="GameRulesManager.h" />
     <ClInclude Include="GfxScene.h" />
+    <ClInclude Include="GlobalMoveAssistance.h" />
     <ClInclude Include="HapticResponseManager.h" />
     <ClInclude Include="Hello.h" />
     <ClInclude Include="LinearResponse.h" />

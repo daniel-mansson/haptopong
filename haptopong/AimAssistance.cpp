@@ -37,3 +37,32 @@ void AimAssistance::applyImpulseFromRacket(btManifoldPoint& point)
 	m_ball->setAngularVelocity(angVel);
 
 }
+	
+void AimAssistance::changeVel(const btVector3& target)
+{
+	btVector3 dist = target - m_ball->getPosition();
+
+	float v0 = m_ball->getVelocity().x();
+	float a = 0.0;	
+	float v0_a = v0 / a;
+	
+	float timeX = dist.x() / v0;
+	
+	float zPos = m_ball->getVelocity().z() * timeX + -10.0 * timeX * timeX * 0.5f;
+
+	btVector3 vel = m_ball->getVelocity();
+	vel[2] -= zPos + 1.0;
+	m_ball->setVelocity(vel);
+
+	std::cout 
+		<<"Time: " << timeX << "\t"
+		<<"v0: " << v0 << "\t"
+		<<"distx: " << dist.x() << "\t"
+		<<"zpos: " << zPos << "\t"
+		<<std::endl;
+}
+	
+btVector3 AimAssistance::adjustedVelocity(const btVector3& velocity, const btVector3& angularVel, float factor)
+{
+
+}

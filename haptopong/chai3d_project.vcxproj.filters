@@ -160,6 +160,9 @@
     <ClCompile Include="AimAssistance.cpp">
       <Filter>Pong\Aiming</Filter>
     </ClCompile>
+    <ClCompile Include="GlobalMoveAssistance.cpp">
+      <Filter>Pong\Aiming</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -283,6 +286,9 @@
       <Filter>Rules&amp;Network\Messages</Filter>
     </ClInclude>
     <ClInclude Include="AimAssistance.h">
+      <Filter>Pong\Aiming</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalMoveAssistance.h">
       <Filter>Pong\Aiming</Filter>
     </ClInclude>
   </ItemGroup>
