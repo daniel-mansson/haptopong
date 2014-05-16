@@ -11,6 +11,7 @@
 #include "GameRulesManager.h"
 #include "StepTimer.h"
 #include "Outside.h"
+#include "AimAssistance.h"
 
 class PongScene : public Scene
 {
@@ -74,7 +75,8 @@ private:
 	void createBall();
 	void createRackets();
 	void createOutside();
-
+	
 	GameRulesManagerPtr m_gameRules;
+	AimAssistancePtr m_aimAssistance;
 };
 

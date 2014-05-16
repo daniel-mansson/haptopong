@@ -76,73 +76,12 @@ PongScene::PongScene(Application& app, GameRulesManagerPtr gameRules) :
 	createOutside();
 
 	gContactProcessedCallback = &OnContactProcessed;
-
-	/*
-	m_groundShape = new btBoxShape(btVector3(btScalar(2.74*0.5),btScalar(1.52*0.5),btScalar(0.10*0.5)));
-
-	btTransform groundTransform;
-	groundTransform.setIdentity();
-	{
-	btScalar mass(0.);
-
-	//rigidbody is dynamic if and only if mass is non zero, otherwise static
-	bool isDynamic = (mass != 0.f);
-
-	btVector3 localInertia(0,0,0);
-	if (isDynamic)
-	m_groundShape->calculateLocalInertia(mass,localInertia);
-
-	//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
-	btDefaultMotionState* myMotionState = new btDefaultMotionState(groundTransform);
-	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass,myMotionState,m_groundShape,localInertia);
-	m_groundBody = new btRigidBody(rbInfo);
-	m_groundBody->setRestitution(0.9f);
-
-	//add the body to the dynamics world
-	m_dynamicsWorld->addRigidBody(m_groundBody);
-	}
-
-	m_ground = new cShapeBox(2.74, 1.52, 0.10);
-	m_ground->setEnabled(false);
-	m_world->addChild(m_ground);
-	*/
+	
+	m_aimAssistance = AimAssistancePtr(new AimAssistance(m_ball, m_playerRacket, m_camera));
+	m_ballEventMgr->setAimAssistance(m_aimAssistance);
 
 	if(m_gameRules != nullptr)
 		m_gameRules->initialize();
-
-	/*
-	{
-	//create a dynamic rigidbody
-
-	//btCollisionShape* colShape = new btBoxShape(btVector3(1,1,1));
-	btCollisionShape* m_sphereShape = new btSphereShape(btScalar(1.));
-
-	/// Create Dynamic Objects
-	btTransform startTransform;
-	startTransform.setIdentity();
-
-	btScalar	mass(1.f);
-
-	//rigidbody is dynamic if and only if mass is non zero, otherwise static
-	bool isDynamic = (mass != 0.f);
-
-	btVector3 localInertia(0,0,0);
-	if (isDynamic)
-	m_sphereShape->calculateLocalInertia(mass,localInertia);
-
-	startTransform.setOrigin(btVector3(0,0,5));
-
-	//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
-	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
-	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass,myMotionState,m_sphereShape,localInertia);
-	m_sphereBody = new btRigidBody(rbInfo);
-
-
-	m_dynamicsWorld->addRigidBody(m_sphereBody);
-	}
-
-	m_sphere = new cShapeSphere(1.0);
-	m_world->addChild(m_sphere);*/
 }
 
 PongScene::~PongScene(void)
@@ -172,7 +111,8 @@ void PongScene::render(const double& timeStep)
 	//btMotionState* pState = m_sphereBody->getMotionState();
 	//pState->getWorldTransform(transform);
 	//m_sphere->setLocalPos(Util::Vec(transform.getOrigin()));
-
+	
+	m_aimAssistance->render(timeStep);
 	m_table->render((float)timeStep);
 	m_net->render((float)timeStep);
 	m_ball->render((float)timeStep);
@@ -199,6 +139,7 @@ void PongScene::updateLogic(const double& timeStep)
 		}
 	}
 
+	m_aimAssistance->updateLogic(timeStep);
 	m_table->updateLogic((float)timeStep);
 	m_net->updateLogic((float)timeStep);
 	m_ball->updateLogic((float)timeStep);
@@ -209,10 +150,9 @@ void PongScene::updateLogic(const double& timeStep)
 	//m_dynamicsWorld->stepSimulation((btScalar)timeStep, 5, btScalar(1.)/btScalar(120.));
 	m_dynamicsWorld->stepSimulation((btScalar)timeStep, 10, btScalar(1.)/btScalar(500.));
 
-	//std::cout << "render hz: " << 1/timeStep << std::endl;
 
 
-	/*	m_camera->set(cVector3d (2.47, (double)m_ball->getBody()->getCenterOfMassPosition().y(), (double)m_ball->getBody()->getCenterOfMassPosition().z() + 0.3),   // camera position (eye)
+	/*	m_camera->set(cVector3d (2.47, (double)m_ball->getBody()->getCenterOfMassPosition().y(), (double)m_ball->getBody()->getCenterOfMassPosition().z()),   // camera position (eye)
 	cVector3d (0.0, 0.0, 0.01),    // look at position (target)
 	cVector3d (0.0, 0.0, 1.0));    // direction of the (up) vector
 	*/
@@ -220,21 +160,12 @@ void PongScene::updateLogic(const double& timeStep)
 
 void PongScene::updateHaptics(const double& timeStep)
 {
-	/*cVector3d pos;
-	m_app.getHapticDevice()->getPosition(pos);
-
-	pos *= 100;
-	double mag = cClamp((pos.x() + 3.5) * 1.5, 2.0, 20.0);
-
-	m_camera->set( cVector3d (mag * cCosRad(pos.y()* 0.5), mag * cSinRad(pos.y() * 0.5), pos.z() * 1.7),    // camera position (eye)
-	cVector3d (0.0, 0.0, 0.0),    // look at position (target)
-	cVector3d (0.0, 0.0, 1.0));   // direction of the (up) vector
-	*/
 	m_playerRacket->updateHaptics(m_app.getHapticDevice(), timeStep);
 
 	cVector3d force(0,0,0);
 
 	m_hapticResponseMgr->updateHaptics(timeStep, force);
+	m_aimAssistance->updateHaptics(timeStep, force);
 
 	m_app.getHapticDevice()->setForce(force);
 
@@ -499,6 +430,7 @@ void PongScene::createTable()
 
 	// enable culling to disable rendering of the inside
 	table->setUseCulling(true);
+	
 
 	// enable display list for faster graphic rendering (recompute if translated)
 	table->setUseDisplayList(true, true);

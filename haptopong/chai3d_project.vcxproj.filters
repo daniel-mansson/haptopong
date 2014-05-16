@@ -40,6 +40,9 @@
     <Filter Include="Rules&amp;Network\Messages">
       <UniqueIdentifier>{f175b760-4f10-474d-b24e-1da716cd2c7e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pong\Aiming">
+      <UniqueIdentifier>{e8da0afc-0648-4ce6-b682-e353a671055e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -153,6 +156,9 @@
     </ClCompile>
     <ClCompile Include="BallState.cpp">
       <Filter>Rules&amp;Network\Messages</Filter>
+    </ClCompile>
+    <ClCompile Include="AimAssistance.cpp">
+      <Filter>Pong\Aiming</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -275,6 +281,9 @@
     </ClInclude>
     <ClInclude Include="BallState.h">
       <Filter>Rules&amp;Network\Messages</Filter>
+    </ClInclude>
+    <ClInclude Include="AimAssistance.h">
+      <Filter>Pong\Aiming</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
