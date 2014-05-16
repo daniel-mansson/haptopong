@@ -628,63 +628,70 @@ void PongScene::createOutside()
 
 void PongScene::createRackets()
 {
-	/////////////////////////////////////////////////////////////////////////
-	// create visual shapes
-	/////////////////////////////////////////////////////////////////////////
-
-	// player racket
-
-	//cMultiMesh* playerRacket = new cMultiMesh();
-	ShadowlessMesh* playerRacket = new ShadowlessMesh();
-
-	bool fileload = playerRacket->loadFromFile("../gfx/racket.obj");
-	if (!fileload)
-	{
-		std::cout << "Error - 3D Model failed to load correctly" << std::endl;
-		std::exit(EXIT_FAILURE);
-	}
-
-	playerRacket->setUseTransparency(true);
-	playerRacket->setTransparencyLevel(0.5f);
-
-	m_world->addChild(playerRacket);
-
-	// opponent racket
-
-	//ShadowlessMesh* opponentRacket = playerRacket->copy(false, false, true);
-	//ShadowlessMesh* opponentRacket = new ShadowlessMesh();
-	cMultiMesh* opponentRacket = new cMultiMesh();
-
-	fileload = opponentRacket->loadFromFile("../gfx/racket.obj");
-	if (!fileload)
-	{
-		std::cout << "Error - 3D Model failed to load correctly" << std::endl;
-		std::exit(EXIT_FAILURE);
-	}
-
-	cMaterial mat;
-	mat.m_ambient.set( 0.5f, 0.5f, 0.5f);
-	mat.m_diffuse.set( 0.5f, 0.5f, 0.5f);
-	mat.m_specular.set(1.0f, 1.0f, 1.0f);
-	opponentRacket->setMaterial(mat, true);
-	opponentRacket->computeAllNormals();
-
-	opponentRacket->setUseCulling(true);
-
-	m_world->addChild(opponentRacket);
-
-
-	/////////////////////////////////////////////////////////////////////////
-	// create physics bodys
-	/////////////////////////////////////////////////////////////////////////
-
-	// player racket
-
-	RacketProperties properties;
-
-	m_racketsCollisionShape = std::shared_ptr<btCollisionShape>(Util::LoadCollisionShape("../gfx/racket_body.obj"));
-
-	btTransform startTransform;
+    /////////////////////////////////////////////////////////////////////////
+    // create visual shapes
+    /////////////////////////////////////////////////////////////////////////
+    
+    // player racket
+    
+    //cMultiMesh* playerRacket = new cMultiMesh();
+    ShadowlessMesh* playerRacket = new ShadowlessMesh();
+    
+    bool fileload = playerRacket->loadFromFile("../gfx/racket.obj");
+    if (!fileload)
+    {
+        std::cout << "Error - 3D Model failed to load correctly" << std::endl;
+        std::exit(EXIT_FAILURE);
+    }
+    
+    cMaterial mat;
+    mat.m_ambient.set( 0.2f, 0.2f, 0.2f);
+    mat.m_diffuse.set( 1.0f, 1.0f, 1.0f);
+    mat.m_specular.set(1.0f, 1.0f, 1.0f);
+    playerRacket->setMaterial(mat, true);
+    //playerRacket->computeAllNormals();
+    
+    playerRacket->setUseTransparency(true);
+    playerRacket->setTransparencyLevel(0.6f);
+    
+    m_world->addChild(playerRacket);
+    
+    // opponent racket
+    
+    //ShadowlessMesh* opponentRacket = playerRacket->copy(false, false, true);
+    //ShadowlessMesh* opponentRacket = new ShadowlessMesh();
+    cMultiMesh* opponentRacket = new cMultiMesh();
+    
+    fileload = opponentRacket->loadFromFile("../gfx/racket.obj");
+    if (!fileload)
+    {
+        std::cout << "Error - 3D Model failed to load correctly" << std::endl;
+        std::exit(EXIT_FAILURE);
+    }
+    
+    mat;
+    mat.m_ambient.set( 0.5f, 0.5f, 0.5f);
+    mat.m_diffuse.set( 0.5f, 0.5f, 0.5f);
+    mat.m_specular.set(1.0f, 1.0f, 1.0f);
+    opponentRacket->setMaterial(mat, true);
+    //opponentRacket->computeAllNormals();
+    
+    opponentRacket->setUseCulling(true);
+    
+    m_world->addChild(opponentRacket);
+    
+    
+    /////////////////////////////////////////////////////////////////////////
+    // create physics bodys
+    /////////////////////////////////////////////////////////////////////////
+    
+    // player racket
+    
+    RacketProperties properties;
+    
+    m_racketsCollisionShape = std::shared_ptr<btCollisionShape>(Util::LoadCollisionShape("../gfx/racket_body.obj"));
+    
+    btTransform startTransform;
 	startTransform.setIdentity();
 	//startTransform.setOrigin(btVector3(2.1f, 0, 0.88f));
 	startTransform.setOrigin(btVector3(1.9f, 0, 0.6f));
