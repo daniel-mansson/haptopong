@@ -268,10 +268,10 @@ void PongScene::updateOpponentPos(const btVector3& position)
 	m_opponentRacket->setPosition(pos);
 }
 
-void PongScene::updateBallState(const btTransform& transform, const btVector3& velocity, const btVector3& angularVelocity)
+void PongScene::updateBallState(const btVector3& position, const btVector3& velocity, const btVector3& angularVelocity)
 {
 	m_ball->stop();
-	m_ball->setPosition(invert(transform.getOrigin()));
+	m_ball->setPosition(invert(position));
 	m_ball->setVelocity(invert(velocity));
 	m_ball->setAngularVelocity(invert(angularVelocity));
 	m_ball->setActive(true);
@@ -291,8 +291,8 @@ void PongScene::onKeyDown(unsigned char key, int x, int y)
 	{
 		m_ball->stop();
 		m_ball->setPosition(btVector3(-2, 0, 0.3f));
-		m_ball->setVelocity(btVector3(4, Util::RandRange(-2, 2), 3.3f));
-		m_ball->setAngularVelocity(btVector3(0, 0, -300 * m_ball->getVelocity().y()));
+		m_ball->setVelocity(btVector3(4, Util::RandRange(-1.5f, 1.5f), 3.3f));
+		m_ball->setAngularVelocity(btVector3(0, 0, -100 * m_ball->getVelocity().y()));
 		m_ball->setActive(true);
 	}
 	if(key == 'e')

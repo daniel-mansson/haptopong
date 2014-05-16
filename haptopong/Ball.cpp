@@ -92,7 +92,7 @@ void Ball::updateLogic(float timeStep)
 	vel.safeNormalize();
 
 	//Not really correct, some kind of dot product is missing
-	m_body->applyCentralForce(0.01f * angVelLen * angVel.cross(vel));
+	m_body->applyCentralForce(0.02f * angVelLen * angVel.cross(vel));
 }
 
 void Ball::updateHaptics(chai3d::cGenericHapticDevicePtr device, const double& timeStep)

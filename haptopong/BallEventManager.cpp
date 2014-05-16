@@ -38,7 +38,7 @@ void BallEventManager::OnNetHit(btManifoldPoint& point, Net& net, Ball& ball)
 
 void BallEventManager::OnRacketHit(btManifoldPoint& point, Racket& racket, Ball& ball)
 {
-	if(ball.isActive() && racket.getPlayerId() != m_gameRulesMgr->getOpponentId())
+	if(ball.isActive() && (m_gameRulesMgr == nullptr || racket.getPlayerId() != m_gameRulesMgr->getOpponentId()))
 	{
 		btVector3 bvel = ball.getVelocity();
 		btVector3 rvel = Util::Vec(racket.getVelocity() * racket.getMoveAreaScale());
@@ -46,6 +46,9 @@ void BallEventManager::OnRacketHit(btManifoldPoint& point, Racket& racket, Ball&
 		float xvel = rvel[0] - bvel[0];
 		if(xvel < 0.0f)
 		{
+			float yvel = rvel[1] - bvel[1];
+			float zvel = rvel[2] - bvel[2];
+
 			float scale = 0.23f;
 			float offset = 0;
 			float tmp = chai3d::cAbs(xvel) * scale + offset;
@@ -55,9 +58,16 @@ void BallEventManager::OnRacketHit(btManifoldPoint& point, Racket& racket, Ball&
 
 			//TODO: real forces
 			xvel *= (1.0f + point.m_combinedRestitution);	
-			bvel[0] += xvel * 1.0f;
-			bvel[2] += -xvel * 0.07f;
+			bvel[0] += xvel;
+			bvel[1] += yvel * 0.4f;
+			bvel[2] += zvel * 0.4f;
 			ball.setVelocity(bvel);
+
+			btVector3 angVel = ball.getAngularVelocity();
+			angVel[1] += -rvel[2] * 200.0f;
+			angVel[2] += rvel[1] * 200.0f;
+			std::cout<< "-Y "<<-rvel[2] * 200.0f<<"\t|Z "<< rvel[1] * 200.0f<<"\n";
+			ball.setAngularVelocity(angVel);
 
 			ball.setActive(false);
 

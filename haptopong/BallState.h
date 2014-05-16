@@ -10,17 +10,17 @@ public:
 	{
 	}
 
-	BallState(const btTransform& transform, const btVector3& vel, const btVector3& angVel) :
-		m_transform(transform),
+	BallState(const btVector3& position, const btVector3& vel, const btVector3& angVel) :
+		m_position(position),
 		m_velocity(vel),
 		m_angularVelocity(angVel)
 	{
 		
 	}
 	
-	const btTransform& getTransform() const
+	const btVector3& getPosition() const
 	{
-		return m_transform;
+		return m_position;
 	}
 	
 	const btVector3& getVelocity() const
@@ -36,7 +36,7 @@ public:
 	virtual int getSize() const
 	{
 		//type + pos
-		return 1 + sizeof(btTransform) + 2 * 3 * sizeof(float);
+		return 1 + 3 * 3 * sizeof(float);
 	}
 
 	virtual const unsigned char* getData() const
@@ -54,8 +54,11 @@ public:
 		*buffer = getType();
 		buffer += 1;
 
-		*(btTransform*)buffer = m_transform;
-		buffer += sizeof(btTransform);
+		for(int i = 0; i < 3; ++i)
+		{
+			*(float*)buffer = m_position[i];
+			buffer += sizeof(float);
+		}
 
 		for(int i = 0; i < 3; ++i)
 		{
@@ -72,8 +75,11 @@ public:
 	
 	virtual void setFromBuffer(unsigned char*& buffer)
 	{
-		m_transform = *(btTransform*)buffer;
-		buffer += sizeof(btTransform);
+		for(int i = 0; i < 3; ++i)
+		{
+			m_position[i] = *(float*)buffer;
+			buffer += sizeof(float);
+		}
 
 		for(int i = 0; i < 3; ++i)
 		{
@@ -90,7 +96,7 @@ public:
 
 private:
 
-	btTransform m_transform;
+	btVector3 m_position;
 	btVector3 m_velocity;
 	btVector3 m_angularVelocity;
 };
