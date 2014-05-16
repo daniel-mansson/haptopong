@@ -617,6 +617,13 @@ void PongScene::createRackets()
         std::exit(EXIT_FAILURE);
     }
     
+    cMaterial mat;
+    mat.m_ambient.set( 0.2f, 0.2f, 0.2f);
+    mat.m_diffuse.set( 1.0f, 1.0f, 1.0f);
+    mat.m_specular.set(1.0f, 1.0f, 1.0f);
+    playerRacket->setMaterial(mat, true);
+    //playerRacket->computeAllNormals();
+    
     playerRacket->setUseTransparency(true);
     playerRacket->setTransparencyLevel(0.7f);
     
@@ -635,12 +642,12 @@ void PongScene::createRackets()
         std::exit(EXIT_FAILURE);
     }
     
-    cMaterial mat;
+    mat;
     mat.m_ambient.set( 0.5f, 0.5f, 0.5f);
     mat.m_diffuse.set( 0.5f, 0.5f, 0.5f);
     mat.m_specular.set(1.0f, 1.0f, 1.0f);
     opponentRacket->setMaterial(mat, true);
-    opponentRacket->computeAllNormals();
+    //opponentRacket->computeAllNormals();
     
     opponentRacket->setUseCulling(true);
     
