@@ -92,6 +92,7 @@
       <AdditionalLibraryDirectories>..\depends\BASS\lib\Win32;..\depends\enet\lib;..\depends\bullet\lib\$(Configuration)\$(Platform);..\depends\CODE\lib\$(Configuration)\$(Platform);..\depends\glew\lib\$(Configuration)\$(Platform);..\depends\ODE\lib\$(Configuration)\$(Platform);..\depends\chai3d\lib\$(Configuration)\$(Platform);..\depends\freeglut\lib\$(Configuration)\$(Platform)</AdditionalLibraryDirectories>
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);chai3d.lib;freeglut.lib;glew.lib;ODE.lib;CODE.lib;BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;enet.lib;ws2_32.lib;winmm.lib;ConvexDecomposition.lib;bass_msvc.lib</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -100,6 +101,7 @@
     <ClCompile Include="BallEvent.cpp" />
     <ClCompile Include="BallEventManager.cpp" />
     <ClCompile Include="BallProperties.cpp" />
+    <ClCompile Include="BallState.cpp" />
     <ClCompile Include="CollisionResponse.cpp" />
     <ClCompile Include="CustomCamera.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -114,6 +116,7 @@
     <ClCompile Include="MenuScene.cpp" />
     <ClCompile Include="Net.cpp" />
     <ClCompile Include="NetworkScene.cpp" />
+    <ClCompile Include="Outside.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="PongScene.cpp" />
     <ClCompile Include="Racket.cpp" />
@@ -138,6 +141,7 @@
     <ClInclude Include="BallEvent.h" />
     <ClInclude Include="BallEventManager.h" />
     <ClInclude Include="BallProperties.h" />
+    <ClInclude Include="BallState.h" />
     <ClInclude Include="CollisionResponse.h" />
     <ClInclude Include="CustomCamera.h" />
     <ClInclude Include="GameObject.h" />
@@ -153,6 +157,7 @@
     <ClInclude Include="Message.h" />
     <ClInclude Include="Net.h" />
     <ClInclude Include="NetworkScene.h" />
+    <ClInclude Include="Outside.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PlayerId.h" />
     <ClInclude Include="PongScene.h" />

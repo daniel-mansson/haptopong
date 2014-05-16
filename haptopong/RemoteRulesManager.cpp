@@ -5,6 +5,7 @@
 #include "Hello.h"
 #include "UpdatePos.h"
 #include "BallEvent.h"
+#include "BallState.h"
 
 RemoteRulesManager::RemoteRulesManager(GameRulesPtr gameRules, ENetAddress addr) :
 	m_gameRules(gameRules),
@@ -44,7 +45,13 @@ void RemoteRulesManager::onBallHitRacket(const Ball& ball, const Racket& racket)
 {
 	sendMessage(MessagePtr(new BallEvent(racket.getPlayerId(), BallEvent::BALLEVENT_RACKET)), ENET_PACKET_FLAG_RELIABLE);
 
-	//TODO: state update
+	btTransform transform;
+	ball.getBody()->getMotionState()->getWorldTransform(transform);
+	
+	btVector3 vel = ball.getVelocity();
+	btVector3 angVel = ball.getAngularVelocity();
+
+	sendMessage(MessagePtr(new BallState(transform, vel, angVel)), ENET_PACKET_FLAG_RELIABLE);
 }
 
 void RemoteRulesManager::onBallOut(const Ball& ball)
@@ -62,10 +69,7 @@ void RemoteRulesManager::update(const double& timeStep)
 		{
 		case ENET_EVENT_TYPE_CONNECT:
 			{
-				unsigned char* buf = m_buffer;
-
-				MessagePtr hello = MessagePtr(new Hello("Client"));
-				sendMessage(hello, ENET_PACKET_FLAG_RELIABLE);
+				sendMessage(MessagePtr(new Hello("Client")), ENET_PACKET_FLAG_RELIABLE);
 			}
 			break;
 
@@ -82,6 +86,12 @@ void RemoteRulesManager::update(const double& timeStep)
 					break;
 				case G_UPDATE_POS:
 					m_pongScene->updateOpponentPos(((UpdatePos*)msg.get())->getPosition());
+					break;
+				case G_BALLSTATE:
+					{
+						BallState* ballState = (BallState*)msg.get();
+						m_pongScene->updateBallState(ballState->getTransform(), ballState->getVelocity(), ballState->getAngularVelocity());
+					}
 					break;
 				}
 			}
@@ -102,11 +112,7 @@ void RemoteRulesManager::updatePlayerPos(const btVector3& position)
 	if(isWaiting())
 		return;
 
-	unsigned char* buf = m_buffer;
-
-	MessagePtr msg = MessagePtr(new UpdatePos(position));
-	
-	sendMessage(msg, ENET_PACKET_FLAG_UNRELIABLE_FRAGMENT);
+	sendMessage(MessagePtr(new UpdatePos(position)), ENET_PACKET_FLAG_UNRELIABLE_FRAGMENT);
 }
 
 void RemoteRulesManager::sendMessage(MessagePtr msg, enet_uint32 reliability)

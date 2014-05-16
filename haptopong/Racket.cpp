@@ -68,7 +68,7 @@ void Racket::updateLogic(float timeStep)
 
 void Racket::updateHaptics(chai3d::cGenericHapticDevicePtr device, const double& timeStep)
 {
-#ifdef TESTING_NETWORK
+#ifdef USE_MOUSE
 	
 	chai3d::cVector3d prev = m_hapticPos;
 	

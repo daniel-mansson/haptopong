@@ -6,6 +6,7 @@
 #include "Welcome.h"
 #include "UpdatePos.h"
 #include "BallEvent.h"
+#include "BallState.h"
 
 LocalRulesManager::LocalRulesManager(GameRulesPtr gameRules, int port) :
 	m_gameRules(gameRules),
@@ -44,7 +45,14 @@ void LocalRulesManager::onBallHitTable(const Ball& ball, const Table& table)
 
 void LocalRulesManager::onBallHitRacket(const Ball& ball, const Racket& racket)
 {
+	
+	btTransform transform;
+	ball.getBody()->getMotionState()->getWorldTransform(transform);
+	
+	btVector3 vel = ball.getVelocity();
+	btVector3 angVel = ball.getAngularVelocity();
 
+	sendMessage(MessagePtr(new BallState(transform, vel, angVel)), ENET_PACKET_FLAG_RELIABLE);
 }
 
 void LocalRulesManager::onBallOut(const Ball& ball)
@@ -73,19 +81,7 @@ void LocalRulesManager::update(const double& timeStep)
 				{
 				case C_HELLO:
 					{
-						unsigned char* buf = m_buffer;
-
-						MessagePtr welcome = MessagePtr(new Welcome("Server"));
-						welcome->addToBuffer(buf);
-
-						ENetPacket * packet = enet_packet_create (m_buffer, 
-							welcome->getSize(), 
-							ENET_PACKET_FLAG_RELIABLE);
-
-						std::cout<<"GOT HELLO "<<msg->getData()<<std::endl;
-
-						enet_host_broadcast (m_server, 0, packet);
-						enet_host_flush (m_server);
+						sendMessage(MessagePtr(new Welcome("Server")), ENET_PACKET_FLAG_RELIABLE);
 						m_isWaiting = false;
 					}
 					break;
@@ -93,7 +89,13 @@ void LocalRulesManager::update(const double& timeStep)
 					m_pongScene->updateOpponentPos(((UpdatePos*)msg.get())->getPosition());
 					break;
 				case G_BALLEVENT:
-					std::cout<<"Ball event: "+((BallEvent*)msg.get())->getEventType();
+					std::cout<<"Ball event: " << (int)((BallEvent*)msg.get())->getEventType() << "  "<< (int)((BallEvent*)msg.get())->getPlayerId() << std::endl;
+					break;
+				case G_BALLSTATE:
+					{
+						BallState* ballState = (BallState*)msg.get();
+						m_pongScene->updateBallState(ballState->getTransform(), ballState->getVelocity(), ballState->getAngularVelocity());
+					}
 					break;
 				}
 			}
@@ -114,15 +116,18 @@ void LocalRulesManager::updatePlayerPos(const btVector3& position)
 	if(isWaiting())
 		return;
 
-	unsigned char* buf = m_buffer;
+	sendMessage(MessagePtr(new UpdatePos(position)), ENET_PACKET_FLAG_UNRELIABLE_FRAGMENT);
+}
 
-	MessagePtr msg = MessagePtr(new UpdatePos(position));
+void LocalRulesManager::sendMessage(MessagePtr msg, enet_uint32 reliability)
+{
+	unsigned char* buf = m_buffer;
 	msg->addToBuffer(buf);
 
 	ENetPacket * packet = enet_packet_create (m_buffer, 
 		msg->getSize(), 
-		ENET_PACKET_FLAG_UNRELIABLE_FRAGMENT);
-
+		reliability);
+	
 	enet_host_broadcast (m_server, 0, packet);
 	enet_host_flush (m_server);
 }

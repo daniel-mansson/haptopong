@@ -31,6 +31,7 @@ private:
 	ENetHost* m_server;
 	ENetPeer* m_peer;
 	unsigned char* m_buffer;
-
+	
+	void sendMessage(MessagePtr msg, enet_uint32 reliability);
 };
 

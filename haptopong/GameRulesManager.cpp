@@ -5,6 +5,8 @@
 #include "Hello.h"
 #include "Welcome.h"
 #include "UpdatePos.h"
+#include "BallEvent.h"
+#include "BallState.h"
 
 GameRulesManager::GameRulesManager() 
 {
@@ -52,6 +54,12 @@ void GameRulesManager::updateMessages(unsigned char* buffer, int length)
 				break;
 			case G_UPDATE_POS:
 				msg = MessagePtr(new UpdatePos());
+				break;
+			case G_BALLEVENT:
+				msg = MessagePtr(new BallEvent());
+				break;
+			case G_BALLSTATE:
+				msg = MessagePtr(new BallState());
 				break;
 			}
 

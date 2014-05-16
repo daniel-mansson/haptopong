@@ -148,6 +148,12 @@
     <ClCompile Include="BallEvent.cpp">
       <Filter>Rules&amp;Network\Messages</Filter>
     </ClCompile>
+    <ClCompile Include="Outside.cpp">
+      <Filter>Pong\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="BallState.cpp">
+      <Filter>Rules&amp;Network\Messages</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -262,6 +268,12 @@
       <Filter>Util</Filter>
     </ClInclude>
     <ClInclude Include="BallEvent.h">
+      <Filter>Rules&amp;Network\Messages</Filter>
+    </ClInclude>
+    <ClInclude Include="Outside.h">
+      <Filter>Pong\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="BallState.h">
       <Filter>Rules&amp;Network\Messages</Filter>
     </ClInclude>
   </ItemGroup>

@@ -10,6 +10,7 @@
 #include "HapticResponseManager.h"
 #include "GameRulesManager.h"
 #include "StepTimer.h"
+#include "Outside.h"
 
 class PongScene : public Scene
 {
@@ -54,6 +55,7 @@ private:
     btCollisionShapePtr m_netCollisionShape;
     btCollisionShapePtr m_ballCollisionShape;
     btCollisionShapePtr m_racketsCollisionShape;
+    btCollisionShapePtr m_outsideCollisionShape;
 	
 	TablePtr m_table;
 	NetPtr m_net;
@@ -61,6 +63,7 @@ private:
     RacketPtr m_playerRacket;
     RacketPtr m_opponentRacket;
 	BallEventManagerPtr m_ballEventMgr;
+	OutsidePtr m_outside;
 	HapticResponseManagerPtr m_hapticResponseMgr;
 	StepTimer m_networkTimer;
     
@@ -70,6 +73,7 @@ private:
 	void createNet();
 	void createBall();
 	void createRackets();
+	void createOutside();
 
 	GameRulesManagerPtr m_gameRules;
 };

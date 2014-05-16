@@ -2,8 +2,10 @@
 
 enum GameObjectType
 {
+	NONE,
 	BALL,
 	RACKET,
 	TABLE,
-    NET
+    NET,
+    OUTSIDE
 };
