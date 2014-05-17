@@ -6,7 +6,7 @@ Outside::Outside(btCollisionShape* collisionShape)
 {
     btTransform startTransform;
 	startTransform.setIdentity();
-    startTransform.setOrigin(btVector3(0,0,-1));
+    startTransform.setOrigin(btVector3(0,0,-0.5));
 	
     btScalar mass(0.);
         
@@ -21,13 +21,13 @@ Outside::Outside(btCollisionShape* collisionShape)
     btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
     btRigidBody::btRigidBodyConstructionInfo rbInfo(mass,myMotionState,collisionShape, localInertia);
     m_body = std::make_shared<btRigidBody>(rbInfo);
-    m_body->setRestitution(0.9f);
+    m_body->setRestitution(0.7f);
 	m_body->setUserPointer(this);
 	m_body->setFriction(0.01f);
     
-	m_body->setCollisionFlags(m_body->getCollisionFlags() |
+	/*m_body->setCollisionFlags(m_body->getCollisionFlags() |
 		btCollisionObject::CF_NO_CONTACT_RESPONSE|
-		btCollisionObject::CF_KINEMATIC_OBJECT);
+		btCollisionObject::CF_KINEMATIC_OBJECT);*/
     
     //m_body->setCcdMotionThreshold(0.f);
     //m_body->setCcdSweptSphereRadius(0.f);

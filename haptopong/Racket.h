@@ -30,8 +30,9 @@ public:
 	const chai3d::cVector3d& getNormal() const { return m_normal; }
 	const chai3d::cVector3d& getVelocity() const { return m_velocity; }
 	const chai3d::cVector3d& getVForce() const { return m_force; }
-
+	
 	void setPosition(const btVector3& position);
+	void setPosition(const btVector3& position, double timeSinceLastUpdate);
 	const btVector3& getPosition() const { return Util::Vec(m_hapticPos); }
 	
 	const chai3d::cVector3d& getHapticPosition() const { return m_hapticPos; }
@@ -53,6 +54,9 @@ public:
 	PlayerId getPlayerId() const { return m_playerId; }
 	void setPlayerId(PlayerId playerId) { m_playerId = playerId; }
 
+	void setSize(double size);
+	void setIsOpponent(bool isOpponent) { m_isOpponent = isOpponent; }
+
 private:
 	chai3d::cVector3d m_normal;
 	chai3d::cVector3d m_velocity;
@@ -62,6 +66,12 @@ private:
     btRigidBodyPtr m_body;
 	float m_moveAreaScale;
 	PlayerId m_playerId;
+	double m_currentScale;
+	
+	bool m_isOpponent;
+	double m_time;
+	double m_maxTime;
+	chai3d::cVector3d m_prevHapticPos;
 	
 	btTransform m_transform;
 	btVector3 m_origin;

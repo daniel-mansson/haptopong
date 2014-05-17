@@ -45,7 +45,8 @@ bool OnContactProcessed(btManifoldPoint& point,void* body0,void* body1)
 PongScene::PongScene(Application& app, GameRulesManagerPtr gameRules) :
 	Scene(app),
 	m_gameRules(gameRules),
-	m_networkTimer(1.0 / 20.0)
+	m_networkTimer(1.0 / 20.0),
+	m_serve(PLAYER_LOCAL)
 {
 	m_hapticResponseMgr = HapticResponseManagerPtr(new HapticResponseManager());
 
@@ -68,7 +69,7 @@ PongScene::PongScene(Application& app, GameRulesManagerPtr gameRules) :
 	btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
 
 	m_dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher,overlappingPairCache,solver,collisionConfiguration);
-	m_dynamicsWorld->setGravity(btVector3(0, 0, -10));
+	m_dynamicsWorld->setGravity(btVector3(0, 0, -7));
 
 	createTable();
 	createNet();
@@ -138,6 +139,16 @@ void PongScene::updateLogic(const double& timeStep)
 			btVector3 pos = m_playerRacket->getPosition();
 			m_gameRules->updatePlayerPos(pos);
 		}
+
+	}
+
+	if(m_serve != NO_PLAYER)
+	{
+		m_ball->stop();
+		m_ball->setPosition(btVector3(0, 0, 0.4f));
+		m_ball->setVelocity(btVector3(0, 0, 0));
+		m_ball->setAngularVelocity(btVector3(0, 0, 0));
+		m_ball->setActive(false);
 	}
 
 	m_aimAssistance->updateLogic(timeStep);
@@ -197,7 +208,7 @@ btVector3 PongScene::invert(const btVector3& vec)
 void PongScene::updateOpponentPos(const btVector3& position)
 {
 	btVector3 pos = invert(position);
-	m_opponentRacket->setPosition(pos);
+	m_opponentRacket->setPosition(pos, m_networkTimer.getTimeStep());
 }
 
 void PongScene::updateBallState(const btVector3& position, const btVector3& velocity, const btVector3& angularVelocity)
@@ -209,30 +220,34 @@ void PongScene::updateBallState(const btVector3& position, const btVector3& velo
 	m_ball->setActive(true);
 }
 
-void PongScene::onKeyDown(unsigned char key, int x, int y)
+
+void PongScene::prepareServe(PlayerId serve)
 {
-	if(key == 'w')
+	m_serve = serve;
+}
+
+void PongScene::startServe()
+{
+	if(m_serve == PLAYER_LOCAL)
 	{
 		m_ball->stop();
-		m_ball->setPosition(btVector3(2, 0, 0.3f));
-		m_ball->setVelocity(btVector3(-4, Util::RandRange(-2, 2), 3.3f));
-		m_ball->setAngularVelocity(btVector3(0, 0, 300 * m_ball->getVelocity().y()));
+		m_ball->setPosition(btVector3(0, 0, 0.4f));
+		m_ball->setVelocity(btVector3(1.7f, Util::RandRange(-0.5f, 0.5f), 2.0f));
+		m_ball->setAngularVelocity(btVector3(0, 0, -30 * m_ball->getVelocity().y()));
 		m_ball->setActive(true);
+		m_serve = NO_PLAYER;
+		//TODO send ball update
 	}
+}
+
+void PongScene::onKeyDown(unsigned char key, int x, int y)
+{
 	if(key == 's')
 	{
 		m_ball->stop();
 		m_ball->setPosition(btVector3(-2, 0, 0.3f));
 		m_ball->setVelocity(btVector3(4, Util::RandRange(-1.5f, 1.5f), 3.3f));
 		m_ball->setAngularVelocity(btVector3(0, 0, -100 * m_ball->getVelocity().y()));
-		m_ball->setActive(true);
-	}
-	if(key == 'e')
-	{
-		m_ball->stop();
-		m_ball->setPosition(btVector3(2, 0, 0.7f));
-		m_ball->setVelocity(btVector3(-4, Util::RandRange(-1, 1), -1.0f));
-		m_ball->setAngularVelocity(btVector3(0, 1400, 0));
 		m_ball->setActive(true);
 	}
 	if(key == 'd')
@@ -246,9 +261,25 @@ void PongScene::onKeyDown(unsigned char key, int x, int y)
 	if(key == 'q')
 	{
 		m_ball->stop();
-		m_ball->setPosition(btVector3(2, 0, 0.3f));
-		m_ball->setVelocity(btVector3(-2.1f, -0.9f, 4.5f));
-		m_ball->setAngularVelocity(btVector3(0, 0, 00 * m_ball->getVelocity().y()));
+		m_ball->setPosition(btVector3(-2, 0, 0.3f));
+		m_ball->setVelocity(btVector3(3, Util::RandRange(-1.5f, 1.5f), 3.3f));
+		m_ball->setAngularVelocity(btVector3(0, 0, -100 * m_ball->getVelocity().y()));
+		m_ball->setActive(true);
+	}
+	if(key == 'w')
+	{
+		m_ball->stop();
+		m_ball->setPosition(btVector3(-2, 0, 0.3f));
+		m_ball->setVelocity(btVector3(3, Util::RandRange(-2.5f, 2.5f), 3.3f));
+		m_ball->setAngularVelocity(btVector3(0, 0, -150 * m_ball->getVelocity().y()));
+		m_ball->setActive(true);
+	}
+	if(key == 'e')
+	{
+		m_ball->stop();
+		m_ball->setPosition(btVector3(-2, 0, 0.3f));
+		m_ball->setVelocity(btVector3(3, Util::RandRange(-0.5f, 0.5f), 3.3f));
+		m_ball->setAngularVelocity(btVector3(0, 0, -10 * m_ball->getVelocity().y()));
 		m_ball->setActive(true);
 	}
 	if(key == 'a')
@@ -290,14 +321,30 @@ void PongScene::onKeyDown(unsigned char key, int x, int y)
 		m_camera->set(cVector3d (2.47, 0.0, 0.95),   // camera position (eye)
 			cVector3d (0.0, 0.0, 0.01),    // look at position (target)
 			cVector3d (0.0, 0.0, 1.0));    // direction of the (up) vector
-		m_playerRacket->setMoveAreaScale(10.0);
 		m_aimAssistance = AimAssistancePtr(new AimAssistance(m_ball, m_playerRacket, m_camera));
 		m_ballEventMgr->setAimAssistance(m_aimAssistance);
+
+		m_playerRacket->setSize(1.0);
+		m_playerRacket->setMoveAreaScale(10.0f);
+		m_opponentRacket->setSize(1.0);
+		m_opponentRacket->setMoveAreaScale(10.0f);
 	}
 	if(key == '2')
 	{
 		m_aimAssistance = AimAssistancePtr(new GlobalMoveAssistance(m_ball, m_playerRacket, m_camera));
 		m_ballEventMgr->setAimAssistance(m_aimAssistance);
+		m_playerRacket->setSize(2.0);
+		m_playerRacket->setMoveAreaScale(18.0f);
+		m_opponentRacket->setSize(2.0);
+		m_opponentRacket->setMoveAreaScale(18.0f);
+	}
+	if(key == ' ')
+	{
+		startServe();
+	}
+	if(key == 'h')
+	{
+		prepareServe(PLAYER_LOCAL);
 	}
 }
 
@@ -379,12 +426,13 @@ void PongScene::createLight()
 	dirLight->setEnabled(true);
 
 	// define direction of light beam
-	dirLight->setDir(-7 , 5, -3);
+	dirLight->setDir(-7 , 2, -3);
 
 	// set lighting conditions
 	dirLight->m_ambient.set(0.4f, 0.4f, 0.4f);
 	dirLight->m_diffuse.set(0.45f, 0.45f, 0.45f);
 	dirLight->m_specular.set(0.2f, 0.2f, 0.2f);
+
 
 	//dirLight->setUseTwoSideLightModel(false);
 
@@ -401,10 +449,13 @@ void PongScene::createLight()
 	spotLight->setEnabled(true);
 
 	// position the light source
-	spotLight->setLocalPos(2.5, 0.0, 2.0);
+	//spotLight->setLocalPos(2.5, 0.0, 2.0);
 
 	// define the direction of the light beam
-	spotLight->setDir(-1.0, 0.0, -1.0);
+	//spotLight->setDir(-1.0, 0.0, -1.0);
+	
+	spotLight->setLocalPos(0.5, 0.0, 5.0);
+	spotLight->setDir(-0.1, 0.0, -1.0);
 
 	// enable this light source to generate shadows
 	spotLight->setShadowMapEnabled(true);
@@ -434,6 +485,7 @@ void PongScene::createTable()
 	/////////////////////////////////////////////////////////////////////////
 
 	cMultiMesh* table = new cMultiMesh();
+	//cMultiMesh* table = new ShadowlessMesh();
 
 	bool fileload = table->loadFromFile("../gfx/table.obj");
 
@@ -567,12 +619,20 @@ void PongScene::createOutside()
 {
 	BallProperties properties;
 
-	m_outsideCollisionShape = btCollisionShapePtr(new btBoxShape(btVector3(50, 50, 0.2f))); 
-
-
+	m_outsideCollisionShape = btCollisionShapePtr(new btBoxShape(btVector3(7.5f, 7.5f, 0.2f))); 
 	m_outside = std::make_shared<Outside>(m_outsideCollisionShape.get());
 
 	m_dynamicsWorld->addRigidBody(m_outside->getBody().get());
+
+	cMaterial mat;
+	mat.setWhite();
+	mat.m_ambient = cColorf(1.0f, 1.0f, 1.0f, 1.0f);
+
+	cShapeBox* box = new cShapeBox(15, 15, 0.4);
+	box->setMaterial(mat, true);
+	box->setLocalPos(0,0,-0.5);
+	m_world->addChild(box);
+	
 }
 
 void PongScene::createRackets()
@@ -583,8 +643,8 @@ void PongScene::createRackets()
 
 	// player racket
 
-	//cMultiMesh* playerRacket = new cMultiMesh();
-	ShadowlessMesh* playerRacket = new ShadowlessMesh();
+	cMultiMesh* playerRacket = new cMultiMesh();
+	//ShadowlessMesh* playerRacket = new ShadowlessMesh();
 
 	bool fileload = playerRacket->loadFromFile("../gfx/racket.obj");
 	if (!fileload)
@@ -639,12 +699,12 @@ void PongScene::createRackets()
 	RacketProperties properties;
 
 	m_racketsCollisionShape = std::shared_ptr<btCollisionShape>(Util::LoadCollisionShape("../gfx/racket_body.obj"));
-
 	btTransform startTransform;
 	startTransform.setIdentity();
 	//startTransform.setOrigin(btVector3(2.1f, 0, 0.88f));
-	startTransform.setOrigin(btVector3(1.9f, 0, 0.6f));
+	startTransform.setOrigin(btVector3(1.8f, 0, 0.6f));
 	startTransform.setRotation(btQuaternion(0, 40*0.0174532925f, 0));
+	
 
 	m_playerRacket = std::make_shared<Racket>(playerRacket, m_racketsCollisionShape.get(), properties, startTransform);
 	if(m_gameRules != nullptr)
@@ -655,13 +715,13 @@ void PongScene::createRackets()
 	// opponent racket
 
 	startTransform.setIdentity();
-	startTransform.setOrigin(btVector3(-1.9f, 0, 0.6f));
+	startTransform.setOrigin(btVector3(-1.8f, 0, 0.6f));
 	startTransform.setRotation(btQuaternion(0, -40*0.0174532925f, 0));
 
 	m_opponentRacket = std::make_shared<Racket>(opponentRacket, m_racketsCollisionShape.get(), properties, startTransform);
 	if(m_gameRules != nullptr)
 		m_opponentRacket->setPlayerId(m_gameRules->getOpponentId());
-
+	m_opponentRacket->setIsOpponent(true);
 	m_dynamicsWorld->addRigidBody(m_opponentRacket->getBody());
 
 

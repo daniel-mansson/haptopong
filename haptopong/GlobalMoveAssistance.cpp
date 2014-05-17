@@ -6,7 +6,6 @@ using namespace chai3d;
 GlobalMoveAssistance::GlobalMoveAssistance(BallPtr ball, RacketPtr playerRacket, chai3d::cCamera* camera) :
 	AimAssistance(ball, playerRacket, camera)
 {
-	playerRacket->setMoveAreaScale(18.0f);
 }
 
 
@@ -45,7 +44,7 @@ void GlobalMoveAssistance::updateHaptics(const double& timeStep, chai3d::cVector
 	vec(1) = cClamp(vec(1), -mag, mag);
 	vec(2) = cClamp(vec(2), -mag, mag);
 
-	force += vec;
+	//force += vec;
 
 }
 

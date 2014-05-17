@@ -25,10 +25,10 @@ void AimAssistance::applyImpulseFromRacket(btManifoldPoint& point)
 	float zvel = rvel[2] - bvel[2];
 
 	//TODO: real forces
-	xvel *= (1.0f + point.m_combinedRestitution);	
+	xvel *= (1.0f + point.m_combinedRestitution * 0.6f);	
 	bvel[0] += xvel;
-	bvel[1] += yvel * 0.4f;
-	bvel[2] += zvel * 0.4f;
+	bvel[1] += yvel * 0.7f;
+	bvel[2] += zvel * 0.7f + fabsf(xvel * 0.12f);
 	m_ball->setVelocity(bvel);
 
 	btVector3 angVel = m_ball->getAngularVelocity();
@@ -41,7 +41,7 @@ void AimAssistance::applyImpulseFromRacket(btManifoldPoint& point)
 
 void AimAssistance::changeVel(const btVector3& target)
 {
-	btVector3 dist = target - m_ball->getPosition();
+	/*btVector3 dist = target - m_ball->getPosition();
 
 	float v0 = m_ball->getVelocity().x();
 	float a = 0.0;	
@@ -60,14 +60,16 @@ void AimAssistance::changeVel(const btVector3& target)
 		<<"v0: " << v0 << "\t"
 		<<"distx: " << dist.x() << "\t"
 		<<"zpos: " << zPos << "\t"
-		<<std::endl;
+		<<std::endl;*/
+
+	//std::cout<<"Angvel: "<<Util::Vec(m_ball->getAngularVelocity())<<"\tVel: "<<Util::Vec(m_ball->getVelocity())<<"\tAdjvel: "<<Util::Vec(adjustedVelocity(m_ball->getVelocity(), m_ball->getAngularVelocity(), 0.03))<<"\n";
 }
 
 btVector3 AimAssistance::adjustedVelocity(const btVector3& velocity, const btVector3& angularVel, float factor)
 {
 	btVector3 adjVel;
 
-	factor *= (float)C_PI / 180.0f;
+	factor *= -(float)C_PI / 180.0f;
 
 	btMatrix3x3 m;
 	m.setEulerZYX(angularVel.x() * factor, angularVel.y() * factor, angularVel.z() * factor);

@@ -46,6 +46,9 @@ public:
 private:
 
 	btVector3 invert(const btVector3& vec);
+	
+	void prepareServe(PlayerId serve);
+	void startServe();
 	 
 	chai3d::cWorldPtr m_world;
     chai3d::cCamera* m_camera;
@@ -78,5 +81,6 @@ private:
 	
 	GameRulesManagerPtr m_gameRules;
 	AimAssistancePtr m_aimAssistance;
+	PlayerId m_serve;
 };
 

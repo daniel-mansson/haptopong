@@ -17,6 +17,8 @@ public:
 		return count;
 	}
 
+	const double& getTimeStep() const { return m_timeStep; }
+
 private:
 	double m_timeStep;
 	double m_accumulator;
