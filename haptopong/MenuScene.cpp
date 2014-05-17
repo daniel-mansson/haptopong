@@ -12,6 +12,7 @@
 #include "LocalRulesManager.h"
 #include "RemoteRulesManager.h"
 #include "SimpleCountGameRules.h"
+#include "IgnoreEverythingRules.h"
 
 using namespace chai3d;
 
@@ -147,8 +148,7 @@ void MenuScene::onKeyDown(unsigned char key, int x, int y)
 			
 			std::istringstream(linePort) >> addr.port;
 
-			auto gameRules = GameRulesPtr(new SimpleCountGameRules(20));
-			auto metaRules = GameRulesManagerPtr(new RemoteRulesManager(gameRules, addr));
+			auto metaRules = GameRulesManagerPtr(new RemoteRulesManager(addr));
 			m_app.pushScene(PongScene::create(m_app, metaRules));
 		}
 		break;
@@ -159,13 +159,18 @@ void MenuScene::onKeyDown(unsigned char key, int x, int y)
 			//std::cin >> port;
 			port = 1234;
 
-			auto gameRules = GameRulesPtr(new SimpleCountGameRules(20));
+			auto gameRules = GameRulesPtr(new SimpleCountGameRules(100));
 			auto metaRules = GameRulesManagerPtr(new LocalRulesManager(gameRules, port));
 			m_app.pushScene(PongScene::create(m_app, metaRules));
 		}
 		break;
-	case '3':
-		m_app.pushScene(PongScene::create(m_app));
+	case '3':	
+		{
+			int port = 1234;
+			auto gameRules = GameRulesPtr(new IgnoreEverythingRules());
+			auto metaRules = GameRulesManagerPtr(new LocalRulesManager(gameRules, port));
+			m_app.pushScene(PongScene::create(m_app, metaRules));
+		}
 		break;
 	case '4':
 		m_app.popScene();

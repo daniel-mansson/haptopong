@@ -20,6 +20,7 @@ public:
 	virtual void onBallHitTable(const Ball& ball, const Table& table) = 0;
 	virtual void onBallHitRacket(const Ball& ball, const Racket& racket) = 0;
 	virtual void onBallOut(const Ball& ball) = 0;
+	virtual void onServeStart(const Ball& ball) = 0;
 
 	virtual bool isWaiting() const = 0;
 	virtual const std::string& getStatus() const { return m_status; }
@@ -33,9 +34,6 @@ public:
 	virtual PlayerId getOpponentId() const = 0;
 
 protected:
-	virtual void sendNewRound(const Score& score, PlayerId nextServe, PlayerId prevWinner);
-	virtual void sendGameOver(const Score& score, PlayerId winner);
-
 	virtual void updateMessages(unsigned char* buffer, int length);
 
 	std::vector<MessagePtr> m_messageQueue;

@@ -6,7 +6,7 @@ class RemoteRulesManager :
 	public GameRulesManager
 {
 public:
-	RemoteRulesManager(GameRulesPtr gameRules, ENetAddress addr);
+	RemoteRulesManager(ENetAddress addr);
 	virtual ~RemoteRulesManager(void);
 	
 	virtual void initialize();
@@ -14,6 +14,7 @@ public:
 	virtual void onBallHitTable(const Ball& ball, const Table& table);
 	virtual void onBallHitRacket(const Ball& ball, const Racket& racket);
 	virtual void onBallOut(const Ball& ball);
+	virtual void onServeStart(const Ball& ball);
 	
 	virtual void update(const double& timeStep);
 	virtual void updatePlayerPos(const btVector3& position);
@@ -26,7 +27,6 @@ private:
 
 	void sendMessage(MessagePtr msg, enet_uint32 reliability);
 
-	GameRulesPtr m_gameRules;
 	bool m_isWaiting;
 	
 	int m_port;

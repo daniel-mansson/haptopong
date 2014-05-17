@@ -163,6 +163,12 @@
     <ClCompile Include="GlobalMoveAssistance.cpp">
       <Filter>Pong\Aiming</Filter>
     </ClCompile>
+    <ClCompile Include="MetaGameInfo.cpp">
+      <Filter>Rules&amp;Network\Messages</Filter>
+    </ClCompile>
+    <ClCompile Include="IgnoreEverythingRules.cpp">
+      <Filter>Rules&amp;Network\GameRules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -290,6 +296,12 @@
     </ClInclude>
     <ClInclude Include="GlobalMoveAssistance.h">
       <Filter>Pong\Aiming</Filter>
+    </ClInclude>
+    <ClInclude Include="MetaGameInfo.h">
+      <Filter>Rules&amp;Network\Messages</Filter>
+    </ClInclude>
+    <ClInclude Include="IgnoreEverythingRules.h">
+      <Filter>Rules&amp;Network\GameRules</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

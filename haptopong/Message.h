@@ -9,7 +9,8 @@ enum MessageType
 	G_HIT_BALL = 200,
 	G_UPDATE_POS = 201,
 	G_BALLEVENT = 202,
-	G_BALLSTATE = 203
+	G_BALLSTATE = 203,
+	G_META = 204
 };
 
 class Message 

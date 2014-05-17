@@ -24,7 +24,7 @@ void BallEventManager::OnTableHit(btManifoldPoint& point, Table& table, Ball& ba
 	if (chai3d::cAbs(ball.getVelocity().z()) > 0.2) m_tableHit->play(0, (float)chai3d::cAbs(bzvel*0.3));
 
 	//std::cout<<"Table hit!\n";
-	if(m_gameRulesMgr != nullptr)
+	if(m_gameRulesMgr != nullptr && ball.isActive())
 	{
 		if(m_lastHit != TABLE)
 			m_count = 0;
@@ -64,10 +64,10 @@ void BallEventManager::OnRacketHit(btManifoldPoint& point, Racket& racket, Ball&
 
 			m_aimAssistance->applyImpulseFromRacket(point);
 
-			ball.setActive(false);
-
-			if(m_gameRulesMgr != nullptr)
+			if(m_gameRulesMgr != nullptr && ball.isActive())
 				m_gameRulesMgr->onBallHitRacket(ball, racket);
+			
+			ball.setActive(false);
 		}
 	}
 
@@ -82,7 +82,7 @@ void BallEventManager::OnOutside(btManifoldPoint& point, Ball& ball)
 		//std::cout<<"OUTSIDE!\n";
 		m_lastHit = OUTSIDE;
 
-		if(m_gameRulesMgr != nullptr)
+		if(m_gameRulesMgr != nullptr && ball.isActive())
 			m_gameRulesMgr->onBallOut(ball);
 	}
 }

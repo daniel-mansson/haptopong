@@ -101,7 +101,6 @@ void Racket::updateHaptics(chai3d::cGenericHapticDevicePtr device, const double&
 {
 #ifdef USE_MOUSE
 	
-	chai3d::cVector3d prev = m_hapticPos;
 	
 	POINT p;
 	GetCursorPos(&p);
@@ -109,6 +108,9 @@ void Racket::updateHaptics(chai3d::cGenericHapticDevicePtr device, const double&
 	m_hapticPos(0) = 0.0;
 	m_hapticPos(1) = p.x * 0.0001 - 0.080;
 	m_hapticPos(2) = -p.y * 0.0001 + 0.080;
+	
+	chai3d::cVector3d prev = m_hapticPos;
+	prev(0) += 0.0018;
 
 #else
 	chai3d::cVector3d prev = m_hapticPos;

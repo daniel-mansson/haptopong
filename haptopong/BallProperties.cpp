@@ -3,7 +3,7 @@
 
 BallProperties::BallProperties(void) :
 	m_friction(0.1),
-	m_elasticity(0.01),
+	m_elasticity(0.026),
 	m_restitution(0.9),
 	m_weight(0.0027),
 	m_radius(0.03),

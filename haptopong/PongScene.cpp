@@ -186,12 +186,13 @@ void PongScene::updateHaptics(const double& timeStep)
 #endif
 }
 
-void PongScene::onNewRound(const Score& score, PlayerId nextServe, PlayerId prevWinner)
+void PongScene::onNewRound(int localScore, int remoteScore, PlayerId nextServe, PlayerId prevWinner)
 {
-
+	std::cout<<"NEW ROUND!  "<< localScore<< " - "<<remoteScore<<"\n";
+	prepareServe(nextServe);
 }
 
-void PongScene::onGameOver(const Score& score, PlayerId winner)
+void PongScene::onGameOver(int localScore, int remoteScore, PlayerId winner)
 {
 
 }
@@ -211,13 +212,15 @@ void PongScene::updateOpponentPos(const btVector3& position)
 	m_opponentRacket->setPosition(pos, m_networkTimer.getTimeStep());
 }
 
-void PongScene::updateBallState(const btVector3& position, const btVector3& velocity, const btVector3& angularVelocity)
+void PongScene::updateBallState(const btVector3& position, const btVector3& velocity, const btVector3& angularVelocity, int serve)
 {
 	m_ball->stop();
 	m_ball->setPosition(invert(position));
 	m_ball->setVelocity(invert(velocity));
 	m_ball->setAngularVelocity(invert(angularVelocity));
-	m_ball->setActive(true);
+	m_ball->setActive(serve == 0);
+	if(serve != 0)
+		m_serve = NO_PLAYER;
 }
 
 
@@ -228,7 +231,7 @@ void PongScene::prepareServe(PlayerId serve)
 
 void PongScene::startServe()
 {
-	if(m_serve == PLAYER_LOCAL)
+	if(m_serve == m_gameRules->getPlayerId())
 	{
 		m_ball->stop();
 		m_ball->setPosition(btVector3(0, 0, 0.4f));
@@ -236,7 +239,8 @@ void PongScene::startServe()
 		m_ball->setAngularVelocity(btVector3(0, 0, -30 * m_ball->getVelocity().y()));
 		m_ball->setActive(true);
 		m_serve = NO_PLAYER;
-		//TODO send ball update
+		
+		m_gameRules->onServeStart(*m_ball);
 	}
 }
 

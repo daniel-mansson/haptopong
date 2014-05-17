@@ -6,9 +6,9 @@
 #include "UpdatePos.h"
 #include "BallEvent.h"
 #include "BallState.h"
+#include "MetaGameInfo.h"
 
-RemoteRulesManager::RemoteRulesManager(GameRulesPtr gameRules, ENetAddress addr) :
-	m_gameRules(gameRules),
+RemoteRulesManager::RemoteRulesManager(ENetAddress addr) :
 	m_address(addr)
 {
 	m_buffer = new unsigned char[2048];
@@ -37,7 +37,7 @@ void RemoteRulesManager::initialize()
 
 void RemoteRulesManager::onBallHitTable(const Ball& ball, const Table& table)
 {
-	PlayerId id = ball.getPosition().x() < 0.0f ? getOpponentId() : getPlayerId();;
+	PlayerId id = ball.getPosition().x() < 0.0f ? getOpponentId() : getPlayerId();
 	sendMessage(MessagePtr(new BallEvent(id, BallEvent::BALLEVENT_TABLE)), ENET_PACKET_FLAG_RELIABLE);
 }
 
@@ -52,6 +52,17 @@ void RemoteRulesManager::onBallHitRacket(const Ball& ball, const Racket& racket)
 	btVector3 angVel = ball.getAngularVelocity();
 
 	sendMessage(MessagePtr(new BallState(transform.getOrigin(), vel, angVel)), ENET_PACKET_FLAG_RELIABLE);
+}
+
+void RemoteRulesManager::onServeStart(const Ball& ball)
+{
+	btTransform transform;
+	ball.getBody()->getMotionState()->getWorldTransform(transform);
+	
+	btVector3 vel = ball.getVelocity();
+	btVector3 angVel = ball.getAngularVelocity();
+
+	sendMessage(MessagePtr(new BallState(transform.getOrigin(), vel, angVel, 1)), ENET_PACKET_FLAG_RELIABLE);
 }
 
 void RemoteRulesManager::onBallOut(const Ball& ball)
@@ -90,7 +101,28 @@ void RemoteRulesManager::update(const double& timeStep)
 				case G_BALLSTATE:
 					{
 						BallState* ballState = (BallState*)msg.get();
-						m_pongScene->updateBallState(ballState->getPosition(), ballState->getVelocity(), ballState->getAngularVelocity());
+						m_pongScene->updateBallState(ballState->getPosition(), ballState->getVelocity(), ballState->getAngularVelocity(), ballState->getServe());
+					}
+					break;
+				case G_META:
+					{
+						MetaGameInfo* meta = (MetaGameInfo*)msg.get();
+						switch(meta->getEventType())
+						{
+						case MetaGameInfo::META_ROUND_START:
+							m_pongScene->onNewRound(
+								meta->getLocalScore(),
+								meta->getRemoteScore(),
+								meta->getServe(),
+								meta->getWinner());
+							break;
+						case MetaGameInfo::META_GAME_OVER:
+							m_pongScene->onGameOver(
+								meta->getLocalScore(),
+								meta->getRemoteScore(),
+								meta->getWinner());
+							break;
+						}
 					}
 					break;
 				}

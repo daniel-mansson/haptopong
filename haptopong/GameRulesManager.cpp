@@ -7,6 +7,7 @@
 #include "UpdatePos.h"
 #include "BallEvent.h"
 #include "BallState.h"
+#include "MetaGameInfo.h"
 
 GameRulesManager::GameRulesManager() 
 {
@@ -18,16 +19,6 @@ GameRulesManager::GameRulesManager()
 GameRulesManager::~GameRulesManager(void)
 {
 	delete[] m_msgBuffer;
-}
-
-void GameRulesManager::sendNewRound(const Score& score, PlayerId nextServe, PlayerId prevWinner)
-{
-	m_pongScene->onNewRound(score, nextServe, prevWinner);
-}
-
-void GameRulesManager::sendGameOver(const Score& score, PlayerId winner)
-{
-	m_pongScene->onGameOver(score, winner);
 }
 
 void GameRulesManager::updateMessages(unsigned char* buffer, int length)
@@ -60,6 +51,9 @@ void GameRulesManager::updateMessages(unsigned char* buffer, int length)
 				break;
 			case G_BALLSTATE:
 				msg = MessagePtr(new BallState());
+				break;
+			case G_META:
+				msg = MessagePtr(new MetaGameInfo());
 				break;
 			}
 
