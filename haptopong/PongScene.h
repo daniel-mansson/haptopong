@@ -29,11 +29,11 @@ public:
 	void onKeyDown(unsigned char key, int x, int y);
     void onSpecialDown(int key, int x, int y);
 	
-	void onNewRound(const Score& score, PlayerId nextServe, PlayerId prevWinner);
-	void onGameOver(const Score& score, PlayerId winner);
+	void onNewRound(int localScore, int remoteScore, PlayerId nextServe, PlayerId prevWinner);
+	void onGameOver(int localScore, int remoteScore, PlayerId winner);
 
 	void updateOpponentPos(const btVector3& position);
-	void updateBallState(const btVector3& position, const btVector3& velocity, const btVector3& angularVelocity);
+	void updateBallState(const btVector3& position, const btVector3& velocity, const btVector3& angularVelocity, int serve);
 	
 	static ScenePtr create(Application& app) { return ScenePtr(new PongScene(app, nullptr)); }
 	static ScenePtr create(Application& app, GameRulesManagerPtr gameRules) 

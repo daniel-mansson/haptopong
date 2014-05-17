@@ -12,9 +12,9 @@ public:
 	GameRules(void);
 	virtual ~GameRules(void);
 	
-	virtual void onBallHitTable(const Ball& ball, const Table& table, PlayerId side) = 0;
-	virtual void onBallHitRacket(const Ball& ball, const Racket& racket) = 0;
-	virtual void onBallOut(const Ball& ball) = 0;
+	virtual void onBallHitTable(PlayerId side) = 0;
+	virtual void onBallHitRacket(PlayerId racketId) = 0;
+	virtual void onBallOut() = 0;
 	
 	virtual bool isRoundOver() const = 0;
 	virtual const Score& getScore() const = 0;

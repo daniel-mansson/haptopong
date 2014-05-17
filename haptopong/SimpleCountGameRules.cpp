@@ -4,10 +4,11 @@
 SimpleCountGameRules::SimpleCountGameRules(int scoreLimit) :
 	m_turn(PLAYER_LOCAL),
 	m_winner(NO_PLAYER),
-	m_state(GOING_TOWARDS_PLAYER),
+	m_state(GOING_TOWARDS_TABLE),
 	m_roundOver(false),
 	m_gameOver(false),
-	m_scoreLimit(scoreLimit)
+	m_scoreLimit(scoreLimit),
+	m_serve(PLAYER_LOCAL)
 {
 	
 }
@@ -17,19 +18,23 @@ SimpleCountGameRules::~SimpleCountGameRules(void)
 {
 }
 
-void SimpleCountGameRules::onBallHitTable(const Ball& ball, const Table& table, PlayerId side)
+void SimpleCountGameRules::onBallHitTable(PlayerId side)
 {
+	//std::cout<<"1table: "<<m_state<<"\t"<<m_turn<<"\n";
 	if(m_state == GOING_TOWARDS_TABLE && m_turn == side)
 		m_state = GOING_TOWARDS_PLAYER;
 	else if(m_state == GOING_TOWARDS_TABLE && m_turn != side)
 		roundOver(m_turn);
 	else
 		roundOver((PlayerId)(3 - m_turn));
+
+	//std::cout<<"2table: "<<m_state<<"\t"<<m_turn<<"\n";
 }
 
-void SimpleCountGameRules::onBallHitRacket(const Ball& ball, const Racket& racket)
+void SimpleCountGameRules::onBallHitRacket(PlayerId racketId)
 {
-	if(m_state == GOING_TOWARDS_PLAYER && racket.getPlayerId() == m_turn)
+	//std::cout<<"1racket: "<<m_state<<"\t"<<m_turn<<"\n";
+	if(m_state == GOING_TOWARDS_PLAYER && racketId == m_turn)
 	{
 		m_state = GOING_TOWARDS_TABLE;
 		m_turn = (PlayerId)(3 - m_turn);
@@ -38,25 +43,31 @@ void SimpleCountGameRules::onBallHitRacket(const Ball& ball, const Racket& racke
 	{
 		roundOver((PlayerId)(3 - m_turn));	
 	}
+
+//	std::cout<<"2racket: "<<m_state<<"\t"<<m_turn<<"\n";
 }
 
-void SimpleCountGameRules::onBallOut(const Ball& ball)
+void SimpleCountGameRules::onBallOut()
 {
-	roundOver((PlayerId)(3 - m_turn));	
+	//std::cout<<"1out: "<<m_state<<"\t"<<m_turn<<"\n";
+	roundOver((PlayerId)(3 - m_turn));
+
+	//std::cout<<"2out: "<<m_state<<"\t"<<m_turn<<"\n";	
 }
 
 void SimpleCountGameRules::onNewRound()
 {
-
+	m_roundOver = false;
 }
 
 void SimpleCountGameRules::roundOver(PlayerId winner)
 {
+	//std::cout<<"round: "<<winner<<"\n";	
 	m_winner = winner;
 	m_roundOver = true;
-	m_serve = (PlayerId)(3 - m_serve);
+	m_serve = winner;//(PlayerId)(3 - m_serve);
 	m_turn = m_serve;
-	m_state = GOING_TOWARDS_PLAYER;
+	m_state = GOING_TOWARDS_TABLE;
 	m_score.addScore(m_winner, 1);
 
 	for(int i = 1; i <= 2; ++i)

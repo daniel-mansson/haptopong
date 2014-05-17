@@ -14,6 +14,7 @@ public:
 	virtual void onBallHitTable(const Ball& ball, const Table& table);
 	virtual void onBallHitRacket(const Ball& ball, const Racket& racket);
 	virtual void onBallOut(const Ball& ball);
+	virtual void onServeStart(const Ball& ball);
 	
 	virtual void update(const double& timeStep);
 	virtual void updatePlayerPos(const btVector3& position);
@@ -24,6 +25,8 @@ public:
 	virtual PlayerId getOpponentId() const { return PLAYER_REMOTE; };
 private:
 	GameRulesPtr m_gameRules;
+	void checkGameRules();
+
 	bool m_isWaiting;
 	
 	int m_port;

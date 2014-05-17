@@ -28,12 +28,12 @@ void AimAssistance::applyImpulseFromRacket(btManifoldPoint& point)
 	xvel *= (1.0f + point.m_combinedRestitution * 0.6f);	
 	bvel[0] += xvel;
 	bvel[1] += yvel * 0.7f;
-	bvel[2] += zvel * 0.7f + fabsf(xvel * 0.12f);
+	bvel[2] += zvel * 0.7f + fabsf(xvel * 0.15f);
 	m_ball->setVelocity(bvel);
 
 	btVector3 angVel = m_ball->getAngularVelocity();
-	angVel[1] += -rvel[2] * 200.0f;
-	angVel[2] += rvel[1] * 200.0f;
+	angVel[1] += -rvel[2] * 240.0f;
+	angVel[2] += rvel[1] * 240.0f;
 	//std::cout<< "-Y "<<-rvel[2] * 200.0f<<"\t|Z "<< rvel[1] * 200.0f<<"\n";
 	m_ball->setAngularVelocity(angVel);
 

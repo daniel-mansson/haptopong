@@ -10,33 +10,39 @@ public:
 	{
 	}
 
-	BallState(const btVector3& position, const btVector3& vel, const btVector3& angVel) :
+	BallState(const btVector3& position, const btVector3& vel, const btVector3& angVel, unsigned char serve = 0) :
 		m_position(position),
 		m_velocity(vel),
-		m_angularVelocity(angVel)
+		m_angularVelocity(angVel),
+		m_serve(serve)
 	{
-		
+
 	}
-	
+
 	const btVector3& getPosition() const
 	{
 		return m_position;
 	}
-	
+
 	const btVector3& getVelocity() const
 	{
 		return m_velocity;
 	}
-	
+
 	const btVector3& getAngularVelocity() const
 	{
 		return m_angularVelocity;
 	}
-	
+
+	unsigned char getServe() const
+	{
+		return m_serve;
+	}
+
 	virtual int getSize() const
 	{
-		//type + pos
-		return 1 + 3 * 3 * sizeof(float);
+		//type + pos + serve
+		return 1 + 3 * 3 * sizeof(float) + 1;
 	}
 
 	virtual const unsigned char* getData() const
@@ -48,7 +54,7 @@ public:
 	{
 		return G_BALLSTATE; 
 	}
-	
+
 	virtual void addToBuffer(unsigned char*& buffer) const
 	{
 		*buffer = getType();
@@ -71,8 +77,11 @@ public:
 			*(float*)buffer = m_angularVelocity[i];
 			buffer += sizeof(float);
 		}
+
+		*buffer = m_serve;
+		buffer += 1;
 	}
-	
+
 	virtual void setFromBuffer(unsigned char*& buffer)
 	{
 		for(int i = 0; i < 3; ++i)
@@ -92,6 +101,9 @@ public:
 			m_angularVelocity[i] = *(float*)buffer;
 			buffer += sizeof(float);
 		}
+
+		m_serve = *buffer;
+		buffer += 1;
 	}
 
 private:
@@ -99,5 +111,6 @@ private:
 	btVector3 m_position;
 	btVector3 m_velocity;
 	btVector3 m_angularVelocity;
+	unsigned char m_serve;
 };
 

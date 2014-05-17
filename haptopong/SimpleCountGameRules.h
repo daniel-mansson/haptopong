@@ -8,9 +8,9 @@ public:
 	SimpleCountGameRules(int scoreLimit);
 	virtual ~SimpleCountGameRules(void);
 	
-	virtual void onBallHitTable(const Ball& ball, const Table& table, PlayerId side);
-	virtual void onBallHitRacket(const Ball& ball, const Racket& racket);
-	virtual void onBallOut(const Ball& ball);
+	virtual void onBallHitTable(PlayerId side);
+	virtual void onBallHitRacket(PlayerId racketId);
+	virtual void onBallOut();
 	
 	virtual bool isRoundOver() const;
 	virtual const Score& getScore() const;
