@@ -1,7 +1,8 @@
 #include "pch.h"
 #include "PongScene.h"
 #include "Application.h"
-#include "ShadowlessMesh.h"
+#include "SelfShadowlessMesh.h"
+#include "SelfShadowlessSphere.h"
 #include "CustomCamera.h"
 #include "GlobalMoveAssistance.h"
 
@@ -109,7 +110,7 @@ void PongScene::exit(ScenePtr to)
 void PongScene::render(const double& timeStep)
 {
 
-	btTransform transform;
+	//btTransform transform;
 	//btMotionState* pState = m_sphereBody->getMotionState();
 	//pState->getWorldTransform(transform);
 	//m_sphere->setLocalPos(Util::Vec(transform.getOrigin()));
@@ -122,6 +123,12 @@ void PongScene::render(const double& timeStep)
 	m_opponentRacket->render((float)timeStep);
 
 	m_camera->renderView(m_app.getWindowWidth(), m_app.getWindowHeight());
+    
+    // move ball shadow
+    btTransform transform;
+    btMotionState* pState = m_ball->getBody()->getMotionState();
+    pState->getWorldTransform(transform);
+    m_ballShadow->setLocalPos(Util::Vec(transform.getOrigin()));
 
 #ifdef TESTING_NETWORK
 	::Sleep(5);
@@ -426,13 +433,13 @@ void PongScene::createLight()
 	dirLight->setEnabled(true);
 
 	// define direction of light beam
-	dirLight->setDir(-7 , 2, -3);
+	dirLight->setDir(-7 , 5, -3);
+	//dirLight->setDir(-7 , 2, -3);
 
 	// set lighting conditions
 	dirLight->m_ambient.set(0.4f, 0.4f, 0.4f);
 	dirLight->m_diffuse.set(0.45f, 0.45f, 0.45f);
 	dirLight->m_specular.set(0.2f, 0.2f, 0.2f);
-
 
 	//dirLight->setUseTwoSideLightModel(false);
 
@@ -442,19 +449,15 @@ void PongScene::createLight()
 
 	chai3d::cSpotLight* spotLight = new cSpotLight(m_world.get());
 
-	// attach light to camera
 	//m_world->addChild(spotLight);
 
 	// enable light source
 	spotLight->setEnabled(true);
 
 	// position the light source
-	//spotLight->setLocalPos(2.5, 0.0, 2.0);
+	spotLight->setLocalPos(0.5, 0.0, 5.0);
 
 	// define the direction of the light beam
-	//spotLight->setDir(-1.0, 0.0, -1.0);
-	
-	spotLight->setLocalPos(0.5, 0.0, 5.0);
 	spotLight->setDir(-0.1, 0.0, -1.0);
 
 	// enable this light source to generate shadows
@@ -463,17 +466,45 @@ void PongScene::createLight()
 	// set the resolution of the shadow map
 	spotLight->m_shadowMap->setResolutionMedium();
 
-	//spotLight->setShadowMapProperties(3, 10);
+	spotLight->setShadowMapProperties(4, 6);
 
 	// set light cone half angle
-	//spotLight->setCutOffAngleDeg(25);
 	spotLight->setCutOffAngleDeg(35);
 
 	// set lighting conditions
-	spotLight->m_ambient.set(0.0f, 0.0f, 0.0f);
-	spotLight->m_diffuse.set(0.9f, 0.9f, 0.9f);
-	spotLight->m_specular.set(0.7f, 0.7f, 0.7f);
+	spotLight->m_ambient.set(0.f, 0.f, 0.f);
+	spotLight->m_diffuse.set(0.f, 0.f, 0.f);
+	spotLight->m_specular.set(0.f, 0.f, 0.f);
 
+	//spotLight->setUseTwoSideLightModel(false);
+	//spotLight->setSpotExponent(0);
+    
+    /////////////////////////////////////////////////////////////////////////
+	// create a spot light source 2
+	/////////////////////////////////////////////////////////////////////////
+    
+	chai3d::cSpotLight* spotLight2 = new cSpotLight(m_world.get());
+    
+	// attach light to camera
+	//m_world->addChild(spotLight);
+    
+	// enable light source
+	spotLight2->setEnabled(true);
+    
+	// position the light source
+	spotLight2->setLocalPos(2.5, 0.0, 2.0);
+    
+	// define the direction of the light beam
+	spotLight2->setDir(-1.0, 0.0, -1.0);
+    
+	// set light cone half angle
+	spotLight2->setCutOffAngleDeg(35);
+    
+	// set lighting conditions
+	spotLight2->m_ambient.set(0.0f, 0.0f, 0.0f);
+	spotLight2->m_diffuse.set(0.9f, 0.9f, 0.9f);
+	spotLight2->m_specular.set(0.7f, 0.7f, 0.7f);
+    
 	//spotLight->setUseTwoSideLightModel(false);
 	//spotLight->setSpotExponent(0);
 }
@@ -484,7 +515,7 @@ void PongScene::createTable()
 	// create visual shape
 	/////////////////////////////////////////////////////////////////////////
 
-	cMultiMesh* table = new cMultiMesh();
+	cMultiMesh* table = new SelfShadowlessMesh();
 	//cMultiMesh* table = new ShadowlessMesh();
 
 	bool fileload = table->loadFromFile("../gfx/table.obj");
@@ -499,7 +530,6 @@ void PongScene::createTable()
 
 	// enable culling to disable rendering of the inside
 	table->setUseCulling(true);
-
 
 	// enable display list for faster graphic rendering (recompute if translated)
 	table->setUseDisplayList(true, true);
@@ -516,6 +546,20 @@ void PongScene::createTable()
 
 	table->setTexture(table_texture);
 	table->setUseTexture(true, true);
+    
+    // shadow mesh
+    
+    cMultiMesh* tableShadow = new cMultiMesh();
+    
+	fileload = tableShadow->loadFromFile("../gfx/table_shadow.obj");
+    
+	if (!fileload)
+	{
+		std::cout << "Error - 3D Model failed to load correctly" << std::endl;
+		std::exit(EXIT_FAILURE);
+	}
+    
+    m_world->addChild(tableShadow);
 
 	/////////////////////////////////////////////////////////////////////////
 	// create physics body
@@ -535,7 +579,7 @@ void PongScene::createNet()
 	// create visual shape
 	/////////////////////////////////////////////////////////////////////////
 
-	cMultiMesh* net = new cMultiMesh();
+	cMultiMesh* net = new SelfShadowlessMesh();
 
 	bool fileload = net->loadFromFile("../gfx/net.obj");
 
@@ -585,7 +629,7 @@ void PongScene::createBall()
 {
 	BallProperties properties;
 
-	cShapeSphere* ballShape = new cShapeSphere((double)properties.getRadius());
+	cShapeSphere* ballShape = new SelfShadowlessSphere((double)properties.getRadius());
 
 	m_world->addChild(ballShape);
 
@@ -612,6 +656,14 @@ void PongScene::createBall()
 	m_ball = std::make_shared<Ball>(ballShape, m_ballCollisionShape.get(), properties, startTransform);
 
 	m_dynamicsWorld->addRigidBody(m_ball->getBody());
+    
+    // shadow mesh
+    
+    m_ballShadow = new cShapeSphere((double)properties.getRadius());
+    m_ballShadow->setTransparencyLevel(0);
+    m_ballShadow->setUseTransparency(true);
+    
+	m_world->addChild(m_ballShadow);
 }
 
 
@@ -669,7 +721,7 @@ void PongScene::createRackets()
 
 	//ShadowlessMesh* opponentRacket = playerRacket->copy(false, false, true);
 	//ShadowlessMesh* opponentRacket = new ShadowlessMesh();
-	cMultiMesh* opponentRacket = new cMultiMesh();
+	cMultiMesh* opponentRacket = new SelfShadowlessMesh();
 
 	fileload = opponentRacket->loadFromFile("../gfx/racket.obj");
 	if (!fileload)
@@ -677,8 +729,7 @@ void PongScene::createRackets()
 		std::cout << "Error - 3D Model failed to load correctly" << std::endl;
 		std::exit(EXIT_FAILURE);
 	}
-
-	mat;
+    
 	mat.m_ambient.set( 0.5f, 0.5f, 0.5f);
 	mat.m_diffuse.set( 0.5f, 0.5f, 0.5f);
 	mat.m_specular.set(1.0f, 1.0f, 1.0f);
