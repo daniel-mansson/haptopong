@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "AimAssistance.h"
 
+using namespace chai3d;
 
 AimAssistance::AimAssistance(BallPtr ball, RacketPtr playerRacket, chai3d::cCamera* camera) :
 	m_ball(ball),
@@ -37,7 +38,7 @@ void AimAssistance::applyImpulseFromRacket(btManifoldPoint& point)
 	m_ball->setAngularVelocity(angVel);
 
 }
-	
+
 void AimAssistance::changeVel(const btVector3& target)
 {
 	btVector3 dist = target - m_ball->getPosition();
@@ -45,9 +46,9 @@ void AimAssistance::changeVel(const btVector3& target)
 	float v0 = m_ball->getVelocity().x();
 	float a = 0.0;	
 	float v0_a = v0 / a;
-	
+
 	float timeX = dist.x() / v0;
-	
+
 	float zPos = m_ball->getVelocity().z() * timeX + -10.0 * timeX * timeX * 0.5f;
 
 	btVector3 vel = m_ball->getVelocity();
@@ -61,8 +62,17 @@ void AimAssistance::changeVel(const btVector3& target)
 		<<"zpos: " << zPos << "\t"
 		<<std::endl;
 }
-	
+
 btVector3 AimAssistance::adjustedVelocity(const btVector3& velocity, const btVector3& angularVel, float factor)
 {
+	btVector3 adjVel;
 
+	factor *= (float)C_PI / 180.0f;
+
+	btMatrix3x3 m;
+	m.setEulerZYX(angularVel.x() * factor, angularVel.y() * factor, angularVel.z() * factor);
+
+	adjVel = velocity * m;
+
+	return adjVel;
 }

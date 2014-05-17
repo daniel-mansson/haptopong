@@ -15,7 +15,7 @@ public:
 
 	virtual void applyImpulseFromRacket(btManifoldPoint& point);
 
-protected:
+//protected:
 	
 	virtual void changeVel(const btVector3& target);
 
