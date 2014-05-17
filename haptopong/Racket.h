@@ -57,6 +57,8 @@ public:
 	void setSize(double size);
 	void setIsOpponent(bool isOpponent) { m_isOpponent = isOpponent; }
 
+	void flash();
+
 private:
 	chai3d::cVector3d m_normal;
 	chai3d::cVector3d m_velocity;
@@ -79,6 +81,10 @@ private:
 	chai3d::cVector3d m_hapticPos;
 	chai3d::cVector3d m_hapticVel;
 	chai3d::cVector3d m_offset;
+	chai3d::cMaterial m_material;
+	chai3d::cMaterial m_flashMaterial;
+	double m_flash;
+	double m_flashFactor;
 };
 
 typedef std::shared_ptr<Racket> RacketPtr;

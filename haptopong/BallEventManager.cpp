@@ -67,6 +67,8 @@ void BallEventManager::OnRacketHit(btManifoldPoint& point, Racket& racket, Ball&
 			if(m_gameRulesMgr != nullptr && ball.isActive())
 				m_gameRulesMgr->onBallHitRacket(ball, racket);
 			
+			racket.flash();
+
 			ball.setActive(false);
 		}
 	}
