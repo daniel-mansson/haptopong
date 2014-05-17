@@ -123,12 +123,6 @@ void PongScene::render(const double& timeStep)
 	m_opponentRacket->render((float)timeStep);
 
 	m_camera->renderView(m_app.getWindowWidth(), m_app.getWindowHeight());
-    
-    // move ball shadow
-    btTransform transform;
-    btMotionState* pState = m_ball->getBody()->getMotionState();
-    pState->getWorldTransform(transform);
-    m_ballShadow->setLocalPos(Util::Vec(transform.getOrigin()));
 
 #ifdef TESTING_NETWORK
 	::Sleep(5);
@@ -629,7 +623,7 @@ void PongScene::createBall()
 {
 	BallProperties properties;
 
-	cShapeSphere* ballShape = new SelfShadowlessSphere((double)properties.getRadius());
+	cShapeSphere* ballShape = new cShapeSphere((double)properties.getRadius());
 
 	m_world->addChild(ballShape);
 
@@ -646,6 +640,12 @@ void PongScene::createBall()
 
 	ballShape->setTexture(net_texture);
 	ballShape->setUseTexture(true, true);
+    
+    /*cMaterial mat;
+	mat.m_ambient.set( 1.0f, 1.0f, 1.0f);
+	mat.m_diffuse.set( 1.0f, 1.0f, 1.0f);
+	mat.m_specular.set(1.0f, 1.0f, 1.0f);
+	ballShape->setMaterial(mat, true);*/
 
 	btTransform startTransform;
 	startTransform.setIdentity();
@@ -656,14 +656,6 @@ void PongScene::createBall()
 	m_ball = std::make_shared<Ball>(ballShape, m_ballCollisionShape.get(), properties, startTransform);
 
 	m_dynamicsWorld->addRigidBody(m_ball->getBody());
-    
-    // shadow mesh
-    
-    m_ballShadow = new cShapeSphere((double)properties.getRadius());
-    m_ballShadow->setTransparencyLevel(0);
-    m_ballShadow->setUseTransparency(true);
-    
-	m_world->addChild(m_ballShadow);
 }
 
 

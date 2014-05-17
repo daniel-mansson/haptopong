@@ -83,6 +83,5 @@ private:
 	AimAssistancePtr m_aimAssistance;
 	PlayerId m_serve;
     
-    chai3d::cShapeSphere* m_ballShadow;
 };
 
