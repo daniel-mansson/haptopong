@@ -128,7 +128,8 @@
     <ClCompile Include="RemoteRulesManager.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Score.cpp" />
-    <ClCompile Include="ShadowlessMesh.cpp" />
+    <ClCompile Include="SelfShadowlessMesh.cpp" />
+    <ClCompile Include="SelfShadowlessSphere.cpp" />
     <ClCompile Include="SimpleCountGameRules.cpp" />
     <ClCompile Include="SoundPlayer.cpp" />
     <ClCompile Include="Message.cpp" />
@@ -174,7 +175,8 @@
     <ClInclude Include="RemoteRulesManager.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Score.h" />
-    <ClInclude Include="ShadowlessMesh.h" />
+    <ClInclude Include="SelfShadowlessMesh.h" />
+    <ClInclude Include="SelfShadowlessSphere.h" />
     <ClInclude Include="SimpleCountGameRules.h" />
     <ClInclude Include="SoundPlayer.h" />
     <ClInclude Include="StepTimer.h" />

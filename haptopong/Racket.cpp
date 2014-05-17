@@ -46,7 +46,7 @@ Racket::Racket(chai3d::cMultiMesh* shape, btCollisionShape* collisionShape, cons
 	m_prevHapticPos = m_hapticPos;
 	m_time = 0;
 	m_maxTime = 100;
-	
+
 	m_material = *m_shape->m_material;
 	m_flashMaterial = *m_shape->m_material;
 	m_flash = 0.0;
@@ -61,7 +61,7 @@ Racket::~Racket(void)
 void Racket::flash()
 {
 	m_flash = 1.0;
-	
+
 }
 
 void Racket::setSize(double size)
@@ -75,17 +75,20 @@ void Racket::setSize(double size)
 void Racket::render(float timeStep)
 {
 	m_flash -= 3.0 * timeStep * m_flash;
-	
+
 	float f = (float)(m_flash * m_flashFactor);
 	m_flashMaterial.m_ambient.set(
 		m_material.m_ambient.getR() + f,
 		m_material.m_ambient.getG() + f,
 		m_material.m_ambient.getB() + f);
 
-
+	bool transparent = m_shape->getUseTransparency();
 	m_shape->setMaterial(m_flashMaterial, true);
-	m_shape->setUseTransparency(true);
-	m_shape->setTransparencyLevel(0.6f);
+	if(transparent)
+	{
+		m_shape->setUseTransparency(true);
+		m_shape->setTransparencyLevel(0.6f);
+	}
 
 	btTransform transform;
 

@@ -82,6 +82,8 @@ private:
 	GameRulesManagerPtr m_gameRules;
 	AimAssistancePtr m_aimAssistance;
 	PlayerId m_serve;
-    
+	
+	chai3d::cShapeLine* m_line1;
+	chai3d::cShapeLine* m_line2;
 };
 

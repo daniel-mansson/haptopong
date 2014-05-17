@@ -85,6 +85,8 @@ PongScene::PongScene(Application& app, GameRulesManagerPtr gameRules) :
 
 	if(m_gameRules != nullptr)
 		m_gameRules->initialize();
+
+	m_line1 = new cShapeLine(cVector3d(0, 0, 1), cVector3d(2, 0, 0.5));
 }
 
 PongScene::~PongScene(void)

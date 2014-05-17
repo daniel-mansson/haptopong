@@ -103,9 +103,6 @@
     <ClCompile Include="Net.cpp">
       <Filter>Pong\GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="ShadowlessMesh.cpp">
-      <Filter>Pong</Filter>
-    </ClCompile>
     <ClCompile Include="HapticResponseManager.cpp">
       <Filter>Pong</Filter>
     </ClCompile>
@@ -168,6 +165,12 @@
     </ClCompile>
     <ClCompile Include="IgnoreEverythingRules.cpp">
       <Filter>Rules&amp;Network\GameRules</Filter>
+    </ClCompile>
+    <ClCompile Include="SelfShadowlessMesh.cpp">
+      <Filter>Pong</Filter>
+    </ClCompile>
+    <ClCompile Include="SelfShadowlessSphere.cpp">
+      <Filter>Pong</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -234,9 +237,6 @@
     <ClInclude Include="Net.h">
       <Filter>Pong\GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="ShadowlessMesh.h">
-      <Filter>Pong</Filter>
-    </ClInclude>
     <ClInclude Include="HapticResponseManager.h">
       <Filter>Pong</Filter>
     </ClInclude>
@@ -302,6 +302,12 @@
     </ClInclude>
     <ClInclude Include="IgnoreEverythingRules.h">
       <Filter>Rules&amp;Network\GameRules</Filter>
+    </ClInclude>
+    <ClInclude Include="SelfShadowlessMesh.h">
+      <Filter>Pong</Filter>
+    </ClInclude>
+    <ClInclude Include="SelfShadowlessSphere.h">
+      <Filter>Pong</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
