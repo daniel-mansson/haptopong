@@ -92,5 +92,8 @@ private:
 	chai3d::cFontPtr m_scoreFont;
 	chai3d::cLabel* m_infoLabel;
 	chai3d::cFontPtr m_infoFont;
+	
+	bool m_hapticButtonDown;
+	bool m_hapticButtonPressed;
 };
 

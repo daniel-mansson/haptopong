@@ -23,7 +23,7 @@ LinearResponse::LinearResponse(const Racket& racket, const Ball& ball) :
 
 	//std::cout<<m_racket.getVelocity() * m_racket.getMoveAreaScale()<<"\t"<< Util::Vec(m_ball.getVelocity())<<"\n"; 
 	m_magnitude = 4.5 * cDot(m_normal, Util::Vec(m_ball.getVelocity()) - 1.f*m_racket.getVelocity() * m_racket.getMoveAreaScale());
-	m_magnitudeTangent = cAbs(m_magnitude * 0.03);
+	m_magnitudeTangent = cAbs(m_magnitude * 0.0003);
 
 	//std::cout<<"Mag: "<<m_tangent * m_magnitudeTangent<<"\tn "<<m_magnitude<<"\n";
 }
