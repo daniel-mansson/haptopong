@@ -412,7 +412,7 @@ void PongScene::onKeyDown(unsigned char key, int x, int y)
 	{
 		m_ball->stop();
 		m_ball->setPosition(btVector3(-.1f, 0, 0.1f));
-		m_ball->setVelocity(btVector3(0, 0, 0));
+		m_ball->setVelocity(btVector3(0, -0.6, 0));
 		m_ball->setAngularVelocity(btVector3(0, 0, 0));
 		m_ball->setActive(true);
 	}
@@ -802,7 +802,7 @@ void PongScene::createOutside()
 {
 	BallProperties properties;
 
-	m_outsideCollisionShape = btCollisionShapePtr(new btBoxShape(btVector3(5.7f, 7.5f, 0.2f)));
+	m_outsideCollisionShape = btCollisionShapePtr(new btBoxShape(btVector3(5.7f, 5.7f, 0.2f)));
 	m_outside = std::make_shared<Outside>(m_outsideCollisionShape.get());
 
 	m_dynamicsWorld->addRigidBody(m_outside->getBody().get());
@@ -811,7 +811,6 @@ void PongScene::createOutside()
 	mat.setWhite();
 	mat.m_ambient = cColorf(1.0f, 1.0f, 1.0f, 1.0f);
 
-	//cShapeBox* box = new cShapeBox(15, 15, 0.4);
 	cShapeBox* box = new cShapeBox(5, 15, 0.4);
 	box->setMaterial(mat, true);
 	box->setLocalPos(0,0,-0.5);
@@ -825,6 +824,34 @@ void PongScene::createOutside()
 	box2->setMaterial(mat, true);
 	box2->setLocalPos(0,0,-0.51);
 	m_world->addChild(box2);
+    
+    cShapeBox* box3 = new cShapeBox(5, 5, 0.4);
+    mat.m_ambient.set(0.f, 0.f, 0.f);
+	mat.m_diffuse.set(0.f, 0.f, 0.f);
+	mat.m_specular.set(0.f, 0.f, 0.f);
+    mat.m_emission.set(0.75f, 0.75f , 0.75f);
+	box3->setMaterial(mat, true);
+	box3->setLocalPos(0, -4.0, -0.49);
+	m_world->addChild(box3);
+    
+    cShapeBox* box4 = new cShapeBox(5, 5, 0.4);
+    mat.m_ambient.set(0.f, 0.f, 0.f);
+	mat.m_diffuse.set(0.f, 0.f, 0.f);
+	mat.m_specular.set(0.f, 0.f, 0.f);
+    mat.m_emission.set(0.75f, 0.75f , 0.75f);
+	box4->setMaterial(mat, true);
+	box4->setLocalPos(0, 4.0, -0.49);
+	m_world->addChild(box4);
+    
+    m_outsideWallCollisionShape = btCollisionShapePtr(new btBoxShape(btVector3(5.7f, 7.5f, 0.2f)));
+	m_outsideWall = std::make_shared<Outside>(m_outsideWallCollisionShape.get());
+    btTransform transform;
+	transform.setIdentity();
+	transform.setOrigin(btVector3(-5.7f, 0, 0));
+	transform.setRotation(btQuaternion(90*0.017f, 0, 0));
+    m_outsideWall->getBody()->setWorldTransform(transform);
+    
+    m_dynamicsWorld->addRigidBody(m_outsideWall->getBody().get());
 
 }
 

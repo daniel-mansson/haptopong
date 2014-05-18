@@ -61,6 +61,7 @@ private:
     btCollisionShapePtr m_ballCollisionShape;
     btCollisionShapePtr m_racketsCollisionShape;
     btCollisionShapePtr m_outsideCollisionShape;
+    btCollisionShapePtr m_outsideWallCollisionShape;
 	
 	TablePtr m_table;
 	NetPtr m_net;
@@ -69,6 +70,7 @@ private:
     RacketPtr m_opponentRacket;
 	BallEventManagerPtr m_ballEventMgr;
 	OutsidePtr m_outside;
+    OutsidePtr m_outsideWall;
 	HapticResponseManagerPtr m_hapticResponseMgr;
 	StepTimer m_networkTimer;
     
