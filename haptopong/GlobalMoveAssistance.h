@@ -6,6 +6,8 @@ class GlobalMoveAssistance :
 public:
 	GlobalMoveAssistance(BallPtr ball, RacketPtr playerRacket, chai3d::cCamera* camera);
 	virtual ~GlobalMoveAssistance(void);
+
+	void useGuiding(bool guide) { m_useGuiding = guide; }
 	
 	virtual void render(const double& timeStep);
 	virtual void updateLogic(const double& timeStep);
@@ -14,5 +16,7 @@ public:
 	virtual void applyImpulseFromRacket(btManifoldPoint& point);
 
 private:
+
+	bool m_useGuiding;
 };
 

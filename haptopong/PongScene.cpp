@@ -501,6 +501,17 @@ void PongScene::onKeyDown(unsigned char key, int x, int y)
 		m_opponentRacket->setSize(2.0);
 		m_opponentRacket->setMoveAreaScale(18.0f);
 	}
+	if(key == '3')
+	{
+		auto* gma = new GlobalMoveAssistance(m_ball, m_playerRacket, m_camera);
+		gma->useGuiding(true);
+		m_aimAssistance = AimAssistancePtr(gma);
+		m_ballEventMgr->setAimAssistance(m_aimAssistance);
+		m_playerRacket->setSize(2.0);
+		m_playerRacket->setMoveAreaScale(18.0f);
+		m_opponentRacket->setSize(2.0);
+		m_opponentRacket->setMoveAreaScale(18.0f);
+	}
 	if(key == ' ' )
 	{
 		startServe();
