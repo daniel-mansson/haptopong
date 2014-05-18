@@ -1,37 +1,27 @@
 #include "pch.h"
-#include "SelfShadowlessSphere.h"
+#include "CustomWorld.h"
+#include <iostream>
 
 using namespace chai3d;
 
-SelfShadowlessSphere::SelfShadowlessSphere(const double& a_radius, cMaterialPtr a_material) :
-    cShapeSphere(a_radius,a_material)
-{
-}
 
-void SelfShadowlessSphere::render(cRenderOptions& a_options)
-{
-    chai3d::cRenderOptions newOptions = a_options;
-    
-    // setup rendering options for first pass
-    //newOptions.m_displayContext                        = a_displayContext;
-    //newOptions.m_camera                                = this;
-    //newOptions.m_single_pass_only                      = true;
-    //newOptions.m_render_opaque_objects_only            = false;
-    //newOptions.m_render_transparent_front_faces_only   = true;
-    //newOptions.m_render_transparent_back_faces_only    = true;
-    //newOptions.m_enable_lighting                       = false;
-    //newOptions.m_render_materials                      = true;
-    //newOptions.m_render_textures                       = true;
-    //newOptions.m_creating_shadow_map                   = false;
-    //newOptions.m_rendering_shadow                      = false;
-    //newOptions.m_shadow_light_level                    = 0.0;
-    //newOptions.m_storeObjectPositions                  = false;
-    //newOptions.m_resetDisplay                          = m_resetDisplay;
-    
-    cShapeSphere::render(newOptions);
-}
-
-void SelfShadowlessSphere::renderSceneGraph(cRenderOptions& a_options)
+//==============================================================================
+/*!
+ Render the scene graph starting at this object. This method is called
+ for each object and optionally render the object itself, its reference frame
+ and the collision and/or scenegraph trees. \n
+ 
+ The object itself is rendered by calling render(), which should be defined
+ for each subclass that has a graphical representation.  renderSceneGraph
+ does not generally need to be over-ridden in subclasses. \n
+ 
+ The a_options parameter is used to allow multiple rendering passes.
+ See CRenderOptionh.h for more information.
+ 
+ \param  a_options  Rendering options.
+ */
+//==============================================================================
+void CustomWorld::renderSceneGraph(cRenderOptions& a_options)
 {
 #ifdef C_USE_OPENGL
     
@@ -136,14 +126,12 @@ void SelfShadowlessSphere::renderSceneGraph(cRenderOptions& a_options)
             /////////////////////////////////////////////////////////////////////
             if (a_options.m_creating_shadow_map)
             {
-                /*
-                 glEnable(GL_CULL_FACE);
-                 glCullFace(GL_FRONT);
-                 
-                 // render object
-                 render(a_options);
-                 glDisable(GL_CULL_FACE);
-                 */
+                glEnable(GL_CULL_FACE);
+                glCullFace(GL_FRONT);
+                
+                // render object
+                render(a_options);
+                glDisable(GL_CULL_FACE);
             }
             
             /////////////////////////////////////////////////////////////////////
@@ -255,10 +243,25 @@ void SelfShadowlessSphere::renderSceneGraph(cRenderOptions& a_options)
             }
         }
     }
+
+    /*
+    m_children[3]->renderSceneGraph(a_options); // net
+    m_children[5]->renderSceneGraph(a_options); // player
+    m_children[0]->renderSceneGraph(a_options);
+    m_children[1]->renderSceneGraph(a_options);
+    m_children[2]->renderSceneGraph(a_options);
+    m_children[6]->renderSceneGraph(a_options); // opponent
+    m_children[4]->renderSceneGraph(a_options); // ball
+    */
     
     // render children
     for (unsigned int i=0; i<m_children.size(); i++)
     {
+        if (i==5) //ball
+            a_options.m_enable_lighting  = false;
+        else
+            a_options.m_enable_lighting  = true;
+        
         m_children[i]->renderSceneGraph(a_options);
     }
     

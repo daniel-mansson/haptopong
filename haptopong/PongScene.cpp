@@ -1,8 +1,10 @@
 #include "pch.h"
 #include "PongScene.h"
 #include "Application.h"
-#include "SelfShadowlessMesh.h"
-#include "SelfShadowlessSphere.h"
+#include "ShadowlessMesh.h"
+#include "ShadowlessSphere.h"
+#include "ShadowSphere.h"
+#include "CustomWorld.h"
 #include "CustomCamera.h"
 #include "GlobalMoveAssistance.h"
 
@@ -298,9 +300,9 @@ void PongScene::onKeyDown(unsigned char key, int x, int y)
 	if(key == '<')
 	{
 		m_ball->stop();
-		m_ball->setPosition(btVector3(2, 0, 0.3f));
-		m_ball->setVelocity(btVector3(Util::RandRange(-2, -1), -0.1f, 2.f));
-		m_ball->setAngularVelocity(btVector3(0, 0, 00 * m_ball->getVelocity().y()));
+		m_ball->setPosition(btVector3(-.1f, 0, 0.1f));
+		m_ball->setVelocity(btVector3(0, 0, 0));
+		m_ball->setAngularVelocity(btVector3(0, 0, 0));
 		m_ball->setActive(true);
 	}
 	if(key == 'z')
@@ -442,7 +444,7 @@ void PongScene::createLight()
 	//dirLight->setUseTwoSideLightModel(false);
 
 	/////////////////////////////////////////////////////////////////////////
-	// create a spot light source
+	// create a spot light source - shadow casting only
 	/////////////////////////////////////////////////////////////////////////
 
 	chai3d::cSpotLight* spotLight = new cSpotLight(m_world.get());
@@ -464,10 +466,11 @@ void PongScene::createLight()
 	// set the resolution of the shadow map
 	spotLight->m_shadowMap->setResolutionMedium();
 
-	spotLight->setShadowMapProperties(4, 6);
+	//spotLight->setShadowMapProperties(0.1, 10.);
 
 	// set light cone half angle
-	spotLight->setCutOffAngleDeg(35);
+	//spotLight->setCutOffAngleDeg(15);
+	spotLight->setCutOffAngleDeg(16);
 
 	// set lighting conditions
 	spotLight->m_ambient.set(0.f, 0.f, 0.f);
@@ -478,7 +481,7 @@ void PongScene::createLight()
 	//spotLight->setSpotExponent(0);
     
     /////////////////////////////////////////////////////////////////////////
-	// create a spot light source 2
+	// create a spot light source - light casting only
 	/////////////////////////////////////////////////////////////////////////
     
 	chai3d::cSpotLight* spotLight2 = new cSpotLight(m_world.get());
@@ -496,7 +499,7 @@ void PongScene::createLight()
 	spotLight2->setDir(-1.0, 0.0, -1.0);
     
 	// set light cone half angle
-	spotLight2->setCutOffAngleDeg(35);
+	spotLight2->setCutOffAngleDeg(49);
     
 	// set lighting conditions
 	spotLight2->m_ambient.set(0.0f, 0.0f, 0.0f);
@@ -513,7 +516,7 @@ void PongScene::createTable()
 	// create visual shape
 	/////////////////////////////////////////////////////////////////////////
 
-	cMultiMesh* table = new SelfShadowlessMesh();
+	cMultiMesh* table = new ShadowlessMesh();
 	//cMultiMesh* table = new ShadowlessMesh();
 
 	bool fileload = table->loadFromFile("../gfx/table.obj");
@@ -558,6 +561,9 @@ void PongScene::createTable()
 	}
     
     m_world->addChild(tableShadow);
+    
+    tableShadow->setUseTransparency(true);
+	tableShadow->setTransparencyLevel(0.f);
 
 	/////////////////////////////////////////////////////////////////////////
 	// create physics body
@@ -577,7 +583,7 @@ void PongScene::createNet()
 	// create visual shape
 	/////////////////////////////////////////////////////////////////////////
 
-	cMultiMesh* net = new SelfShadowlessMesh();
+	cMultiMesh* net = new ShadowlessMesh();
 
 	bool fileload = net->loadFromFile("../gfx/net.obj");
 
@@ -627,10 +633,15 @@ void PongScene::createBall()
 {
 	BallProperties properties;
 
-	cShapeSphere* ballShape = new cShapeSphere((double)properties.getRadius());
+	ShadowlessSphere* ballShape = new ShadowlessSphere((double)properties.getRadius());
 
 	m_world->addChild(ballShape);
 
+    ShadowSphere* shadowShape = new ShadowSphere((double)properties.getRadius(), (double)properties.getRadius(), 0.);
+    shadowShape->setUseCulling(true);
+    
+    m_world->addChild(shadowShape);
+    
 	m_ballCollisionShape = std::make_shared<btSphereShape>(btScalar(properties.getRadius()));
 
 	cTexture2dPtr net_texture = cTexture2d::create();
@@ -644,12 +655,6 @@ void PongScene::createBall()
 
 	ballShape->setTexture(net_texture);
 	ballShape->setUseTexture(true, true);
-    
-    /*cMaterial mat;
-	mat.m_ambient.set( 1.0f, 1.0f, 1.0f);
-	mat.m_diffuse.set( 1.0f, 1.0f, 1.0f);
-	mat.m_specular.set(1.0f, 1.0f, 1.0f);
-	ballShape->setMaterial(mat, true);*/
 
 	btTransform startTransform;
 	startTransform.setIdentity();
@@ -657,7 +662,7 @@ void PongScene::createBall()
 	//startTransform.setOrigin(btVector3(1.75,0,0.65));
 	//startTransform.setOrigin(btVector3(2.2,0,0.9));
 
-	m_ball = std::make_shared<Ball>(ballShape, m_ballCollisionShape.get(), properties, startTransform);
+	m_ball = std::make_shared<Ball>(ballShape, shadowShape, m_ballCollisionShape.get(), properties, startTransform);
 
 	m_dynamicsWorld->addRigidBody(m_ball->getBody());
 }
@@ -667,7 +672,7 @@ void PongScene::createOutside()
 {
 	BallProperties properties;
 
-	m_outsideCollisionShape = btCollisionShapePtr(new btBoxShape(btVector3(7.5f, 7.5f, 0.2f))); 
+	m_outsideCollisionShape = btCollisionShapePtr(new btBoxShape(btVector3(5.7f, 7.5f, 0.2f)));
 	m_outside = std::make_shared<Outside>(m_outsideCollisionShape.get());
 
 	m_dynamicsWorld->addRigidBody(m_outside->getBody().get());
@@ -676,7 +681,8 @@ void PongScene::createOutside()
 	mat.setWhite();
 	mat.m_ambient = cColorf(1.0f, 1.0f, 1.0f, 1.0f);
 
-	cShapeBox* box = new cShapeBox(15, 15, 0.4);
+    //cShapeBox* box = new cShapeBox(15, 15, 0.4);
+	cShapeBox* box = new cShapeBox(11.4, 15, 0.4);
 	box->setMaterial(mat, true);
 	box->setLocalPos(0,0,-0.5);
 	m_world->addChild(box);
@@ -717,7 +723,7 @@ void PongScene::createRackets()
 
 	//ShadowlessMesh* opponentRacket = playerRacket->copy(false, false, true);
 	//ShadowlessMesh* opponentRacket = new ShadowlessMesh();
-	cMultiMesh* opponentRacket = new SelfShadowlessMesh();
+	cMultiMesh* opponentRacket = new ShadowlessMesh();
 
 	fileload = opponentRacket->loadFromFile("../gfx/racket.obj");
 	if (!fileload)

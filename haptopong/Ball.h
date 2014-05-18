@@ -2,11 +2,13 @@
 
 #include "GameObject.h"
 #include "BallProperties.h"
+#include "ShadowlessSphere.h"
+#include "ShadowSphere.h"
 
 class Ball : public GameObject
 {
 public:
-	Ball(chai3d::cShapeSphere* shape, btCollisionShape* collisionShape, const BallProperties &properties = BallProperties(), const btTransform &startTransform = btTransform(btMatrix3x3::getIdentity()));
+	Ball(ShadowlessSphere* shape, ShadowSphere* shadowShape, btCollisionShape* collisionShape, const BallProperties &properties = BallProperties(), const btTransform &startTransform = btTransform(btMatrix3x3::getIdentity()));
 	~Ball(void);
 
 	virtual GameObjectType getType() const { return BALL; };
@@ -50,7 +52,8 @@ private:
 
 	BallProperties m_properties;
 	btRigidBodyPtr m_body;
-	chai3d::cShapeSphere* m_shape;
+	ShadowlessSphere* m_shape;
+	ShadowSphere* m_shadowShape;
     
 	const btMotionState* m_motionState;
 	btTransform m_transform;

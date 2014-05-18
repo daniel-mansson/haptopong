@@ -4,12 +4,13 @@
 
 using namespace chai3d;
 
-Ball::Ball(chai3d::cShapeSphere* shape, btCollisionShape* collisionShape, const BallProperties &properties, const btTransform &startTransform) :
+Ball::Ball(ShadowlessSphere* shape, ShadowSphere* shadowShape, btCollisionShape* collisionShape, const BallProperties &properties, const btTransform &startTransform) :
 	m_bernoulli(0, 0, 0),
 	m_resistance(0, 0, 0),
 	m_velocity(0, 0, 0),
 	m_angularVelocity(0, 0, 0),
 	m_shape(shape),
+    m_shadowShape(shadowShape),
     m_properties(properties),
 	m_isActive(true)
 {   
@@ -29,12 +30,13 @@ Ball::Ball(chai3d::cShapeSphere* shape, btCollisionShape* collisionShape, const 
 	m_body->setDamping((float)m_properties.getLinDamping(), (float)m_properties.getAngDamping());
 	m_body->setUserPointer(this);
 	m_body->setActivationState(DISABLE_DEACTIVATION);
-    
 
 	setVelocity(btVector3(Util::RandRange(-0.2f, 0.2f), Util::RandRange(-0.2f, 0.2f), Util::RandRange(-0.2f, 0.2f)));
     //m_body->setCcdMotionThreshold(m_properties.getRadius()*0.9);
     //m_body->setCcdSweptSphereRadius(m_properties.getRadius()*0.9);
     
+    
+    //m_shadowShape->scale(0.9);
     
     
 	//Regural movement(0.15[sec] is the updating time that is needed for integration)
@@ -80,6 +82,8 @@ void Ball::render(float timeStep)
 
 	m_shape->setLocalPos(Util::Vec(m_transform.getOrigin()));
 	m_shape->setLocalRot(cMatrix3d(Util::Vec(m_transform.getRotation().getAxis()), m_transform.getRotation().getAngle()));
+
+    m_shadowShape->setLocalPos(m_transform.getOrigin().x(), m_transform.getOrigin().y(), m_transform.getOrigin().z() - m_properties.getRadius()+0.001);
 }
 
 void Ball::updateLogic(float timeStep)

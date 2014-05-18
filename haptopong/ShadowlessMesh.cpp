@@ -1,9 +1,9 @@
 #include "pch.h"
-#include "SelfShadowlessMesh.h"
+#include "ShadowlessMesh.h"
 
 using namespace chai3d;
 
-void SelfShadowlessMesh::render(cRenderOptions& a_options)
+void ShadowlessMesh::render(cRenderOptions& a_options)
 {
     chai3d::cRenderOptions newOptions = a_options;
     
@@ -26,7 +26,7 @@ void SelfShadowlessMesh::render(cRenderOptions& a_options)
     cMultiMesh::render(newOptions);
 }
 
-void SelfShadowlessMesh::renderSceneGraph(cRenderOptions& a_options)
+void ShadowlessMesh::renderSceneGraph(cRenderOptions& a_options)
 {
 #ifdef C_USE_OPENGL
     
