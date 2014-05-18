@@ -8,7 +8,8 @@ public:
 	virtual ~GlobalMoveAssistance(void);
 
 	void useGuiding(bool guide) { m_useGuiding = guide; }
-	
+	void setGuideForce(double force) { m_guideForce = force; }
+
 	virtual void render(const double& timeStep);
 	virtual void updateLogic(const double& timeStep);
 	virtual void updateHaptics(const double& timeStep, chai3d::cVector3d& force);
@@ -18,5 +19,6 @@ public:
 private:
 
 	bool m_useGuiding;
+	double m_guideForce;
 };
 

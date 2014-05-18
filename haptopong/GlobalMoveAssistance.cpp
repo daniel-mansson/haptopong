@@ -4,7 +4,9 @@
 using namespace chai3d;
 
 GlobalMoveAssistance::GlobalMoveAssistance(BallPtr ball, RacketPtr playerRacket, chai3d::cCamera* camera) :
-	AimAssistance(ball, playerRacket, camera)
+	AimAssistance(ball, playerRacket, camera),
+	m_guideForce(15.0),
+	m_useGuiding(false)
 {
 }
 
@@ -12,7 +14,7 @@ GlobalMoveAssistance::GlobalMoveAssistance(BallPtr ball, RacketPtr playerRacket,
 GlobalMoveAssistance::~GlobalMoveAssistance(void)
 {
 }
-
+ 
 void GlobalMoveAssistance::render(const double& timeStep)
 {
 	btVector3 pos = m_racket->getPosition();
