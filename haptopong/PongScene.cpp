@@ -812,10 +812,19 @@ void PongScene::createOutside()
 	mat.m_ambient = cColorf(1.0f, 1.0f, 1.0f, 1.0f);
 
 	//cShapeBox* box = new cShapeBox(15, 15, 0.4);
-	cShapeBox* box = new cShapeBox(11.4, 15, 0.4);
+	cShapeBox* box = new cShapeBox(5, 15, 0.4);
 	box->setMaterial(mat, true);
 	box->setLocalPos(0,0,-0.5);
 	m_world->addChild(box);
+    
+	cShapeBox* box2 = new cShapeBox(11.4, 15, 0.4);
+    mat.m_ambient.set(0.f, 0.f, 0.f);
+	mat.m_diffuse.set(0.f, 0.f, 0.f);
+	mat.m_specular.set(0.f, 0.f, 0.f);
+    mat.m_emission.set(0.75f, 0.75f , 0.75f);
+	box2->setMaterial(mat, true);
+	box2->setLocalPos(0,0,-0.51);
+	m_world->addChild(box2);
 
 }
 
