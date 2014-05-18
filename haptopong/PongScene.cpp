@@ -425,9 +425,33 @@ void PongScene::onKeyDown(unsigned char key, int x, int y)
 	if(key == 'r')
 	{
 		m_ball->stop();
-		m_ball->setPosition(btVector3(1.4f, 0.06f, 0.58f));
+		m_ball->setPosition(btVector3(1.2f, 0.0f, 0.58f));
 		m_ball->setVelocity(btVector3(5.f, 0.f, 0.f));
 		m_ball->setAngularVelocity(btVector3(0, 0, 0));
+		m_ball->setActive(true);
+	}
+	if(key == 't')
+	{
+		m_ball->stop();
+		m_ball->setPosition(btVector3(1.2f, 0.0f, 0.58f));
+		m_ball->setVelocity(btVector3(5.f, 0.f, 0.f));
+		m_ball->setAngularVelocity(btVector3(10, 0, 0));
+		m_ball->setActive(true);
+	}
+	if(key == 'y')
+	{
+		m_ball->stop();
+		m_ball->setPosition(btVector3(1.2f, 0.0f, 0.58f));
+		m_ball->setVelocity(btVector3(5.f, 0.f, 0.f));
+		m_ball->setAngularVelocity(btVector3(0, 10, 0));
+		m_ball->setActive(true);
+	}
+	if(key == 'u')
+	{
+		m_ball->stop();
+		m_ball->setPosition(btVector3(1.2f, 0.0f, 0.58f));
+		m_ball->setVelocity(btVector3(5.f, 0.f, 0.f));
+		m_ball->setAngularVelocity(btVector3(0, 0, 10));
 		m_ball->setActive(true);
 	}
 
