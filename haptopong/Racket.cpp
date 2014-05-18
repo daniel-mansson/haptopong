@@ -133,7 +133,7 @@ void Racket::updateLogic(float timeStep)
 	}
 }
 
-//#define USE_MOUSE
+//#define USE_MOUSE 
 
 void Racket::updateHaptics(chai3d::cGenericHapticDevicePtr device, const double& timeStep)
 {
