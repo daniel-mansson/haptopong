@@ -129,6 +129,8 @@
     <ClCompile Include="CustomCamera.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="CustomSphere.cpp" />
+    <ClCompile Include="CustomWorld.cpp" />
     <ClCompile Include="GameObject.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
     </ClCompile>
@@ -174,6 +176,7 @@
     <ClCompile Include="NetworkScene.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="NoRecieveShadowMesh.cpp" />
     <ClCompile Include="Outside.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
     </ClCompile>
@@ -248,6 +251,8 @@
     <ClInclude Include="BounceEffectPool.h" />
     <ClInclude Include="CollisionResponse.h" />
     <ClInclude Include="CustomCamera.h" />
+    <ClInclude Include="CustomSphere.h" />
+    <ClInclude Include="CustomWorld.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectType.h" />
     <ClInclude Include="GameRules.h" />
@@ -264,6 +269,7 @@
     <ClInclude Include="MetaGameInfo.h" />
     <ClInclude Include="Net.h" />
     <ClInclude Include="NetworkScene.h" />
+    <ClInclude Include="NoRecieveShadowMesh.h" />
     <ClInclude Include="Outside.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PlayerId.h" />

@@ -190,6 +190,15 @@
     <ClCompile Include="ShadowSphere.cpp">
       <Filter>Pong\Shapes</Filter>
     </ClCompile>
+    <ClCompile Include="CustomSphere.cpp">
+      <Filter>Pong\Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomWorld.cpp">
+      <Filter>Pong\Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="NoRecieveShadowMesh.cpp">
+      <Filter>Pong\Shapes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -337,6 +346,15 @@
       <Filter>Pong\Shapes</Filter>
     </ClInclude>
     <ClInclude Include="ShadowSphere.h">
+      <Filter>Pong\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomSphere.h">
+      <Filter>Pong\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomWorld.h">
+      <Filter>Pong\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="NoRecieveShadowMesh.h">
       <Filter>Pong\Shapes</Filter>
     </ClInclude>
   </ItemGroup>
