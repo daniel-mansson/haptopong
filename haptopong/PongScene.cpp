@@ -15,6 +15,7 @@ BallEventManagerPtr g_ballEventMgr = nullptr;
 
 bool OnContactProcessed(btManifoldPoint& point,void* body0,void* body1)
 {
+	//std::cerr<<"CONTACT\n";
 	GameObject* go0 = (GameObject*)((btRigidBody*)body0)->getUserPointer();
 	GameObject* go1 = (GameObject*)((btRigidBody*)body1)->getUserPointer();
 
@@ -76,15 +77,21 @@ PongScene::PongScene(Application& app, GameRulesManagerPtr gameRules) :
 
 	m_dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher,overlappingPairCache,solver,collisionConfiguration);
 	m_dynamicsWorld->setGravity(btVector3(0, 0, -7));
-
+	
+	//std::cerr<<0;
+	
 	createTable();
 	createNet();
 	createBall();
 	createRackets();
 	createOutside();
-
+	//std::cerr<<1;
+	//Sleep(1000);
+	
+	//std::cerr<<2;
 	gContactProcessedCallback = &OnContactProcessed;
-
+	
+	//std::cerr<<3;
 	m_aimAssistance = AimAssistancePtr(new AimAssistance(m_ball, m_playerRacket, m_camera));
 	m_ballEventMgr->setAimAssistance(m_aimAssistance);
 
@@ -195,7 +202,12 @@ void PongScene::updateLogic(const double& timeStep)
 			btVector3 pos = m_playerRacket->getPosition();
 			m_gameRules->updatePlayerPos(pos);
 		}
+	}
 
+	if(m_hapticButtonPressed)
+	{
+		m_hapticButtonPressed = false;
+		startServe();
 	}
 
 	if(m_serve != NO_PLAYER)
@@ -207,17 +219,21 @@ void PongScene::updateLogic(const double& timeStep)
 		m_ball->setActive(false);
 	}
 
+	//std::cout<<1;
 	m_aimAssistance->updateLogic(timeStep);
 	m_table->updateLogic((float)timeStep);
 	m_net->updateLogic((float)timeStep);
 	m_ball->updateLogic((float)timeStep);
 	m_playerRacket->updateLogic((float)timeStep);
 	m_opponentRacket->updateLogic((float)timeStep);
-
+	
+	//std::cout<<2;
 	//m_dynamicsWorld->stepSimulation((btScalar)timeStep, 10);
 	//m_dynamicsWorld->stepSimulation((btScalar)timeStep, 5, btScalar(1.)/btScalar(120.));
+	//std::cout<<"   "<<m_dynamicsWorld<<"  ";
 	m_dynamicsWorld->stepSimulation((btScalar)timeStep, 10, btScalar(1.)/btScalar(500.));
-
+	
+	//std::cout<<3;
 
 
 	/*	m_camera->set(cVector3d (2.47, (double)m_ball->getBody()->getCenterOfMassPosition().y(), (double)m_ball->getBody()->getCenterOfMassPosition().z()),   // camera position (eye)
@@ -228,6 +244,7 @@ void PongScene::updateLogic(const double& timeStep)
 
 void PongScene::updateHaptics(const double& timeStep)
 {
+	//std::cerr<<'h';
 	m_playerRacket->updateHaptics(m_app.getHapticDevice(), timeStep);
 
 	cVector3d force(0,0,0);
@@ -236,6 +253,22 @@ void PongScene::updateHaptics(const double& timeStep)
 	m_aimAssistance->updateHaptics(timeStep, force);
 
 	m_app.getHapticDevice()->setForce(force);
+	
+	bool button;
+	m_app.getHapticDevice()->getUserSwitch(0, button);
+
+	if(button)
+	{
+		if(!m_hapticButtonDown)
+		{
+			m_hapticButtonDown = true;
+			m_hapticButtonPressed = true;
+		}
+	}
+	else
+	{
+		m_hapticButtonDown = false;
+	}
 
 #ifdef TESTING_NETWORK
 	::Sleep(10);
@@ -330,7 +363,6 @@ void PongScene::updateBallState(const btVector3& position, const btVector3& velo
 		m_ballEventMgr->playSound(hitMagnitude);
 	}
 }
-
 
 void PongScene::prepareServe(PlayerId serve)
 {
@@ -480,10 +512,22 @@ void PongScene::onKeyDown(unsigned char key, int x, int y)
 		m_opponentRacket->setSize(2.0);
 		m_opponentRacket->setMoveAreaScale(18.0f);
 	}
-	if(key == ' ')
+	if(key == '3')
+	{
+		auto* gma = new GlobalMoveAssistance(m_ball, m_playerRacket, m_camera);
+		gma->useGuiding(true);
+		m_aimAssistance = AimAssistancePtr(gma);
+		m_ballEventMgr->setAimAssistance(m_aimAssistance);
+		m_playerRacket->setSize(2.0);
+		m_playerRacket->setMoveAreaScale(18.0f);
+		m_opponentRacket->setSize(2.0);
+		m_opponentRacket->setMoveAreaScale(18.0f);
+	}
+	if(key == ' ' )
 	{
 		startServe();
 	}
+
 	if(key == 'h')
 	{
 		prepareServe(PLAYER_LOCAL);

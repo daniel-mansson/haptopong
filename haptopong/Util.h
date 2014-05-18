@@ -43,6 +43,7 @@ public:
         }
         
         btConvexTriangleMeshShape* shape = new btConvexTriangleMeshShape(trimesh, true);
+		volatile auto* p = shape->getConvexPolyhedron();
         shape->setMargin((btScalar)0.);
         
         //bool useQuantization = false;
