@@ -5,6 +5,15 @@
 
 using namespace chai3d;
 
+
+/*CustomCamera::CustomCamera(cWorld* parent, cGenericObject* excludeOpaque1, cGenericObject* excludeOpaque2) :
+ cCamera(parent),
+ m_excludeOpaque1(excludeOpaque1),
+ m_excludeOpaque2(excludeOpaque2)
+ {
+ 
+ }*/
+
 CustomCamera::CustomCamera(cWorld* parent) :
 	cCamera(parent)
 {

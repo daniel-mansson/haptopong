@@ -2,9 +2,8 @@
 #include "PongScene.h"
 #include "Application.h"
 #include "ShadowlessMesh.h"
-#include "ShadowlessSphere.h"
-#include "ShadowSphere.h"
-#include "CustomWorld.h"
+#include "NoRecieveShadowMesh.h"
+#include "CustomSphere.h"
 #include "CustomCamera.h"
 #include "GlobalMoveAssistance.h"
 
@@ -662,14 +661,9 @@ void PongScene::createBall()
 {
 	BallProperties properties;
 
-	ShadowlessSphere* ballShape = new ShadowlessSphere((double)properties.getRadius());
+	CustomSphere* ballShape = new CustomSphere(m_world.get(), (double)properties.getRadius());
 
 	m_world->addChild(ballShape);
-
-    ShadowSphere* shadowShape = new ShadowSphere((double)properties.getRadius(), (double)properties.getRadius(), 0.);
-    shadowShape->setUseCulling(true);
-    
-    m_world->addChild(shadowShape);
     
 	m_ballCollisionShape = std::make_shared<btSphereShape>(btScalar(properties.getRadius()));
 
@@ -691,7 +685,7 @@ void PongScene::createBall()
 	//startTransform.setOrigin(btVector3(1.75,0,0.65));
 	//startTransform.setOrigin(btVector3(2.2,0,0.9));
 
-	m_ball = std::make_shared<Ball>(ballShape, shadowShape, m_ballCollisionShape.get(), properties, startTransform);
+	m_ball = std::make_shared<Ball>(ballShape, m_ballCollisionShape.get(), properties, startTransform);
 
 	m_dynamicsWorld->addRigidBody(m_ball->getBody());
 }
@@ -752,7 +746,7 @@ void PongScene::createRackets()
 
 	//ShadowlessMesh* opponentRacket = playerRacket->copy(false, false, true);
 	//ShadowlessMesh* opponentRacket = new ShadowlessMesh();
-	cMultiMesh* opponentRacket = new ShadowlessMesh();
+	cMultiMesh* opponentRacket = new NoRecieveShadowMesh();
 
 	fileload = opponentRacket->loadFromFile("../gfx/racket.obj");
 	if (!fileload)
@@ -765,7 +759,6 @@ void PongScene::createRackets()
 	mat.m_diffuse.set( 0.5f, 0.5f, 0.5f);
 	mat.m_specular.set(1.0f, 1.0f, 1.0f);
 	opponentRacket->setMaterial(mat, true);
-	//opponentRacket->computeAllNormals();
 
 	opponentRacket->setUseCulling(true);
 

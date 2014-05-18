@@ -4,13 +4,12 @@
 
 using namespace chai3d;
 
-Ball::Ball(ShadowlessSphere* shape, ShadowSphere* shadowShape, btCollisionShape* collisionShape, const BallProperties &properties, const btTransform &startTransform) :
+Ball::Ball(cGenericObject* shape, btCollisionShape* collisionShape, const BallProperties &properties, const btTransform &startTransform) :
 	m_bernoulli(0, 0, 0),
 	m_resistance(0, 0, 0),
 	m_velocity(0, 0, 0),
 	m_angularVelocity(0, 0, 0),
 	m_shape(shape),
-	m_shadowShape(shadowShape),
 	m_properties(properties),
 	m_isActive(true)
 {   
@@ -87,8 +86,6 @@ void Ball::render(float timeStep)
 
 	m_shape->setLocalPos(Util::Vec(m_transform.getOrigin()));
 	m_shape->setLocalRot(cMatrix3d(Util::Vec(m_transform.getRotation().getAxis()), m_transform.getRotation().getAngle()));
-
-	m_shadowShape->setLocalPos(m_transform.getOrigin().x(), m_transform.getOrigin().y(), m_transform.getOrigin().z() - m_properties.getRadius()+0.001);
 }
 
 void Ball::updateLogic(float timeStep)
@@ -163,7 +160,7 @@ btRigidBody* Ball::getBody() const {
 	return m_body.get();
 }
 
-chai3d::cShapeSphere* Ball::getShape() const {
+chai3d::cGenericObject* Ball::getShape() const {
 	return m_shape;
 }
 
