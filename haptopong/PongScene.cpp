@@ -199,7 +199,7 @@ void PongScene::updateLogic(const double& timeStep)
 	if(m_serve != NO_PLAYER)
 	{
 		m_ball->stop();
-		m_ball->setPosition(btVector3(0, 0, 0.4f));
+		m_ball->setPosition(btVector3(0, 0, 0.7f));
 		m_ball->setVelocity(btVector3(0, 0, 0));
 		m_ball->setAngularVelocity(btVector3(0, 0, 0));
 		m_ball->setActive(false);
@@ -345,8 +345,8 @@ void PongScene::startServe()
 	if(m_serve == m_gameRules->getPlayerId())
 	{
 		m_ball->stop();
-		m_ball->setPosition(btVector3(0, 0, 0.4f));
-		m_ball->setVelocity(btVector3(1.7f, Util::RandRange(-0.5f, 0.5f), 2.0f));
+		m_ball->setPosition(btVector3(0, 0, 0.7f));
+		m_ball->setVelocity(btVector3(2.0f, Util::RandRange(-0.5f, 0.5f), 0.4f));
 		m_ball->setAngularVelocity(btVector3(0, 0, -30 * m_ball->getVelocity().y()));
 		m_ball->setActive(true);
 		m_serve = NO_PLAYER;

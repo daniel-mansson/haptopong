@@ -35,6 +35,8 @@ void AimAssistance::applyImpulseFromRacket(btManifoldPoint& point)
 		bvel *= 5.5f / len;
 
 	m_ball->setVelocity(bvel);
+	
+	changeVel(btVector3(-1.2f, 0, 0));
 
 	//std::cout<<"HIT! "<< Util::Vec(bvel)<<"\n";
 
