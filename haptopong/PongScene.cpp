@@ -231,7 +231,7 @@ void PongScene::updateLogic(const double& timeStep)
 	//m_dynamicsWorld->stepSimulation((btScalar)timeStep, 10);
 	//m_dynamicsWorld->stepSimulation((btScalar)timeStep, 5, btScalar(1.)/btScalar(120.));
 	//std::cout<<"   "<<m_dynamicsWorld<<"  ";
-	m_dynamicsWorld->stepSimulation((btScalar)timeStep, 10, btScalar(1.)/btScalar(500.));
+	m_dynamicsWorld->stepSimulation((btScalar)timeStep * 0.8f, 10, btScalar(1.)/btScalar(500.));
 	
 	//std::cout<<3;
 
