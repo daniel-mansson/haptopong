@@ -5,7 +5,7 @@ using namespace chai3d;
 
 GlobalMoveAssistance::GlobalMoveAssistance(BallPtr ball, RacketPtr playerRacket, chai3d::cCamera* camera) :
 	AimAssistance(ball, playerRacket, camera),
-	m_guideForce(10.0),
+	m_guideForce(5.0),
 	m_useGuiding(false)
 {
 }
@@ -43,16 +43,16 @@ void GlobalMoveAssistance::updateHaptics(const double& timeStep, chai3d::cVector
 
 	cVector3d toBall = bpos - rpos;
 	
-	double v = cAbs(toBall(0) * 0.5);
-	double factor = cClamp01(1.0 - v);
+	double v = bpos(0) - 0.5;
+	double factor = cClamp01(v) * cClamp01(3 - bpos(0));
 	
 	toBall(0) = 0.0;
 	double dist = toBall.length();
 	toBall /= dist;
-	/*
-	dist = cClamp01(dist / 3.0);
-	dist *= cSqr(dist);
-	dist *= 3;*/
+	
+	dist = cClamp01(dist / 1.0);
+	dist = sqrt(dist);
+	dist *= 1;
 
 	double f = cClamp(factor * m_guideForce * dist, -5.0, 5.0);
 
