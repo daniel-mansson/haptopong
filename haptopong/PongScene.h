@@ -87,5 +87,10 @@ private:
 	bool m_roundOver;
 	double m_roundOverTimer;
 	PlayerId m_nextServe;
+	
+	chai3d::cLabel* m_scoreLabel;
+	chai3d::cFontPtr m_scoreFont;
+	chai3d::cLabel* m_infoLabel;
+	chai3d::cFontPtr m_infoFont;
 };
 
