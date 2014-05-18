@@ -18,7 +18,7 @@ public:
 	virtual void initialize() = 0;
 	
 	virtual void onBallHitTable(const Ball& ball, const Table& table) = 0;
-	virtual void onBallHitRacket(const Ball& ball, const Racket& racket) = 0;
+	virtual void onBallHitRacket(const Ball& ball, const Racket& racket, float hitMagnitude) = 0;
 	virtual void onBallOut(const Ball& ball) = 0;
 	virtual void onServeStart(const Ball& ball) = 0;
 

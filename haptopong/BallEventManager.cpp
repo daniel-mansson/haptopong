@@ -39,7 +39,7 @@ void BallEventManager::OnTableHit(btManifoldPoint& point, Table& table, Ball& ba
 	m_lastHit = TABLE;
 	
 	btVector3 pos = ball.getPosition();
-	pos[2] = 0.055;
+	pos[2] = 0.055f;
 	m_bouncePool->put(pos);
 }
 
@@ -65,12 +65,12 @@ void BallEventManager::OnRacketHit(btManifoldPoint& point, Racket& racket, Ball&
 			float scale = 0.23f;
 			float offset = 0;
 			float tmp = chai3d::cAbs(xvel) * scale + offset;
-			m_racketHit->play(chai3d::cClamp(tmp, 0.7f, 1.6f));
-
+			float hitMagnitude = (float)chai3d::cClamp(tmp, 0.7f, 1.6f);
+			playSound(hitMagnitude);
 			m_aimAssistance->applyImpulseFromRacket(point);
 
 			if(m_gameRulesMgr != nullptr && ball.isActive())
-				m_gameRulesMgr->onBallHitRacket(ball, racket);
+				m_gameRulesMgr->onBallHitRacket(ball, racket, hitMagnitude);
 			
 			racket.flash();
 
@@ -80,6 +80,11 @@ void BallEventManager::OnRacketHit(btManifoldPoint& point, Racket& racket, Ball&
 
 	//std::cout<<"Racket hit!\n";
 	m_lastHit = RACKET;
+}
+
+void BallEventManager::playSound(float hitMagnitude)
+{
+	m_racketHit->play(hitMagnitude);
 }
 
 void BallEventManager::OnOutside(btManifoldPoint& point, Ball& ball)

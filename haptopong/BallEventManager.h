@@ -24,6 +24,8 @@ public:
 
 	void setAimAssistance(AimAssistancePtr aimAssistance) { m_aimAssistance = aimAssistance; }
 
+	void playSound(float hitMagnitude);
+
 private:
 	HapticResponseManagerPtr m_hapticResponseMgr;
 	GameRulesManagerPtr m_gameRulesMgr;

@@ -47,7 +47,7 @@ void LocalRulesManager::onBallHitTable(const Ball& ball, const Table& table)
 	checkGameRules();
 }
 
-void LocalRulesManager::onBallHitRacket(const Ball& ball, const Racket& racket)
+void LocalRulesManager::onBallHitRacket(const Ball& ball, const Racket& racket, float hitMagnitude)
 {
 	m_gameRules->onBallHitRacket(racket.getPlayerId());
 	checkGameRules();
@@ -58,7 +58,7 @@ void LocalRulesManager::onBallHitRacket(const Ball& ball, const Racket& racket)
 	btVector3 vel = ball.getVelocity();
 	btVector3 angVel = ball.getAngularVelocity();
 
-	sendMessage(MessagePtr(new BallState(transform.getOrigin(), vel, angVel)), ENET_PACKET_FLAG_RELIABLE);
+	sendMessage(MessagePtr(new BallState(transform.getOrigin(), vel, angVel, hitMagnitude)), ENET_PACKET_FLAG_RELIABLE);
 }
 
 void LocalRulesManager::onServeStart(const Ball& ball)
@@ -69,7 +69,7 @@ void LocalRulesManager::onServeStart(const Ball& ball)
 	btVector3 vel = ball.getVelocity();
 	btVector3 angVel = ball.getAngularVelocity();
 
-	sendMessage(MessagePtr(new BallState(transform.getOrigin(), vel, angVel, 1)), ENET_PACKET_FLAG_RELIABLE);
+	sendMessage(MessagePtr(new BallState(transform.getOrigin(), vel, angVel, 0.0, 1)), ENET_PACKET_FLAG_RELIABLE);
 
 	m_gameRules->onNewRound();
 }
@@ -174,7 +174,12 @@ void LocalRulesManager::update(const double& timeStep)
 				case G_BALLSTATE:
 					{
 						BallState* ballState = (BallState*)msg.get();
-						m_pongScene->updateBallState(ballState->getPosition(), ballState->getVelocity(), ballState->getAngularVelocity(), ballState->getServe());
+						m_pongScene->updateBallState(
+							ballState->getPosition(), 
+							ballState->getVelocity(), 
+							ballState->getAngularVelocity(), 
+							ballState->getServe(),
+							ballState->getHitMagnitude());
 						if(ballState->getServe() != 0)
 							m_gameRules->onNewRound();
 					}

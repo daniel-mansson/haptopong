@@ -34,7 +34,7 @@ public:
 	void onGameOver(int localScore, int remoteScore, PlayerId winner);
 
 	void updateOpponentPos(const btVector3& position);
-	void updateBallState(const btVector3& position, const btVector3& velocity, const btVector3& angularVelocity, int serve);
+	void updateBallState(const btVector3& position, const btVector3& velocity, const btVector3& angularVelocity, int serve, float hitMagnitude);
 	
 	static ScenePtr create(Application& app) { return ScenePtr(new PongScene(app, nullptr)); }
 	static ScenePtr create(Application& app, GameRulesManagerPtr gameRules) 

@@ -12,7 +12,7 @@ public:
 	virtual void initialize();
 
 	virtual void onBallHitTable(const Ball& ball, const Table& table);
-	virtual void onBallHitRacket(const Ball& ball, const Racket& racket);
+	virtual void onBallHitRacket(const Ball& ball, const Racket& racket, float hitMagnitude);
 	virtual void onBallOut(const Ball& ball);
 	virtual void onServeStart(const Ball& ball);
 	

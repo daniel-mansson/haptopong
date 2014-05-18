@@ -239,7 +239,7 @@ void PongScene::updateOpponentPos(const btVector3& position)
 	m_opponentRacket->setPosition(pos, m_networkTimer.getTimeStep());
 }
 
-void PongScene::updateBallState(const btVector3& position, const btVector3& velocity, const btVector3& angularVelocity, int serve)
+void PongScene::updateBallState(const btVector3& position, const btVector3& velocity, const btVector3& angularVelocity, int serve, float hitMagnitude)
 {
 	m_ball->stop();
 	m_ball->setPosition(invert(position));
@@ -248,6 +248,11 @@ void PongScene::updateBallState(const btVector3& position, const btVector3& velo
 	m_ball->setActive(serve == 0);
 	if(serve != 0)
 		m_serve = NO_PLAYER;
+	else
+	{
+		m_opponentRacket->flash();
+		m_ballEventMgr->playSound(hitMagnitude);
+	}
 }
 
 

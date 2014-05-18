@@ -41,7 +41,7 @@ void RemoteRulesManager::onBallHitTable(const Ball& ball, const Table& table)
 	sendMessage(MessagePtr(new BallEvent(id, BallEvent::BALLEVENT_TABLE)), ENET_PACKET_FLAG_RELIABLE);
 }
 
-void RemoteRulesManager::onBallHitRacket(const Ball& ball, const Racket& racket)
+void RemoteRulesManager::onBallHitRacket(const Ball& ball, const Racket& racket, float hitMagnitude)
 {
 	sendMessage(MessagePtr(new BallEvent(racket.getPlayerId(), BallEvent::BALLEVENT_RACKET)), ENET_PACKET_FLAG_RELIABLE);
 
@@ -51,7 +51,7 @@ void RemoteRulesManager::onBallHitRacket(const Ball& ball, const Racket& racket)
 	btVector3 vel = ball.getVelocity();
 	btVector3 angVel = ball.getAngularVelocity();
 
-	sendMessage(MessagePtr(new BallState(transform.getOrigin(), vel, angVel)), ENET_PACKET_FLAG_RELIABLE);
+	sendMessage(MessagePtr(new BallState(transform.getOrigin(), vel, angVel, hitMagnitude)), ENET_PACKET_FLAG_RELIABLE);
 }
 
 void RemoteRulesManager::onServeStart(const Ball& ball)
@@ -62,7 +62,7 @@ void RemoteRulesManager::onServeStart(const Ball& ball)
 	btVector3 vel = ball.getVelocity();
 	btVector3 angVel = ball.getAngularVelocity();
 
-	sendMessage(MessagePtr(new BallState(transform.getOrigin(), vel, angVel, 1)), ENET_PACKET_FLAG_RELIABLE);
+	sendMessage(MessagePtr(new BallState(transform.getOrigin(), vel, angVel, 0.0, 1)), ENET_PACKET_FLAG_RELIABLE);
 }
 
 void RemoteRulesManager::onBallOut(const Ball& ball)
@@ -101,7 +101,12 @@ void RemoteRulesManager::update(const double& timeStep)
 				case G_BALLSTATE:
 					{
 						BallState* ballState = (BallState*)msg.get();
-						m_pongScene->updateBallState(ballState->getPosition(), ballState->getVelocity(), ballState->getAngularVelocity(), ballState->getServe());
+						m_pongScene->updateBallState(
+							ballState->getPosition(), 
+							ballState->getVelocity(), 
+							ballState->getAngularVelocity(), 
+							ballState->getServe(),
+							ballState->getHitMagnitude());
 					}
 					break;
 				case G_META:

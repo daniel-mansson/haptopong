@@ -10,7 +10,7 @@ public:
 	{
 	}
 
-	BallState(const btVector3& position, const btVector3& vel, const btVector3& angVel, unsigned char serve = 0) :
+	BallState(const btVector3& position, const btVector3& vel, const btVector3& angVel, float hitMagnitude, unsigned char serve = 0) :
 		m_position(position),
 		m_velocity(vel),
 		m_angularVelocity(angVel),
@@ -39,10 +39,15 @@ public:
 		return m_serve;
 	}
 
+	float getHitMagnitude() const
+	{
+		return m_hitMagnitude;
+	}
+
 	virtual int getSize() const
 	{
 		//type + pos + serve
-		return 1 + 3 * 3 * sizeof(float) + 1;
+		return 1 + 3 * 3 * sizeof(float) + 1 + sizeof(float);
 	}
 
 	virtual const unsigned char* getData() const
@@ -77,6 +82,9 @@ public:
 			*(float*)buffer = m_angularVelocity[i];
 			buffer += sizeof(float);
 		}
+		
+		*(float*)buffer = m_hitMagnitude;
+		buffer += sizeof(float);
 
 		*buffer = m_serve;
 		buffer += 1;
@@ -101,6 +109,9 @@ public:
 			m_angularVelocity[i] = *(float*)buffer;
 			buffer += sizeof(float);
 		}
+		
+		m_hitMagnitude = *(float*)buffer;
+		buffer += sizeof(float);
 
 		m_serve = *buffer;
 		buffer += 1;
@@ -111,6 +122,7 @@ private:
 	btVector3 m_position;
 	btVector3 m_velocity;
 	btVector3 m_angularVelocity;
+	float m_hitMagnitude;
 	unsigned char m_serve;
 };
 
