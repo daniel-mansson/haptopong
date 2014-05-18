@@ -101,13 +101,13 @@ PongScene::PongScene(Application& app, GameRulesManagerPtr gameRules) :
 	m_ball->onRoundStart();
 
 
-	m_scoreFont = cFontPtr(NEW_CFONTCALIBRI40());
-	m_infoFont = cFontPtr(NEW_CFONTCALIBRI40());
+	m_scoreFont = NEW_CFONTCALIBRI40(); //cFontPtr(NEW_CFONTCALIBRI40());
+	m_infoFont = NEW_CFONTCALIBRI40(); //cFontPtr(NEW_CFONTCALIBRI40());
 
-	m_scoreLabel = new cLabel(m_scoreFont.get());
+	m_scoreLabel = new cLabel(m_scoreFont/*.get()*/);
 	m_scoreLabel->setString("0 - 0");
 
-	m_infoLabel = new cLabel(m_infoFont.get());
+	m_infoLabel = new cLabel(m_infoFont/*.get()*/);
 	m_infoLabel->setString(m_gameRules->getPlayerId() == PLAYER_LOCAL ? "Your serve!" : "Opponent's serve!");
 
 	m_camera->m_frontLayer->addChild(m_infoLabel);

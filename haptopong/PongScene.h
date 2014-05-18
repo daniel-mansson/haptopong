@@ -91,9 +91,9 @@ private:
 	PlayerId m_nextServe;
 	
 	chai3d::cLabel* m_scoreLabel;
-	chai3d::cFontPtr m_scoreFont;
+	chai3d::cFont* m_scoreFont;
 	chai3d::cLabel* m_infoLabel;
-	chai3d::cFontPtr m_infoFont;
+	chai3d::cFont* m_infoFont;
 	
 	bool m_hapticButtonDown;
 	bool m_hapticButtonPressed;
