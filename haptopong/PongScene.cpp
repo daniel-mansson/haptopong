@@ -106,6 +106,9 @@ PongScene::PongScene(Application& app, GameRulesManagerPtr gameRules) :
 
 	m_camera->m_frontLayer->addChild(m_infoLabel);
 	m_camera->m_frontLayer->addChild(m_scoreLabel);
+	
+	m_hapticButtonDown = false;
+	m_hapticButtonPressed = false;
 }
 
 PongScene::~PongScene(void)
