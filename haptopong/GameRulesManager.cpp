@@ -9,7 +9,8 @@
 #include "BallState.h"
 #include "MetaGameInfo.h"
 
-GameRulesManager::GameRulesManager() 
+GameRulesManager::GameRulesManager() :
+	m_enabled(true)
 {
 	m_msgBufferMaxLength = 2048;
 	m_msgBuffer = new unsigned char[m_msgBufferMaxLength];

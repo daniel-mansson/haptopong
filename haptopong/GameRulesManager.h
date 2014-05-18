@@ -33,6 +33,8 @@ public:
 	virtual PlayerId getPlayerId() const = 0;
 	virtual PlayerId getOpponentId() const = 0;
 
+	void setEnabled(bool enabled) { m_enabled = enabled; }
+
 protected:
 	virtual void updateMessages(unsigned char* buffer, int length);
 
@@ -43,6 +45,7 @@ protected:
 
 	PongScene* m_pongScene;
 	std::string m_status;
+	bool m_enabled;
 };
 
 typedef std::shared_ptr<GameRulesManager> GameRulesManagerPtr;

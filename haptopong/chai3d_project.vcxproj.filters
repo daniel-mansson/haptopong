@@ -46,6 +46,9 @@
     <Filter Include="Pong\BounceEffect">
       <UniqueIdentifier>{953eaa13-6218-4def-9fd2-48cef5b7aeed}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pong\Shapes">
+      <UniqueIdentifier>{a3ac38a5-be4a-48ea-aedf-703f16d97e08}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -169,12 +172,6 @@
     <ClCompile Include="IgnoreEverythingRules.cpp">
       <Filter>Rules&amp;Network\GameRules</Filter>
     </ClCompile>
-    <ClCompile Include="SelfShadowlessMesh.cpp">
-      <Filter>Pong</Filter>
-    </ClCompile>
-    <ClCompile Include="SelfShadowlessSphere.cpp">
-      <Filter>Pong</Filter>
-    </ClCompile>
     <ClCompile Include="BounceEffectPool.cpp">
       <Filter>Pong\BounceEffect</Filter>
     </ClCompile>
@@ -182,7 +179,16 @@
       <Filter>Pong\BounceEffect</Filter>
     </ClCompile>
     <ClCompile Include="ShadowlessCylinder.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Pong\Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="ShadowlessMesh.cpp">
+      <Filter>Pong\Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="ShadowlessSphere.cpp">
+      <Filter>Pong\Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="ShadowSphere.cpp">
+      <Filter>Pong\Shapes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -315,12 +321,6 @@
     <ClInclude Include="IgnoreEverythingRules.h">
       <Filter>Rules&amp;Network\GameRules</Filter>
     </ClInclude>
-    <ClInclude Include="SelfShadowlessMesh.h">
-      <Filter>Pong</Filter>
-    </ClInclude>
-    <ClInclude Include="SelfShadowlessSphere.h">
-      <Filter>Pong</Filter>
-    </ClInclude>
     <ClInclude Include="BounceEffectPool.h">
       <Filter>Pong\BounceEffect</Filter>
     </ClInclude>
@@ -328,7 +328,16 @@
       <Filter>Pong\BounceEffect</Filter>
     </ClInclude>
     <ClInclude Include="ShadowlessCylinder.h">
-      <Filter>Header Files</Filter>
+      <Filter>Pong\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="ShadowlessMesh.h">
+      <Filter>Pong\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="ShadowlessSphere.h">
+      <Filter>Pong\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="ShadowSphere.h">
+      <Filter>Pong\Shapes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

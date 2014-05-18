@@ -84,5 +84,8 @@ private:
 	AimAssistancePtr m_aimAssistance;
 	PlayerId m_serve;
 	BounceEffectPoolPtr m_bouncePool;
+	bool m_roundOver;
+	double m_roundOverTimer;
+	PlayerId m_nextServe;
 };
 

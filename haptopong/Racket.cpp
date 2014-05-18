@@ -139,7 +139,7 @@ void Racket::updateHaptics(chai3d::cGenericHapticDevicePtr device, const double&
 	m_hapticPos(1) =  p.x * 0.0001 - 0.080;
 	m_hapticPos(2) = -p.y * 0.0001 + 0.080;
 
-	prev(0) = m_hapticPos(0) + 0.0088;
+	prev(0) = m_hapticPos(0) + 0.0028;
 
 #else
 	chai3d::cVector3d prev = m_hapticPos;

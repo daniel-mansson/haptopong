@@ -43,6 +43,9 @@ public:
 	//A ball is active if it is moving towards the local player.
 	bool isActive() const { return m_isActive; }
 	void setActive(bool active) { m_isActive = active; }
+	
+	void onRoundStart();
+	void onRoundEnd();
 
 private:
 	chai3d::cVector3d m_bernoulli;
@@ -58,6 +61,9 @@ private:
 	const btMotionState* m_motionState;
 	btTransform m_transform;
 	bool m_isActive;
+	
+	chai3d::cMaterial m_playMat;
+	chai3d::cMaterial m_inactiveMat;
 };
 
 typedef std::shared_ptr<Ball> BallPtr;

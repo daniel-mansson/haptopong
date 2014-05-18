@@ -49,7 +49,9 @@ PongScene::PongScene(Application& app, GameRulesManagerPtr gameRules) :
 	Scene(app),
 	m_gameRules(gameRules),
 	m_networkTimer(1.0 / 20.0),
-	m_serve(PLAYER_LOCAL)
+	m_serve(PLAYER_LOCAL),
+	m_roundOver(false),
+	m_roundOverTimer(0.0)
 {
 	m_hapticResponseMgr = HapticResponseManagerPtr(new HapticResponseManager());
 	
@@ -89,7 +91,8 @@ PongScene::PongScene(Application& app, GameRulesManagerPtr gameRules) :
 
 	if(m_gameRules != nullptr)
 		m_gameRules->initialize();
-
+	
+	m_ball->onRoundStart();
 }
 
 PongScene::~PongScene(void)
@@ -138,6 +141,17 @@ void PongScene::render(const double& timeStep)
 
 void PongScene::updateLogic(const double& timeStep)
 {
+	if(m_roundOver)
+	{
+		m_roundOverTimer -= timeStep;
+		if(m_roundOverTimer <= 0.0)
+		{
+			m_roundOver = false;
+			m_ball->onRoundStart();
+			prepareServe(m_nextServe);
+		}
+	}
+
 	if(m_gameRules != nullptr)
 	{
 		m_gameRules->update(timeStep);
@@ -197,7 +211,12 @@ void PongScene::updateHaptics(const double& timeStep)
 void PongScene::onNewRound(int localScore, int remoteScore, PlayerId nextServe, PlayerId prevWinner)
 {
 	std::cout<<"NEW ROUND!  "<< localScore<< " - "<<remoteScore<<"\n";
-	prepareServe(nextServe);
+	//prepareServe(nextServe);
+	m_roundOver = true;
+	m_nextServe = nextServe;
+	m_roundOverTimer = 2.0;
+	m_ball->setActive(false);
+	m_ball->onRoundEnd();
 }
 
 void PongScene::onGameOver(int localScore, int remoteScore, PlayerId winner)
