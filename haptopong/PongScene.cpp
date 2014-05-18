@@ -196,7 +196,12 @@ void PongScene::updateLogic(const double& timeStep)
 			btVector3 pos = m_playerRacket->getPosition();
 			m_gameRules->updatePlayerPos(pos);
 		}
+	}
 
+	if(m_hapticButtonPressed)
+	{
+		m_hapticButtonPressed = false;
+		startServe();
 	}
 
 	if(m_serve != NO_PLAYER)
@@ -237,6 +242,22 @@ void PongScene::updateHaptics(const double& timeStep)
 	m_aimAssistance->updateHaptics(timeStep, force);
 
 	m_app.getHapticDevice()->setForce(force);
+	
+	bool button;
+	m_app.getHapticDevice()->getUserSwitch(0, button);
+
+	if(button)
+	{
+		if(!m_hapticButtonDown)
+		{
+			m_hapticButtonDown = true;
+			m_hapticButtonPressed = true;
+		}
+	}
+	else
+	{
+		m_hapticButtonDown = false;
+	}
 
 #ifdef TESTING_NETWORK
 	::Sleep(10);
@@ -331,7 +352,6 @@ void PongScene::updateBallState(const btVector3& position, const btVector3& velo
 		m_ballEventMgr->playSound(hitMagnitude);
 	}
 }
-
 
 void PongScene::prepareServe(PlayerId serve)
 {
@@ -481,10 +501,11 @@ void PongScene::onKeyDown(unsigned char key, int x, int y)
 		m_opponentRacket->setSize(2.0);
 		m_opponentRacket->setMoveAreaScale(18.0f);
 	}
-	if(key == ' ')
+	if(key == ' ' )
 	{
 		startServe();
 	}
+
 	if(key == 'h')
 	{
 		prepareServe(PLAYER_LOCAL);

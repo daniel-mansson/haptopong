@@ -28,7 +28,8 @@ void AimAssistance::applyImpulseFromRacket(btManifoldPoint& point)
 	xvel *= (1.0f + point.m_combinedRestitution * 0.6f);	
 	bvel[0] += xvel;
 	bvel[1] += yvel * 0.7f;
-	bvel[2] += zvel * 0.7f + fabsf(xvel * 0.1f);
+	//bvel[2] += zvel * 0.7f + fabsf(xvel * 0.1f);
+	bvel[2] += zvel * 0.7f - bvel[0] * 0.3f;
 
 	float len = bvel.length();
 	if(len > 5.5f)
@@ -50,7 +51,7 @@ void AimAssistance::applyImpulseFromRacket(btManifoldPoint& point)
 
 void AimAssistance::changeVel(const btVector3& target)
 {
-	/*btVector3 dist = target - m_ball->getPosition();
+	btVector3 dist = target - m_ball->getPosition();
 
 	float v0 = m_ball->getVelocity().x();
 	float a = 0.0;	
@@ -58,20 +59,27 @@ void AimAssistance::changeVel(const btVector3& target)
 
 	float timeX = dist.x() / v0;
 
-	float zPos = m_ball->getVelocity().z() * timeX + -10.0 * timeX * timeX * 0.5f;
+	float zPos = m_ball->getVelocity().z() * timeX + -10.0f * timeX * timeX * 0.5f;
+	
+	float spinFactor = 1.0f / (1.0f + cAbs(m_ball->getAngularVelocity().y()) * 0.01f);
+
+	zPos = cClamp(spinFactor* (zPos + 1.5f), -0.7f, 0.7f);
 
 	btVector3 vel = m_ball->getVelocity();
-	vel[2] -= zPos + 1.0;
+	vel[2] -= zPos;
 	m_ball->setVelocity(vel);
 
-	std::cout 
+	/*std::cout 
 		<<"Time: " << timeX << "\t"
 		<<"v0: " << v0 << "\t"
 		<<"distx: " << dist.x() << "\t"
-		<<"zpos: " << zPos << "\t"
-		<<std::endl;*/
-
+		<<"zpos: " << -zPos << "\t"
+		<<"spinf: " << spinFactor// << "\t"
+		<<std::endl;
+	*/
 	//std::cout<<"Angvel: "<<Util::Vec(m_ball->getAngularVelocity())<<"\tVel: "<<Util::Vec(m_ball->getVelocity())<<"\tAdjvel: "<<Util::Vec(adjustedVelocity(m_ball->getVelocity(), m_ball->getAngularVelocity(), 0.03))<<"\n";
+
+	
 }
 
 btVector3 AimAssistance::adjustedVelocity(const btVector3& velocity, const btVector3& angularVel, float factor)

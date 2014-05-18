@@ -11,7 +11,7 @@ BallProperties::BallProperties(void) :
 	m_volume(0.000034),
 	m_gravity(9.8),
     m_linDamping(0.001),
-    m_angDamping(0.8)
+    m_angDamping(0.9)
 {
 }
 
