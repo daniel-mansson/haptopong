@@ -2,11 +2,12 @@
 #include "BallEventManager.h"
 #include "LinearResponse.h"
 
-BallEventManager::BallEventManager(HapticResponseManagerPtr hapticResponseMgr, GameRulesManagerPtr gameRulesMgr) :
+BallEventManager::BallEventManager(HapticResponseManagerPtr hapticResponseMgr, GameRulesManagerPtr gameRulesMgr, BounceEffectPoolPtr bouncePool) :
 	m_hapticResponseMgr(hapticResponseMgr),
 	m_gameRulesMgr(gameRulesMgr),
 	m_lastHit(NONE),
-	m_count(0)
+	m_count(0),
+	m_bouncePool(bouncePool)
 {
 	m_tableHit = new SoundPlayer("../sounds/tennis_ball_hit_by_table.wav", 0);
 	m_racketHit = new SoundPlayer("../sounds/tennis_ball_hit_by_racket.wav", 0);
@@ -36,6 +37,10 @@ void BallEventManager::OnTableHit(btManifoldPoint& point, Table& table, Ball& ba
 	}
 	
 	m_lastHit = TABLE;
+	
+	btVector3 pos = ball.getPosition();
+	pos[2] = 0.055;
+	m_bouncePool->put(pos);
 }
 
 void BallEventManager::OnNetHit(btManifoldPoint& point, Net& net, Ball& ball)

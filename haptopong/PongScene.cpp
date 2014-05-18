@@ -50,12 +50,14 @@ PongScene::PongScene(Application& app, GameRulesManagerPtr gameRules) :
 	m_serve(PLAYER_LOCAL)
 {
 	m_hapticResponseMgr = HapticResponseManagerPtr(new HapticResponseManager());
-
-	m_ballEventMgr = BallEventManagerPtr(new BallEventManager(m_hapticResponseMgr, m_gameRules));
-	g_ballEventMgr = m_ballEventMgr;
-
+	
 	// create a new world.
 	m_world = std::make_shared<cWorld>();
+	
+	m_bouncePool = BounceEffectPoolPtr(new BounceEffectPool(m_world.get(), 10));
+
+	m_ballEventMgr = BallEventManagerPtr(new BallEventManager(m_hapticResponseMgr, m_gameRules, m_bouncePool));
+	g_ballEventMgr = m_ballEventMgr;
 
 	// set the background color of the environment
 	m_world->m_backgroundColor.setGrayLevel(0.6f);
@@ -86,7 +88,6 @@ PongScene::PongScene(Application& app, GameRulesManagerPtr gameRules) :
 	if(m_gameRules != nullptr)
 		m_gameRules->initialize();
 
-	m_line1 = new cShapeLine(cVector3d(0, 0, 1), cVector3d(2, 0, 0.5));
 }
 
 PongScene::~PongScene(void)
@@ -124,6 +125,8 @@ void PongScene::render(const double& timeStep)
 	m_playerRacket->render((float)timeStep);
 	m_opponentRacket->render((float)timeStep);
 
+	m_bouncePool->update(timeStep);
+	
 	m_camera->renderView(m_app.getWindowWidth(), m_app.getWindowHeight());
 
 #ifdef TESTING_NETWORK

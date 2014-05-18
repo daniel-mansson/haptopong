@@ -12,6 +12,7 @@
 #include "StepTimer.h"
 #include "Outside.h"
 #include "AimAssistance.h"
+#include "BounceEffectPool.h"
 
 class PongScene : public Scene
 {
@@ -82,8 +83,6 @@ private:
 	GameRulesManagerPtr m_gameRules;
 	AimAssistancePtr m_aimAssistance;
 	PlayerId m_serve;
-	
-	chai3d::cShapeLine* m_line1;
-	chai3d::cShapeLine* m_line2;
+	BounceEffectPoolPtr m_bouncePool;
 };
 

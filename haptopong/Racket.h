@@ -58,6 +58,7 @@ public:
 	void setIsOpponent(bool isOpponent) { m_isOpponent = isOpponent; }
 
 	void flash();
+	chai3d::cMultiMesh* getShape() { return m_shape; }
 
 private:
 	chai3d::cVector3d m_normal;

@@ -9,11 +9,12 @@
 #include "GameRulesManager.h"
 #include "GameObjectType.h"
 #include "AimAssistance.h"
+#include "BounceEffectPool.h"
 
 class BallEventManager
 {
 public:
-	BallEventManager(HapticResponseManagerPtr hapticResponseMgr, GameRulesManagerPtr gameRulesMgr);
+	BallEventManager(HapticResponseManagerPtr hapticResponseMgr, GameRulesManagerPtr gameRulesMgr, BounceEffectPoolPtr bouncePool);
 	~BallEventManager(void);
 	
 	void OnTableHit(btManifoldPoint& point, Table& table, Ball& ball);
@@ -32,6 +33,7 @@ private:
 	AimAssistancePtr m_aimAssistance;
 	GameObjectType m_lastHit;
 	int m_count;
+	BounceEffectPoolPtr m_bouncePool;
 };
 
 typedef std::shared_ptr<BallEventManager> BallEventManagerPtr;

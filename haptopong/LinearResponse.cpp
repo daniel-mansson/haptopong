@@ -17,16 +17,13 @@ LinearResponse::LinearResponse(const Racket& racket, const Ball& ball) :
 	m_duration = m_racket.getProperties().getElasticity() + m_ball.getProperties().getElasticity();	
 	m_normal = m_racket.getNormal();
 	
-	//This is not correct
-	m_tangent = Util::Vec(m_ball.getAngularVelocity());
-	double angle = m_tangent.length();
-	if(angle >= C_SMALL)
-		m_tangent /= angle;
-
+	m_tangent(0) = 0.0;
+	m_tangent(1) = (double)m_ball.getAngularVelocity().z();
+	m_tangent(2) = (double)m_ball.getAngularVelocity().y();
 
 	//std::cout<<m_racket.getVelocity() * m_racket.getMoveAreaScale()<<"\t"<< Util::Vec(m_ball.getVelocity())<<"\n"; 
-	m_magnitude = 4.5f * cDot(m_normal, Util::Vec(m_ball.getVelocity()) - 1.f*m_racket.getVelocity() * m_racket.getMoveAreaScale());
-	m_magnitudeTangent = 0.0f * angle;
+	m_magnitude = 4.5 * cDot(m_normal, Util::Vec(m_ball.getVelocity()) - 1.f*m_racket.getVelocity() * m_racket.getMoveAreaScale());
+	m_magnitudeTangent = 0.001;
 }
 
 

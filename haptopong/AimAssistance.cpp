@@ -29,6 +29,11 @@ void AimAssistance::applyImpulseFromRacket(btManifoldPoint& point)
 	bvel[0] += xvel;
 	bvel[1] += yvel * 0.7f;
 	bvel[2] += zvel * 0.7f + fabsf(xvel * 0.15f);
+
+	float len = bvel.length();
+	if(len > 5.0f)
+		bvel *= 5.0f / len;
+
 	m_ball->setVelocity(bvel);
 
 	btVector3 angVel = m_ball->getAngularVelocity();

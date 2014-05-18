@@ -103,6 +103,8 @@
     <ClCompile Include="BallEventManager.cpp" />
     <ClCompile Include="BallProperties.cpp" />
     <ClCompile Include="BallState.cpp" />
+    <ClCompile Include="BounceEffect.cpp" />
+    <ClCompile Include="BounceEffectPool.cpp" />
     <ClCompile Include="CollisionResponse.cpp" />
     <ClCompile Include="CustomCamera.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -130,6 +132,7 @@
     <ClCompile Include="Score.cpp" />
     <ClCompile Include="SelfShadowlessMesh.cpp" />
     <ClCompile Include="SelfShadowlessSphere.cpp" />
+    <ClCompile Include="ShadowlessCylinder.cpp" />
     <ClCompile Include="SimpleCountGameRules.cpp" />
     <ClCompile Include="SoundPlayer.cpp" />
     <ClCompile Include="Message.cpp" />
@@ -148,6 +151,8 @@
     <ClInclude Include="BallEventManager.h" />
     <ClInclude Include="BallProperties.h" />
     <ClInclude Include="BallState.h" />
+    <ClInclude Include="BounceEffect.h" />
+    <ClInclude Include="BounceEffectPool.h" />
     <ClInclude Include="CollisionResponse.h" />
     <ClInclude Include="CustomCamera.h" />
     <ClInclude Include="GameObject.h" />
@@ -177,6 +182,7 @@
     <ClInclude Include="Score.h" />
     <ClInclude Include="SelfShadowlessMesh.h" />
     <ClInclude Include="SelfShadowlessSphere.h" />
+    <ClInclude Include="ShadowlessCylinder.h" />
     <ClInclude Include="SimpleCountGameRules.h" />
     <ClInclude Include="SoundPlayer.h" />
     <ClInclude Include="StepTimer.h" />

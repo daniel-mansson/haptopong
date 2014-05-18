@@ -43,6 +43,9 @@
     <Filter Include="Pong\Aiming">
       <UniqueIdentifier>{e8da0afc-0648-4ce6-b682-e353a671055e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pong\BounceEffect">
+      <UniqueIdentifier>{953eaa13-6218-4def-9fd2-48cef5b7aeed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -171,6 +174,15 @@
     </ClCompile>
     <ClCompile Include="SelfShadowlessSphere.cpp">
       <Filter>Pong</Filter>
+    </ClCompile>
+    <ClCompile Include="BounceEffectPool.cpp">
+      <Filter>Pong\BounceEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="BounceEffect.cpp">
+      <Filter>Pong\BounceEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="ShadowlessCylinder.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -308,6 +320,15 @@
     </ClInclude>
     <ClInclude Include="SelfShadowlessSphere.h">
       <Filter>Pong</Filter>
+    </ClInclude>
+    <ClInclude Include="BounceEffectPool.h">
+      <Filter>Pong\BounceEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="BounceEffect.h">
+      <Filter>Pong\BounceEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="ShadowlessCylinder.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
