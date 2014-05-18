@@ -51,6 +51,12 @@ Racket::Racket(chai3d::cMultiMesh* shape, btCollisionShape* collisionShape, cons
 	m_flashMaterial = *m_shape->m_material;
 	m_flash = 0.0;
 	m_flashFactor = 1.0 - m_material.m_ambient.getR();
+
+	m_scaleX = 20.0f;
+	m_scaleOffset.setValue(0.012f * m_scaleX * 0.3f, 0, 0);
+
+	m_body->getCollisionShape()->setLocalScaling(btVector3(m_scaleX, 1.0f, 1.0f));
+	m_shape->scaleXYZ(1.0f, 1.0f, 1.0f);
 }
 
 
@@ -66,7 +72,7 @@ void Racket::flash()
 
 void Racket::setSize(double size)
 {
-	m_body->getCollisionShape()->setLocalScaling(btVector3(1.0f, (float)size, (float)size));
+	m_body->getCollisionShape()->setLocalScaling(btVector3(m_scaleX, (float)size, (float)size));
 	double s = size / m_currentScale;	
 	m_shape->scaleXYZ(1.0f, (float)s, (float)s);
 	m_currentScale = size;
@@ -95,7 +101,7 @@ void Racket::render(float timeStep)
 	btMotionState* pState = m_body->getMotionState();
 	pState->getWorldTransform(transform);
 
-	m_shape->setLocalPos(Util::Vec(transform.getOrigin()));
+	m_shape->setLocalPos(Util::Vec(transform.getOrigin() - m_scaleOffset));
 	m_shape->setLocalRot(chai3d::cMatrix3d(Util::Vec(transform.getRotation().getAxis()), transform.getRotation().getAngle()));
 }
 
@@ -111,6 +117,7 @@ void Racket::updateLogic(float timeStep)
 		m_transform.setOrigin(Util::Vec(offset) + m_origin);
 		m_body->getMotionState()->setWorldTransform(m_transform);
 
+
 		m_time += timeStep;
 	}
 	else
@@ -118,8 +125,11 @@ void Racket::updateLogic(float timeStep)
 		chai3d::cVector3d offset = m_hapticPos;
 		offset *= m_moveAreaScale;
 
-		m_transform.setOrigin(Util::Vec(offset) + m_origin);
+		m_transform.setOrigin(Util::Vec(offset) + m_origin + m_scaleOffset);
 		m_body->getMotionState()->setWorldTransform(m_transform);
+		
+		/*btVector3 v = ((Util::Vec(offset) + m_origin) - m_body->getCenterOfMassPosition()) / timeStep;
+		m_body->setLinearVelocity(v);*/
 	}
 }
 

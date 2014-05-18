@@ -28,13 +28,15 @@ void AimAssistance::applyImpulseFromRacket(btManifoldPoint& point)
 	xvel *= (1.0f + point.m_combinedRestitution * 0.6f);	
 	bvel[0] += xvel;
 	bvel[1] += yvel * 0.7f;
-	bvel[2] += zvel * 0.7f + fabsf(xvel * 0.15f);
+	bvel[2] += zvel * 0.7f + fabsf(xvel * 0.1f);
 
 	float len = bvel.length();
-	if(len > 5.0f)
-		bvel *= 5.0f / len;
+	if(len > 5.5f)
+		bvel *= 5.5f / len;
 
 	m_ball->setVelocity(bvel);
+
+	//std::cout<<"HIT! "<< Util::Vec(bvel)<<"\n";
 
 	btVector3 angVel = m_ball->getAngularVelocity();
 	angVel[1] += -rvel[2] * 240.0f;

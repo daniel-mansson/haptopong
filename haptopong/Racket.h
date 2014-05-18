@@ -86,6 +86,8 @@ private:
 	chai3d::cMaterial m_flashMaterial;
 	double m_flash;
 	double m_flashFactor;
+	btVector3 m_scaleOffset;
+	float m_scaleX;
 };
 
 typedef std::shared_ptr<Racket> RacketPtr;

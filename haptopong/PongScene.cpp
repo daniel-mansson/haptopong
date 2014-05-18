@@ -53,10 +53,10 @@ PongScene::PongScene(Application& app, GameRulesManagerPtr gameRules) :
 	m_roundOverTimer(0.0)
 {
 	m_hapticResponseMgr = HapticResponseManagerPtr(new HapticResponseManager());
-	
+
 	// create a new world.
 	m_world = std::make_shared<cWorld>();
-	
+
 	m_bouncePool = BounceEffectPoolPtr(new BounceEffectPool(m_world.get(), 10));
 
 	m_ballEventMgr = BallEventManagerPtr(new BallEventManager(m_hapticResponseMgr, m_gameRules, m_bouncePool));
@@ -90,8 +90,21 @@ PongScene::PongScene(Application& app, GameRulesManagerPtr gameRules) :
 
 	if(m_gameRules != nullptr)
 		m_gameRules->initialize();
-	
+
 	m_ball->onRoundStart();
+
+
+	m_scoreFont = cFontPtr(NEW_CFONTCALIBRI40());
+	m_infoFont = cFontPtr(NEW_CFONTCALIBRI40());
+
+	m_scoreLabel = new cLabel(m_scoreFont.get());
+	m_scoreLabel->setString("0 - 0");
+
+	m_infoLabel = new cLabel(m_infoFont.get());
+	m_infoLabel->setString(m_gameRules->getPlayerId() == PLAYER_LOCAL ? "Your serve!" : "Opponent's serve!");
+
+	m_camera->m_frontLayer->addChild(m_infoLabel);
+	m_camera->m_frontLayer->addChild(m_scoreLabel);
 }
 
 PongScene::~PongScene(void)
@@ -130,7 +143,26 @@ void PongScene::render(const double& timeStep)
 	m_opponentRacket->render((float)timeStep);
 
 	m_bouncePool->update(timeStep);
-	
+
+	{
+		double w = (double)m_app.getWindowWidth();
+		double h = (double)m_app.getWindowHeight();
+		double lw, lh, y = h;
+
+		//Render title
+		lw = m_scoreLabel->getStringWidth();
+		lh = m_scoreLabel->getStringHeight();
+		y -= lh * 1.5;
+		m_scoreLabel->setLocalPos(20, y, 0);
+		//y -= lh * 0.5;
+
+		lw = m_infoLabel->getStringWidth();
+		lh = m_infoLabel->getStringHeight();
+		m_infoLabel->setLocalPos(0.5 * (w - lw), y, 0);
+		y -= lh * 0.5;
+
+	}
+
 	m_camera->renderView(m_app.getWindowWidth(), m_app.getWindowHeight());
 
 #ifdef TESTING_NETWORK
@@ -216,11 +248,50 @@ void PongScene::onNewRound(int localScore, int remoteScore, PlayerId nextServe, 
 	m_roundOverTimer = 2.0;
 	m_ball->setActive(false);
 	m_ball->onRoundEnd();
+
+	if(m_gameRules->getPlayerId() == PLAYER_LOCAL)
+	{
+		std::stringstream s;
+		s << localScore << " - " << remoteScore;
+		m_scoreLabel->setString(s.str());
+	}
+	else
+	{
+		std::stringstream s;
+		s << localScore << " - " << remoteScore;
+		m_scoreLabel->setString(s.str());
+	}
+
+	if(m_gameRules->getPlayerId() == prevWinner)
+		m_infoLabel->setString("Well done!");
+	else
+		m_infoLabel->setString("Too bad!");
+
 }
 
 void PongScene::onGameOver(int localScore, int remoteScore, PlayerId winner)
 {
+	m_roundOver = false;
+	m_ball->setActive(false);
+	m_ball->onRoundEnd();
 
+	if(m_gameRules->getPlayerId() == PLAYER_LOCAL)
+	{
+		std::stringstream s;
+		s << localScore << " - " << remoteScore;
+		m_scoreLabel->setString(s.str());
+	}
+	else
+	{
+		std::stringstream s;
+		s << localScore << " - " << remoteScore;
+		m_scoreLabel->setString(s.str());
+	}
+
+	if(m_gameRules->getPlayerId() == winner)
+		m_infoLabel->setString("Game over! You won!");
+	else
+		m_infoLabel->setString("Game over! You lost!");
 }
 
 btVector3 PongScene::invert(const btVector3& vec)
@@ -246,7 +317,10 @@ void PongScene::updateBallState(const btVector3& position, const btVector3& velo
 	m_ball->setAngularVelocity(invert(angularVelocity));
 	m_ball->setActive(serve == 0);
 	if(serve != 0)
+	{
 		m_serve = NO_PLAYER;
+		m_infoLabel->setString("");
+	}
 	else
 	{
 		m_opponentRacket->flash();
@@ -258,6 +332,11 @@ void PongScene::updateBallState(const btVector3& position, const btVector3& velo
 void PongScene::prepareServe(PlayerId serve)
 {
 	m_serve = serve;
+
+	if(m_gameRules->getPlayerId() == serve)
+		m_infoLabel->setString("Your serve!");
+	else
+		m_infoLabel->setString("Opponent's serve!");
 }
 
 void PongScene::startServe()
@@ -270,8 +349,9 @@ void PongScene::startServe()
 		m_ball->setAngularVelocity(btVector3(0, 0, -30 * m_ball->getVelocity().y()));
 		m_ball->setActive(true);
 		m_serve = NO_PLAYER;
-		
+
 		m_gameRules->onServeStart(*m_ball);
+		m_infoLabel->setString("");
 	}
 }
 
@@ -344,12 +424,36 @@ void PongScene::onKeyDown(unsigned char key, int x, int y)
 	if(key == 'r')
 	{
 		m_ball->stop();
-		m_ball->setPosition(btVector3(1.4f, 0.06f, 0.58f));
+		m_ball->setPosition(btVector3(1.2f, 0.0f, 0.58f));
 		m_ball->setVelocity(btVector3(5.f, 0.f, 0.f));
 		m_ball->setAngularVelocity(btVector3(0, 0, 0));
 		m_ball->setActive(true);
 	}
-	
+	if(key == 't')
+	{
+		m_ball->stop();
+		m_ball->setPosition(btVector3(1.2f, 0.0f, 0.58f));
+		m_ball->setVelocity(btVector3(5.f, 0.f, 0.f));
+		m_ball->setAngularVelocity(btVector3(10, 0, 0));
+		m_ball->setActive(true);
+	}
+	if(key == 'y')
+	{
+		m_ball->stop();
+		m_ball->setPosition(btVector3(1.2f, 0.0f, 0.58f));
+		m_ball->setVelocity(btVector3(5.f, 0.f, 0.f));
+		m_ball->setAngularVelocity(btVector3(0, 10, 0));
+		m_ball->setActive(true);
+	}
+	if(key == 'u')
+	{
+		m_ball->stop();
+		m_ball->setPosition(btVector3(1.2f, 0.0f, 0.58f));
+		m_ball->setVelocity(btVector3(5.f, 0.f, 0.f));
+		m_ball->setAngularVelocity(btVector3(0, 0, 10));
+		m_ball->setActive(true);
+	}
+
 	if(key == '1')
 	{
 		// position and orient the camera
@@ -507,33 +611,33 @@ void PongScene::createLight()
 
 	//spotLight->setUseTwoSideLightModel(false);
 	//spotLight->setSpotExponent(0);
-    
-    /////////////////////////////////////////////////////////////////////////
+
+	/////////////////////////////////////////////////////////////////////////
 	// create a spot light source - light casting only
 	/////////////////////////////////////////////////////////////////////////
-    
+
 	chai3d::cSpotLight* spotLight2 = new cSpotLight(m_world.get());
-    
+
 	// attach light to camera
 	//m_world->addChild(spotLight);
-    
+
 	// enable light source
 	spotLight2->setEnabled(true);
-    
+
 	// position the light source
 	spotLight2->setLocalPos(2.5, 0.0, 2.0);
-    
+
 	// define the direction of the light beam
 	spotLight2->setDir(-1.0, 0.0, -1.0);
-    
+
 	// set light cone half angle
 	spotLight2->setCutOffAngleDeg(49);
-    
+
 	// set lighting conditions
 	spotLight2->m_ambient.set(0.0f, 0.0f, 0.0f);
 	spotLight2->m_diffuse.set(0.9f, 0.9f, 0.9f);
 	spotLight2->m_specular.set(0.7f, 0.7f, 0.7f);
-    
+
 	//spotLight->setUseTwoSideLightModel(false);
 	//spotLight->setSpotExponent(0);
 }
@@ -575,22 +679,22 @@ void PongScene::createTable()
 
 	table->setTexture(table_texture);
 	table->setUseTexture(true, true);
-    
-    // shadow mesh
-    
-    cMultiMesh* tableShadow = new cMultiMesh();
-    
+
+	// shadow mesh
+
+	cMultiMesh* tableShadow = new cMultiMesh();
+
 	fileload = tableShadow->loadFromFile("../gfx/table_shadow.obj");
-    
+
 	if (!fileload)
 	{
 		std::cout << "Error - 3D Model failed to load correctly" << std::endl;
 		std::exit(EXIT_FAILURE);
 	}
-    
-    m_world->addChild(tableShadow);
-    
-    tableShadow->setUseTransparency(true);
+
+	m_world->addChild(tableShadow);
+
+	tableShadow->setUseTransparency(true);
 	tableShadow->setTransparencyLevel(0.f);
 
 	/////////////////////////////////////////////////////////////////////////
@@ -704,12 +808,12 @@ void PongScene::createOutside()
 	mat.setWhite();
 	mat.m_ambient = cColorf(1.0f, 1.0f, 1.0f, 1.0f);
 
-    //cShapeBox* box = new cShapeBox(15, 15, 0.4);
+	//cShapeBox* box = new cShapeBox(15, 15, 0.4);
 	cShapeBox* box = new cShapeBox(11.4, 15, 0.4);
 	box->setMaterial(mat, true);
 	box->setLocalPos(0,0,-0.5);
 	m_world->addChild(box);
-	
+
 }
 
 void PongScene::createRackets()
@@ -754,7 +858,7 @@ void PongScene::createRackets()
 		std::cout << "Error - 3D Model failed to load correctly" << std::endl;
 		std::exit(EXIT_FAILURE);
 	}
-    
+
 	mat.m_ambient.set( 0.5f, 0.5f, 0.5f);
 	mat.m_diffuse.set( 0.5f, 0.5f, 0.5f);
 	mat.m_specular.set(1.0f, 1.0f, 1.0f);
@@ -779,7 +883,7 @@ void PongScene::createRackets()
 	//startTransform.setOrigin(btVector3(2.1f, 0, 0.88f));
 	startTransform.setOrigin(btVector3(1.8f, 0, 0.6f));
 	startTransform.setRotation(btQuaternion(0, 40*0.0174532925f, 0));
-	
+
 
 	m_playerRacket = std::make_shared<Racket>(playerRacket, m_racketsCollisionShape.get(), properties, startTransform);
 	if(m_gameRules != nullptr)
