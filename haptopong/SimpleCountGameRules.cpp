@@ -50,7 +50,11 @@ void SimpleCountGameRules::onBallHitRacket(PlayerId racketId)
 void SimpleCountGameRules::onBallOut()
 {
 	std::cout<<"1out: "<<m_state<<"\t"<<m_turn<<"\n";
-	roundOver((PlayerId)(3 - m_turn));
+
+	if(m_state == GOING_TOWARDS_TABLE)
+		roundOver(m_turn);
+	else if(m_state == GOING_TOWARDS_PLAYER)
+		roundOver((PlayerId)(3 - m_turn));
 
 	std::cout<<"2out: "<<m_state<<"\t"<<m_turn<<"\n";	
 }
