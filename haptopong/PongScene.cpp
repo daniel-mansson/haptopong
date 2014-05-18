@@ -2,9 +2,8 @@
 #include "PongScene.h"
 #include "Application.h"
 #include "ShadowlessMesh.h"
-#include "ShadowlessSphere.h"
-#include "ShadowSphere.h"
-#include "CustomWorld.h"
+#include "NoRecieveShadowMesh.h"
+#include "CustomSphere.h"
 #include "CustomCamera.h"
 #include "GlobalMoveAssistance.h"
 
@@ -445,7 +444,7 @@ void PongScene::onKeyDown(unsigned char key, int x, int y)
 	{
 		m_ball->stop();
 		m_ball->setPosition(btVector3(-.1f, 0, 0.1f));
-		m_ball->setVelocity(btVector3(0, 0, 0));
+		m_ball->setVelocity(btVector3(0, -0.6, 0));
 		m_ball->setAngularVelocity(btVector3(0, 0, 0));
 		m_ball->setActive(true);
 	}
@@ -813,15 +812,10 @@ void PongScene::createBall()
 {
 	BallProperties properties;
 
-	ShadowlessSphere* ballShape = new ShadowlessSphere((double)properties.getRadius());
+	CustomSphere* ballShape = new CustomSphere(m_world.get(), (double)properties.getRadius());
 
 	m_world->addChild(ballShape);
-
-	ShadowSphere* shadowShape = new ShadowSphere((double)properties.getRadius(), (double)properties.getRadius(), 0.);
-	shadowShape->setUseCulling(true);
-
-	m_world->addChild(shadowShape);
-
+    
 	m_ballCollisionShape = std::make_shared<btSphereShape>(btScalar(properties.getRadius()));
 
 	cTexture2dPtr net_texture = cTexture2d::create();
@@ -842,7 +836,7 @@ void PongScene::createBall()
 	//startTransform.setOrigin(btVector3(1.75,0,0.65));
 	//startTransform.setOrigin(btVector3(2.2,0,0.9));
 
-	m_ball = std::make_shared<Ball>(ballShape, shadowShape, m_ballCollisionShape.get(), properties, startTransform);
+	m_ball = std::make_shared<Ball>(ballShape, m_ballCollisionShape.get(), properties, startTransform);
 
 	m_dynamicsWorld->addRigidBody(m_ball->getBody());
 }
@@ -852,7 +846,7 @@ void PongScene::createOutside()
 {
 	BallProperties properties;
 
-	m_outsideCollisionShape = btCollisionShapePtr(new btBoxShape(btVector3(5.7f, 7.5f, 0.2f)));
+	m_outsideCollisionShape = btCollisionShapePtr(new btBoxShape(btVector3(5.7f, 5.7f, 0.2f)));
 	m_outside = std::make_shared<Outside>(m_outsideCollisionShape.get());
 
 	m_dynamicsWorld->addRigidBody(m_outside->getBody().get());
@@ -861,11 +855,47 @@ void PongScene::createOutside()
 	mat.setWhite();
 	mat.m_ambient = cColorf(1.0f, 1.0f, 1.0f, 1.0f);
 
-	//cShapeBox* box = new cShapeBox(15, 15, 0.4);
-	cShapeBox* box = new cShapeBox(11.4, 15, 0.4);
+	cShapeBox* box = new cShapeBox(5, 15, 0.4);
 	box->setMaterial(mat, true);
 	box->setLocalPos(0,0,-0.5);
 	m_world->addChild(box);
+    
+	cShapeBox* box2 = new cShapeBox(11.4, 15, 0.4);
+    mat.m_ambient.set(0.f, 0.f, 0.f);
+	mat.m_diffuse.set(0.f, 0.f, 0.f);
+	mat.m_specular.set(0.f, 0.f, 0.f);
+    mat.m_emission.set(0.75f, 0.75f , 0.75f);
+	box2->setMaterial(mat, true);
+	box2->setLocalPos(0,0,-0.51);
+	m_world->addChild(box2);
+    
+    cShapeBox* box3 = new cShapeBox(5, 5, 0.4);
+    mat.m_ambient.set(0.f, 0.f, 0.f);
+	mat.m_diffuse.set(0.f, 0.f, 0.f);
+	mat.m_specular.set(0.f, 0.f, 0.f);
+    mat.m_emission.set(0.75f, 0.75f , 0.75f);
+	box3->setMaterial(mat, true);
+	box3->setLocalPos(0, -4.0, -0.49);
+	m_world->addChild(box3);
+    
+    cShapeBox* box4 = new cShapeBox(5, 5, 0.4);
+    mat.m_ambient.set(0.f, 0.f, 0.f);
+	mat.m_diffuse.set(0.f, 0.f, 0.f);
+	mat.m_specular.set(0.f, 0.f, 0.f);
+    mat.m_emission.set(0.75f, 0.75f , 0.75f);
+	box4->setMaterial(mat, true);
+	box4->setLocalPos(0, 4.0, -0.49);
+	m_world->addChild(box4);
+    
+    m_outsideWallCollisionShape = btCollisionShapePtr(new btBoxShape(btVector3(5.7f, 7.5f, 0.2f)));
+	m_outsideWall = std::make_shared<Outside>(m_outsideWallCollisionShape.get());
+    btTransform transform;
+	transform.setIdentity();
+	transform.setOrigin(btVector3(-5.7f, 0, 0));
+	transform.setRotation(btQuaternion(90*0.017f, 0, 0));
+    m_outsideWall->getBody()->setWorldTransform(transform);
+    
+    m_dynamicsWorld->addRigidBody(m_outsideWall->getBody().get());
 
 }
 
@@ -903,7 +933,7 @@ void PongScene::createRackets()
 
 	//ShadowlessMesh* opponentRacket = playerRacket->copy(false, false, true);
 	//ShadowlessMesh* opponentRacket = new ShadowlessMesh();
-	cMultiMesh* opponentRacket = new ShadowlessMesh();
+	cMultiMesh* opponentRacket = new NoRecieveShadowMesh();
 
 	fileload = opponentRacket->loadFromFile("../gfx/racket.obj");
 	if (!fileload)
@@ -916,7 +946,6 @@ void PongScene::createRackets()
 	mat.m_diffuse.set( 0.5f, 0.5f, 0.5f);
 	mat.m_specular.set(1.0f, 1.0f, 1.0f);
 	opponentRacket->setMaterial(mat, true);
-	//opponentRacket->computeAllNormals();
 
 	opponentRacket->setUseCulling(true);
 
