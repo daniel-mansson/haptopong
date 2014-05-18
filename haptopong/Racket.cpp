@@ -89,7 +89,7 @@ void Racket::render(float timeStep)
 		m_material.m_ambient.getB() + f);
 
 	bool transparent = m_shape->getUseTransparency();
-	m_shape->setMaterial(m_flashMaterial, true);
+	//m_shape->setMaterial(m_flashMaterial, true);
 	if(transparent)
 	{
 		m_shape->setUseTransparency(true);

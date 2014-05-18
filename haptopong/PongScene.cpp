@@ -860,6 +860,8 @@ void PongScene::createOutside()
 	box->setLocalPos(0,0,-0.5);
 	m_world->addChild(box);
     
+    // anti-shadow floors (3)
+    
 	cShapeBox* box2 = new cShapeBox(11.4, 15, 0.4);
     mat.m_ambient.set(0.f, 0.f, 0.f);
 	mat.m_diffuse.set(0.f, 0.f, 0.f);
@@ -887,6 +889,7 @@ void PongScene::createOutside()
 	box4->setLocalPos(0, 4.0, -0.49);
 	m_world->addChild(box4);
     
+    
     m_outsideWallCollisionShape = btCollisionShapePtr(new btBoxShape(btVector3(5.7f, 7.5f, 0.2f)));
 	m_outsideWall = std::make_shared<Outside>(m_outsideWallCollisionShape.get());
     btTransform transform;
@@ -896,7 +899,8 @@ void PongScene::createOutside()
     m_outsideWall->getBody()->setWorldTransform(transform);
     
     m_dynamicsWorld->addRigidBody(m_outsideWall->getBody().get());
-
+    m_outsideWall->getBody()->setRestitution(0.05f);
+    
 }
 
 void PongScene::createRackets()
@@ -931,9 +935,7 @@ void PongScene::createRackets()
 
 	// opponent racket
 
-	//ShadowlessMesh* opponentRacket = playerRacket->copy(false, false, true);
-	//ShadowlessMesh* opponentRacket = new ShadowlessMesh();
-	cMultiMesh* opponentRacket = new NoRecieveShadowMesh();
+	cMultiMesh* opponentRacket = new cMultiMesh();
 
 	fileload = opponentRacket->loadFromFile("../gfx/racket.obj");
 	if (!fileload)
@@ -947,7 +949,9 @@ void PongScene::createRackets()
 	mat.m_specular.set(1.0f, 1.0f, 1.0f);
 	opponentRacket->setMaterial(mat, true);
 
-	opponentRacket->setUseCulling(true);
+    //playerRacket->setUseTransparency(true);
+    
+	//opponentRacket->setUseCulling(true);
 
 	m_world->addChild(opponentRacket);
 

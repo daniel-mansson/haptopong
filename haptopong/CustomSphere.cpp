@@ -15,12 +15,10 @@ CustomSphere::CustomSphere(cWorld* world, const double& a_radius, cMaterialPtr a
 
 void CustomSphere::render(cRenderOptions& a_options)
 {
+    chai3d::cVector3d pos = getLocalPos();
+    m_shadowShape->setLocalPos(pos.x(), pos.y(), pos.z() - getRadius()+0.001);
+    
     if (a_options.m_render_opaque_objects_only) {
         cShapeSphere::render(a_options);
     }
-    
-    chai3d::cVector3d pos = getLocalPos();
-    
-    m_shadowShape->setLocalPos(pos.x(), pos.y(), pos.z() - getRadius()+0.001);
-
 }
