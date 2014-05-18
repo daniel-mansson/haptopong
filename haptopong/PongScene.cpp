@@ -95,17 +95,17 @@ PongScene::PongScene(Application& app, GameRulesManagerPtr gameRules) :
 	m_ball->onRoundStart();
 
 
-	m_scoreFont = cFontPtr(NEW_CFONTCALIBRI72());
+	m_scoreFont = cFontPtr(NEW_CFONTCALIBRI40());
 	m_infoFont = cFontPtr(NEW_CFONTCALIBRI40());
 
 	m_scoreLabel = new cLabel(m_scoreFont.get());
 	m_scoreLabel->setString("0 - 0");
 
 	m_infoLabel = new cLabel(m_infoFont.get());
-	m_infoLabel->setString("testing");
+	m_infoLabel->setString(m_gameRules->getPlayerId() == PLAYER_LOCAL ? "Your serve!" : "Opponent's serve!");
 
-	m_world->addChild(m_infoLabel);
-	m_world->addChild(m_scoreLabel);
+	m_camera->m_frontLayer->addChild(m_infoLabel);
+	m_camera->m_frontLayer->addChild(m_scoreLabel);
 }
 
 PongScene::~PongScene(void)
@@ -154,8 +154,8 @@ void PongScene::render(const double& timeStep)
 		lw = m_scoreLabel->getStringWidth();
 		lh = m_scoreLabel->getStringHeight();
 		y -= lh * 1.5;
-		m_scoreLabel->setLocalPos(0.5 * (w - lw), y, 0);
-		y -= lh * 0.5;
+		m_scoreLabel->setLocalPos(20, y, 0);
+		//y -= lh * 0.5;
 
 		lw = m_infoLabel->getStringWidth();
 		lh = m_infoLabel->getStringHeight();

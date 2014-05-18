@@ -20,7 +20,7 @@ SimpleCountGameRules::~SimpleCountGameRules(void)
 
 void SimpleCountGameRules::onBallHitTable(PlayerId side)
 {
-	std::cout<<"1table: "<<m_state<<"\t"<<m_turn<<"\n";
+	//std::cout<<"1table: "<<m_state<<"\t"<<m_turn<<"\n";
 	if(m_state == GOING_TOWARDS_TABLE && m_turn == side)
 		m_state = GOING_TOWARDS_PLAYER;
 	else if(m_state == GOING_TOWARDS_TABLE && m_turn != side)
@@ -28,12 +28,12 @@ void SimpleCountGameRules::onBallHitTable(PlayerId side)
 	else
 		roundOver((PlayerId)(3 - m_turn));
 
-	std::cout<<"2table: "<<m_state<<"\t"<<m_turn<<"\n";
+	//std::cout<<"2table: "<<m_state<<"\t"<<m_turn<<"\n";
 }
 
 void SimpleCountGameRules::onBallHitRacket(PlayerId racketId)
 {
-	std::cout<<"1racket: "<<m_state<<"\t"<<m_turn<<"\n";
+	//std::cout<<"1racket: "<<m_state<<"\t"<<m_turn<<"\n";
 	if(m_state == GOING_TOWARDS_PLAYER && racketId == m_turn)
 	{
 		m_state = GOING_TOWARDS_TABLE;
@@ -44,19 +44,19 @@ void SimpleCountGameRules::onBallHitRacket(PlayerId racketId)
 		roundOver((PlayerId)(3 - m_turn));	
 	}
 
-	std::cout<<"2racket: "<<m_state<<"\t"<<m_turn<<"\n";
+	//std::cout<<"2racket: "<<m_state<<"\t"<<m_turn<<"\n";
 }
 
 void SimpleCountGameRules::onBallOut()
 {
-	std::cout<<"1out: "<<m_state<<"\t"<<m_turn<<"\n";
+	//std::cout<<"1out: "<<m_state<<"\t"<<m_turn<<"\n";
 
 	if(m_state == GOING_TOWARDS_TABLE)
 		roundOver(m_turn);
 	else if(m_state == GOING_TOWARDS_PLAYER)
 		roundOver((PlayerId)(3 - m_turn));
 
-	std::cout<<"2out: "<<m_state<<"\t"<<m_turn<<"\n";	
+	//std::cout<<"2out: "<<m_state<<"\t"<<m_turn<<"\n";	
 }
 
 void SimpleCountGameRules::onNewRound()
@@ -66,7 +66,7 @@ void SimpleCountGameRules::onNewRound()
 
 void SimpleCountGameRules::roundOver(PlayerId winner)
 {
-	std::cout<<"round: "<<winner<<"\n";	
+	//std::cout<<"round: "<<winner<<"\n";	
 	m_winner = winner;
 	m_roundOver = true;
 	m_serve = winner;//(PlayerId)(3 - m_serve);
