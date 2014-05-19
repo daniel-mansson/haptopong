@@ -4,7 +4,8 @@
 
 using namespace chai3d;
 
-Ball::Ball(cGenericObject* shape, btCollisionShape* collisionShape, const BallProperties &properties, const btTransform &startTransform) :
+Ball::Ball(cGenericObject* shape, btCollisionShape* collisionShape, const cTexture2dPtr &playTexture, const cTexture2dPtr &inactiveTexture,
+           const BallProperties &properties, const btTransform &startTransform) :
 	m_bernoulli(0, 0, 0),
 	m_resistance(0, 0, 0),
 	m_velocity(0, 0, 0),
@@ -72,8 +73,13 @@ Ball::Ball(cGenericObject* shape, btCollisionShape* collisionShape, const BallPr
 	
 	m_playMat = *m_shape->m_material;
 	m_inactiveMat = *m_shape->m_material;
-	m_inactiveMat.m_diffuse.set(0.5f, 0.0f, 0.0f);
-	m_inactiveMat.m_ambient.set(0.3f, 0.1f, 0.1f);
+	//m_inactiveMat.m_diffuse.set(0.5f, 0.0f, 0.0f);
+	//m_inactiveMat.m_ambient.set(0.3f, 0.1f, 0.1f);
+
+    m_playTex = playTexture;
+    m_inactiveTex = inactiveTexture;
+    m_shape->setTexture(std::make_shared<cTexture2d>(*m_playTex.get())); // need to be copy. image changes need to be confined
+	m_shape->setUseTexture(true, true);
 }
 
 Ball::~Ball(void)
@@ -103,12 +109,18 @@ void Ball::updateLogic(float timeStep)
 
 void Ball::onRoundStart()
 {
-	m_shape->setMaterial(m_playMat);
+	//m_shape->setMaterial(m_playMat);
+    //m_shape->setTexture(m_playTex);
+    m_shape->m_texture->m_image = m_playTex->m_image;
+    m_shape->m_texture->markForUpdate();
 }
 
 void Ball::onRoundEnd()
 {
-	m_shape->setMaterial(m_inactiveMat);
+	//m_shape->setMaterial(m_inactiveMat);
+    //m_shape->setTexture(m_inactiveTex);
+    m_shape->m_texture->m_image = m_inactiveTex->m_image;
+    m_shape->m_texture->markForUpdate();
 }
 
 void Ball::updateHaptics(chai3d::cGenericHapticDevicePtr device, const double& timeStep)

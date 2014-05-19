@@ -6,7 +6,8 @@
 class Ball : public GameObject
 {
 public:
-	Ball(chai3d::cGenericObject* shape, btCollisionShape* collisionShape, const BallProperties &properties = BallProperties(), const btTransform &startTransform = btTransform(btMatrix3x3::getIdentity()));
+	Ball(chai3d::cGenericObject* shape, btCollisionShape* collisionShape, const chai3d::cTexture2dPtr &playTexture, const chai3d::cTexture2dPtr &inactiveTexture,
+         const BallProperties &properties = BallProperties(), const btTransform &startTransform = btTransform(btMatrix3x3::getIdentity()));
 	~Ball(void);
 
 	virtual GameObjectType getType() const { return BALL; };
@@ -61,6 +62,9 @@ private:
 	
 	chai3d::cMaterial m_playMat;
 	chai3d::cMaterial m_inactiveMat;
+    
+    chai3d::cTexture2dPtr m_playTex;
+    chai3d::cTexture2dPtr m_inactiveTex;
 };
 
 typedef std::shared_ptr<Ball> BallPtr;

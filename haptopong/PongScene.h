@@ -61,7 +61,6 @@ private:
     btCollisionShapePtr m_ballCollisionShape;
     btCollisionShapePtr m_racketsCollisionShape;
     btCollisionShapePtr m_outsideCollisionShape;
-    btCollisionShapePtr m_outsideWallCollisionShape;
 	
 	TablePtr m_table;
 	NetPtr m_net;

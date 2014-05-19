@@ -121,10 +121,11 @@ PongScene::~PongScene(void)
 {
 	g_ballEventMgr = nullptr;
 
-#ifdef MACOSX
+    #ifdef MACOSX
 	// osx texture deletion crash fix
 	m_world->removeChild(m_ball->getShape());
-#endif
+    m_ball = nullptr;
+    #endif
 }
 
 void PongScene::enter(ScenePtr from)
@@ -818,25 +819,29 @@ void PongScene::createBall()
     
 	m_ballCollisionShape = std::make_shared<btSphereShape>(btScalar(properties.getRadius()));
 
-	cTexture2dPtr net_texture = cTexture2d::create();
-	net_texture->setWrapMode(GL_REPEAT);
-	bool fileload = net_texture->loadFromFile("../gfx/ball_diffuse.png");
+	cTexture2dPtr activeTex = cTexture2d::create();
+	activeTex->setWrapMode(GL_REPEAT);
+	bool fileload = activeTex->loadFromFile("../gfx/ball_active_diffuse.png");
+	if (!fileload)
+	{
+		std::cout << "Error - Texture image failed to load correctly." << std::endl;
+		std::exit(EXIT_FAILURE);
+	}
+    
+    cTexture2dPtr inactiveTex = cTexture2d::create();
+	inactiveTex->setWrapMode(GL_REPEAT);
+	fileload = inactiveTex->loadFromFile("../gfx/ball_inactive_diffuse.png");
 	if (!fileload)
 	{
 		std::cout << "Error - Texture image failed to load correctly." << std::endl;
 		std::exit(EXIT_FAILURE);
 	}
 
-	ballShape->setTexture(net_texture);
-	ballShape->setUseTexture(true, true);
-
 	btTransform startTransform;
 	startTransform.setIdentity();
 	startTransform.setOrigin(btVector3(0,0,1));
-	//startTransform.setOrigin(btVector3(1.75,0,0.65));
-	//startTransform.setOrigin(btVector3(2.2,0,0.9));
 
-	m_ball = std::make_shared<Ball>(ballShape, m_ballCollisionShape.get(), properties, startTransform);
+	m_ball = std::make_shared<Ball>(ballShape, m_ballCollisionShape.get(), activeTex, inactiveTex, properties, startTransform);
 
 	m_dynamicsWorld->addRigidBody(m_ball->getBody());
 }
@@ -845,6 +850,8 @@ void PongScene::createBall()
 void PongScene::createOutside()
 {
 	BallProperties properties;
+    
+    // floor
 
 	m_outsideCollisionShape = btCollisionShapePtr(new btBoxShape(btVector3(5.7f, 5.7f, 0.2f)));
 	m_outside = std::make_shared<Outside>(m_outsideCollisionShape.get());
@@ -888,10 +895,10 @@ void PongScene::createOutside()
 	box4->setMaterial(mat, true);
 	box4->setLocalPos(0, 4.0, -0.49);
 	m_world->addChild(box4);
+
+    // far wall
     
-    
-    m_outsideWallCollisionShape = btCollisionShapePtr(new btBoxShape(btVector3(5.7f, 7.5f, 0.2f)));
-	m_outsideWall = std::make_shared<Outside>(m_outsideWallCollisionShape.get());
+	m_outsideWall = std::make_shared<Outside>(m_outsideCollisionShape.get());
     btTransform transform;
 	transform.setIdentity();
 	transform.setOrigin(btVector3(-5.7f, 0, 0));
