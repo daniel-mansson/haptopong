@@ -64,7 +64,8 @@ PongScene::PongScene(Application& app, GameRulesManagerPtr gameRules) :
 	g_ballEventMgr = m_ballEventMgr;
 
 	// set the background color of the environment
-	m_world->m_backgroundColor.setGrayLevel(0.6f);
+	//m_world->m_backgroundColor.setGrayLevel(0.6f);
+	m_world->m_backgroundColor.setGrayLevel(0.7f);
 
 	createCamera();
 	createLight();
@@ -115,6 +116,14 @@ PongScene::PongScene(Application& app, GameRulesManagerPtr gameRules) :
 	
 	m_hapticButtonDown = false;
 	m_hapticButtonPressed = false;
+    
+    // init camera 2
+    m_aimAssistance = AimAssistancePtr(new GlobalMoveAssistance(m_ball, m_playerRacket, m_camera));
+    m_ballEventMgr->setAimAssistance(m_aimAssistance);
+    m_playerRacket->setSize(2.0);
+    m_playerRacket->setMoveAreaScale(18.0f);
+    m_opponentRacket->setSize(2.0);
+    m_opponentRacket->setMoveAreaScale(18.0f);
 }
 
 PongScene::~PongScene(void)
@@ -860,7 +869,8 @@ void PongScene::createOutside()
 
 	cMaterial mat;
 	mat.setWhite();
-	mat.m_ambient = cColorf(1.0f, 1.0f, 1.0f, 1.0f);
+	//mat.m_ambient = cColorf(1.0f, 1.0f, 1.0f, 1.0f);
+	mat.m_ambient = cColorf(0.92f, 0.92f, 0.92f, 1.0f);
 
 	cShapeBox* box = new cShapeBox(5, 15, 0.4);
 	box->setMaterial(mat, true);
@@ -873,7 +883,8 @@ void PongScene::createOutside()
     mat.m_ambient.set(0.f, 0.f, 0.f);
 	mat.m_diffuse.set(0.f, 0.f, 0.f);
 	mat.m_specular.set(0.f, 0.f, 0.f);
-    mat.m_emission.set(0.75f, 0.75f , 0.75f);
+    //mat.m_emission.set(0.75f, 0.75f , 0.75f);
+    mat.m_emission.set(0.7f, 0.7f , 0.7f);
 	box2->setMaterial(mat, true);
 	box2->setLocalPos(0,0,-0.51);
 	m_world->addChild(box2);
@@ -882,7 +893,8 @@ void PongScene::createOutside()
     mat.m_ambient.set(0.f, 0.f, 0.f);
 	mat.m_diffuse.set(0.f, 0.f, 0.f);
 	mat.m_specular.set(0.f, 0.f, 0.f);
-    mat.m_emission.set(0.75f, 0.75f , 0.75f);
+    //mat.m_emission.set(0.75f, 0.75f , 0.75f);
+    mat.m_emission.set(0.7f, 0.7f , 0.7f);
 	box3->setMaterial(mat, true);
 	box3->setLocalPos(0, -4.0, -0.49);
 	m_world->addChild(box3);
@@ -891,7 +903,8 @@ void PongScene::createOutside()
     mat.m_ambient.set(0.f, 0.f, 0.f);
 	mat.m_diffuse.set(0.f, 0.f, 0.f);
 	mat.m_specular.set(0.f, 0.f, 0.f);
-    mat.m_emission.set(0.75f, 0.75f , 0.75f);
+    //mat.m_emission.set(0.75f, 0.75f , 0.75f);
+    mat.m_emission.set(0.7f, 0.7f , 0.7f);
 	box4->setMaterial(mat, true);
 	box4->setLocalPos(0, 4.0, -0.49);
 	m_world->addChild(box4);
@@ -906,7 +919,7 @@ void PongScene::createOutside()
     m_outsideWall->getBody()->setWorldTransform(transform);
     
     m_dynamicsWorld->addRigidBody(m_outsideWall->getBody().get());
-    m_outsideWall->getBody()->setRestitution(0.05f);
+    m_outsideWall->getBody()->setRestitution(0.025f);
     
 }
 

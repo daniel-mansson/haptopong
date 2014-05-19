@@ -23,7 +23,7 @@ Outside::Outside(btCollisionShape* collisionShape)
     m_body = std::make_shared<btRigidBody>(rbInfo);
     m_body->setRestitution(0.7f);
 	m_body->setUserPointer(this);
-	m_body->setFriction(0.5f);
+	m_body->setFriction(0.75f);
     
 	/*m_body->setCollisionFlags(m_body->getCollisionFlags() |
 		btCollisionObject::CF_NO_CONTACT_RESPONSE|
