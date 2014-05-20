@@ -901,7 +901,7 @@ void PongScene::createOutside()
 	box2->setLocalPos(0,0,-0.51);
 	m_world->addChild(box2);
     */
-    cShapeBox* box3 = new cShapeBox(5, 5, 0.4);
+    cShapeBox* box3 = new cShapeBox(3, 5, 0.4);
     mat.m_ambient.set(0.f, 0.f, 0.f);
 	mat.m_diffuse.set(0.f, 0.f, 0.f);
 	mat.m_specular.set(0.f, 0.f, 0.f);
@@ -911,7 +911,7 @@ void PongScene::createOutside()
 	box3->setLocalPos(0, -4.0, -0.495);
 	m_world->addChild(box3);
     
-    cShapeBox* box4 = new cShapeBox(5, 5, 0.4);
+    cShapeBox* box4 = new cShapeBox(3, 5, 0.4);
     mat.m_ambient.set(0.f, 0.f, 0.f);
 	mat.m_diffuse.set(0.f, 0.f, 0.f);
 	mat.m_specular.set(0.f, 0.f, 0.f);
