@@ -4,7 +4,7 @@
     <LocalDebuggerCommandArguments>..\bin</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
     <LocalDebuggerEnvironment>
-    </LocalDebuggerEnvironment>
+$(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LocalDebuggerCommandArguments>..\bin</LocalDebuggerCommandArguments>

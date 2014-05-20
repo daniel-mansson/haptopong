@@ -1,4 +1,8 @@
 
+#ifdef WIN32
+#define _VARIADIC_MAX 6
+#endif 
+
 //Network engine
 #ifndef MACOSX
 #include <WinSock2.h>
