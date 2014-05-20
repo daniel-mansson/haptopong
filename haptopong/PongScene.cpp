@@ -900,27 +900,26 @@ void PongScene::createOutside()
 	box2->setMaterial(mat, true);
 	box2->setLocalPos(0,0,-0.51);
 	m_world->addChild(box2);
-    
+    */
     cShapeBox* box3 = new cShapeBox(5, 5, 0.4);
     mat.m_ambient.set(0.f, 0.f, 0.f);
 	mat.m_diffuse.set(0.f, 0.f, 0.f);
 	mat.m_specular.set(0.f, 0.f, 0.f);
-    //mat.m_emission.set(0.75f, 0.75f , 0.75f);
-    mat.m_emission.set(0.7f, 0.7f , 0.7f);
+    mat.m_emission.set(0.75f, 0.75f , 0.75f);
+    //mat.m_emission.set(0.7f, 0.7f , 0.7f);
 	box3->setMaterial(mat, true);
-	box3->setLocalPos(0, -4.0, -0.49);
+	box3->setLocalPos(0, -4.0, -0.495);
 	m_world->addChild(box3);
     
     cShapeBox* box4 = new cShapeBox(5, 5, 0.4);
     mat.m_ambient.set(0.f, 0.f, 0.f);
 	mat.m_diffuse.set(0.f, 0.f, 0.f);
 	mat.m_specular.set(0.f, 0.f, 0.f);
-    //mat.m_emission.set(0.75f, 0.75f , 0.75f);
-    mat.m_emission.set(0.7f, 0.7f , 0.7f);
+    mat.m_emission.set(0.75f, 0.75f , 0.75f);
+    //mat.m_emission.set(0.7f, 0.7f , 0.7f);
 	box4->setMaterial(mat, true);
-	box4->setLocalPos(0, 4.0, -0.49);
+	box4->setLocalPos(0, 4.0, -0.495);
 	m_world->addChild(box4);
-    */
      
     // far wall
     

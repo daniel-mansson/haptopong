@@ -7,7 +7,7 @@ using namespace chai3d;
 
 BounceEffect::BounceEffect(chai3d::cWorld* world)
 {
-	m_shape = new ShadowlessCylinder(0.1, 0.1, 0.003);
+	m_shape = new ShadowlessCylinder(0.1, 0.1, /*0.003*/0.001);
 	cMaterial mat;
 	mat.m_ambient.set(1, 1, 1);
 	mat.m_diffuse.set(0, 1, 1);
