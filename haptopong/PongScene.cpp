@@ -101,7 +101,7 @@ PongScene::PongScene(Application& app, GameRulesManagerPtr gameRules) :
 
 	m_ball->onRoundStart();
 
-
+    // front layer
 	m_scoreFont = NEW_CFONTCALIBRI40(); //cFontPtr(NEW_CFONTCALIBRI40());
 	m_infoFont = NEW_CFONTCALIBRI40(); //cFontPtr(NEW_CFONTCALIBRI40());
 
@@ -116,6 +116,18 @@ PongScene::PongScene(Application& app, GameRulesManagerPtr gameRules) :
 	
 	m_hapticButtonDown = false;
 	m_hapticButtonPressed = false;
+    
+    // background layer
+    cBackground* background = new cBackground();
+    m_camera->m_backLayer->addChild(background);
+    
+    // load a texture file
+    bool fileload = background->loadFromFile("../gfx/background.png");
+    if (!fileload)
+    {
+        std::cout << "Error - Image failed to load correctly." << std::endl;
+		std::exit(EXIT_FAILURE);
+    }
     
     // init camera 2
     m_aimAssistance = AimAssistancePtr(new GlobalMoveAssistance(m_ball, m_playerRacket, m_camera));
@@ -549,29 +561,29 @@ void PongScene::onSpecialDown(int key, int x, int y)
 	switch (key) {
 	case GLUT_KEY_DOWN:
 		m_camera->set(cVector3d (0.02, -1.4, 0.055),   // camera position (eye)
-			cVector3d (0.0, 0.0, 0.055),    // look at position (target)
-			cVector3d (0.0, 0.0, 1.0));    // direction of the (up) vector
+                      cVector3d (0.0, 0.0, 0.055),    // look at position (target)
+                      cVector3d (0.0, 0.0, 1.0));    // direction of the (up) vector
 		m_camera->set(cVector3d (-1.5, 0.0, 0.6),   // camera position (eye)
-			cVector3d (-2.0, 0.0, 0.6),    // look at position (target)
-			cVector3d (0.0, 0.0, 1.0));    // direction of the (up) vector
+                      cVector3d (-2.0, 0.0, 0.6),    // look at position (target)
+                      cVector3d (0.0, 0.0, 1.0));    // direction of the (up) vector
 		break;
 	case GLUT_KEY_LEFT:
-		m_camera->set(cVector3d (1.7, 0.15, 0.6),   // camera position (eye)
-			cVector3d (2.0, 0.0, 0.6),    // look at position (target)
-			cVector3d (0.0, 0.0, 1.0));    // direction of the (up) vector
+		m_camera->set(cVector3d (0, -5.0, 0.6),   // camera position (eye)
+                      cVector3d (.0, 0.0, 0.6),    // look at position (target)
+                      cVector3d (0.0, 0.0, 1.0));    // direction of the (up) vector
 		break;
 	case GLUT_KEY_RIGHT:
 		m_camera->set(cVector3d (1.4, 1.2, 0.17),    // camera position (eye)
-			cVector3d (1.4, 0.0, 0.01),    // look at position (target)
-			cVector3d (0.0, 0.0, 1.0));    // direction of the (up) vector
+                      cVector3d (1.4, 0.0, 0.01),    // look at position (target)
+                      cVector3d (0.0, 0.0, 1.0));    // direction of the (up) vector
 		m_camera->set(cVector3d (1.2, 1.6, 0.4),    // camera position (eye)
-			cVector3d (1.2, 0.0, 0.4),    // look at position (target)
-			cVector3d (0.0, 0.0, 1.0));    // direction of the (up) vector
+                      cVector3d (1.2, 0.0, 0.4),    // look at position (target)
+                      cVector3d (0.0, 0.0, 1.0));    // direction of the (up) vector
 		break;
 	case GLUT_KEY_UP:
 		m_camera->set(cVector3d (2.47, 0.0, 0.95),   // camera position (eye)
-			cVector3d (0.0, 0.0, 0.01),    // look at position (target)
-			cVector3d (0.0, 0.0, 1.0));    // direction of the (up) vector
+        cVector3d (0.0, 0.0, 0.01),    // look at position (target)
+        cVector3d (0.0, 0.0, 1.0));    // direction of the (up) vector
 		break;
 	}
 }
@@ -869,16 +881,16 @@ void PongScene::createOutside()
 
 	cMaterial mat;
 	mat.setWhite();
-	//mat.m_ambient = cColorf(1.0f, 1.0f, 1.0f, 1.0f);
-	mat.m_ambient = cColorf(0.92f, 0.92f, 0.92f, 1.0f);
+	mat.m_ambient = cColorf(1.0f, 1.0f, 1.0f, 1.0f);
+	//mat.m_ambient = cColorf(0.92f, 0.92f, 0.92f, 1.0f);
 
-	cShapeBox* box = new cShapeBox(5, 15, 0.4);
+	cShapeBox* box = new cShapeBox(3.0, 15, 0.4);
 	box->setMaterial(mat, true);
 	box->setLocalPos(0,0,-0.5);
 	m_world->addChild(box);
     
     // anti-shadow floors (3)
-    
+    /*
 	cShapeBox* box2 = new cShapeBox(11.4, 15, 0.4);
     mat.m_ambient.set(0.f, 0.f, 0.f);
 	mat.m_diffuse.set(0.f, 0.f, 0.f);
@@ -908,7 +920,8 @@ void PongScene::createOutside()
 	box4->setMaterial(mat, true);
 	box4->setLocalPos(0, 4.0, -0.49);
 	m_world->addChild(box4);
-
+    */
+     
     // far wall
     
 	m_outsideWall = std::make_shared<Outside>(m_outsideCollisionShape.get());
