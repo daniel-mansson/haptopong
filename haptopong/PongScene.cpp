@@ -130,12 +130,7 @@ PongScene::PongScene(Application& app, GameRulesManagerPtr gameRules) :
     }
     
     // init camera 2
-    m_aimAssistance = AimAssistancePtr(new GlobalMoveAssistance(m_ball, m_playerRacket, m_camera));
-    m_ballEventMgr->setAimAssistance(m_aimAssistance);
-    m_playerRacket->setSize(2.0);
-    m_playerRacket->setMoveAreaScale(18.0f);
-    m_opponentRacket->setSize(2.0);
-    m_opponentRacket->setMoveAreaScale(18.0f);
+    onKeyDown('2', 0, 0);
 }
 
 PongScene::~PongScene(void)
