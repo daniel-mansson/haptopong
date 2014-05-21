@@ -33,7 +33,7 @@ void SoundPlayer::play(float frequency, float volume)
     BASS_ChannelStop(m_stream);
     
     BASS_ChannelSetAttribute(m_stream, BASS_ATTRIB_FREQ, (float)(m_infoBass.freq * frequency));
-    BASS_ChannelSetAttribute(m_stream, BASS_ATTRIB_VOL, chai3d::cClamp01(volume));
+    BASS_ChannelSetAttribute(m_stream, BASS_ATTRIB_VOL, (float)chai3d::cClamp01(volume));
     
     //m_pos = m_startpos;
     m_pos = 0;

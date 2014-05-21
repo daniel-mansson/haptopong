@@ -79,17 +79,12 @@ PongScene::PongScene(Application& app, GameRulesManagerPtr gameRules) :
 	m_dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher,overlappingPairCache,solver,collisionConfiguration);
 	m_dynamicsWorld->setGravity(btVector3(0, 0, -7));
 	
-	//std::cerr<<0;
-	
 	createTable();
 	createNet();
 	createBall();
 	createRackets();
 	createOutside();
-	//std::cerr<<1;
-	//Sleep(1000);
-	
-	//std::cerr<<2;
+
 	gContactProcessedCallback = &OnContactProcessed;
 	
 	//std::cerr<<3;
@@ -461,7 +456,7 @@ void PongScene::onKeyDown(unsigned char key, int x, int y)
 	{
 		m_ball->stop();
 		m_ball->setPosition(btVector3(-.1f, 0, 0.1f));
-		m_ball->setVelocity(btVector3(0, -0.6, 0));
+		m_ball->setVelocity(btVector3(0, -0.6f, 0));
 		m_ball->setAngularVelocity(btVector3(0, 0, 0));
 		m_ball->setActive(true);
 	}

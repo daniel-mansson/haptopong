@@ -137,10 +137,11 @@ void MenuScene::onKeyDown(unsigned char key, int x, int y)
 			std::string line;
 			std::string linePort;
 			std::cout<<"Host: ";
-			//std::getline(std::cin, line);
-			line = "130.229.132.142";
+			std::getline(std::cin, line);
+			if(line.length() < 3)
+				line = "130.229.138.66";
 			//line = "127.0.0.1";
-			std::cout<<"Port: ";
+			//std::cout<<"Port: ";
 			//std::getline(std::cin, linePort);
 			linePort = "1234";
 			ENetAddress addr; 

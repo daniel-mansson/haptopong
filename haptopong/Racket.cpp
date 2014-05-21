@@ -81,7 +81,7 @@ void Racket::setSize(double size)
 void Racket::render(float timeStep)
 {
 	m_flash -= 3.0 * timeStep * m_flash;
-
+	
 	float f = (float)(m_flash * m_flashFactor);
 	m_flashMaterial.m_ambient.set(
 		m_material.m_ambient.getR() + f,

@@ -199,6 +199,9 @@
     <ClCompile Include="NoRecieveShadowMesh.cpp">
       <Filter>Pong\Shapes</Filter>
     </ClCompile>
+    <ClCompile Include="Util.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
