@@ -874,9 +874,9 @@ void PongScene::createOutside()
 	mat.m_ambient = cColorf(1.0f, 1.0f, 1.0f, 1.0f);
 	//mat.m_ambient = cColorf(0.92f, 0.92f, 0.92f, 1.0f);
 
-	cShapeBox* box = new cShapeBox(3.0, 15, 0.4);
+	cShapeBox* box = new cShapeBox(4.0, 15, 0.4);
 	box->setMaterial(mat, true);
-	box->setLocalPos(0,0,-0.5);
+	box->setLocalPos(0.5, 0, -0.5);
 	m_world->addChild(box);
     
     // anti-shadow floors (3)
