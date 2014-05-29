@@ -157,6 +157,7 @@ void PongScene::render(const double& timeStep)
 	//pState->getWorldTransform(transform);
 	//m_sphere->setLocalPos(Util::Vec(transform.getOrigin()));
 
+
 	m_aimAssistance->render(timeStep);
 	m_table->render((float)timeStep);
 	m_net->render((float)timeStep);
@@ -194,6 +195,8 @@ void PongScene::render(const double& timeStep)
 
 void PongScene::updateLogic(const double& timeStep)
 {
+	m_ballEventMgr->update(timeStep);
+
 	if(m_roundOver)
 	{
 		m_roundOverTimer -= timeStep;

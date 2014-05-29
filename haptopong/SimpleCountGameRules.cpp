@@ -10,7 +10,7 @@ SimpleCountGameRules::SimpleCountGameRules(int scoreLimit) :
 	m_scoreLimit(scoreLimit),
 	m_serve(PLAYER_LOCAL)
 {
-	
+
 }
 
 
@@ -66,20 +66,23 @@ void SimpleCountGameRules::onNewRound()
 
 void SimpleCountGameRules::roundOver(PlayerId winner)
 {
-	//std::cout<<"round: "<<winner<<"\n";	
-	m_winner = winner;
-	m_roundOver = true;
-	m_serve = winner;//(PlayerId)(3 - m_serve);
-	m_turn = m_serve;
-	m_state = GOING_TOWARDS_TABLE;
-	m_score.addScore(m_winner, 1);
-
-	for(int i = 1; i <= 2; ++i)
+	//std::cout<<"round: "<<winner<<"\n";
+	if(!m_roundOver)
 	{
-		if(m_score.getScore((PlayerId)i) >= m_scoreLimit)
+		m_winner = winner;
+		m_roundOver = true;
+		m_serve = winner;//(PlayerId)(3 - m_serve);
+		m_turn = m_serve;
+		m_state = GOING_TOWARDS_TABLE;
+		m_score.addScore(m_winner, 1);
+
+		for(int i = 1; i <= 2; ++i)
 		{
-			m_gameOver = true;
-			break;
+			if(m_score.getScore((PlayerId)i) >= m_scoreLimit)
+			{
+				m_gameOver = true;
+				break;
+			}
 		}
 	}
 }
