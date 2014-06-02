@@ -25,6 +25,7 @@ public:
 	void setAimAssistance(AimAssistancePtr aimAssistance) { m_aimAssistance = aimAssistance; }
 
 	void playSound(float hitMagnitude);
+	void update(const double& timeStep) { m_tableHitCooldown += timeStep; }
 
 private:
 	HapticResponseManagerPtr m_hapticResponseMgr;
@@ -36,6 +37,7 @@ private:
 	GameObjectType m_lastHit;
 	int m_count;
 	BounceEffectPoolPtr m_bouncePool;
+	double m_tableHitCooldown;
 };
 
 typedef std::shared_ptr<BallEventManager> BallEventManagerPtr;
