@@ -1,27 +1,54 @@
 #include "pch.h"
-#include "CustomWorld.h"
-#include <iostream>
+#include "CustomMesh.h"
 
 using namespace chai3d;
 
+CustomMesh::CustomMesh(cWorld* a_world, bool castShadow, bool recieveShadow) :
+m_worldParent(a_world), m_castShadow(castShadow), m_recieveShadow(recieveShadow)
+{
+}
 
-//==============================================================================
-/*!
- Render the scene graph starting at this object. This method is called
- for each object and optionally render the object itself, its reference frame
- and the collision and/or scenegraph trees. \n
- 
- The object itself is rendered by calling render(), which should be defined
- for each subclass that has a graphical representation.  renderSceneGraph
- does not generally need to be over-ridden in subclasses. \n
- 
- The a_options parameter is used to allow multiple rendering passes.
- See CRenderOptionh.h for more information.
- 
- \param  a_options  Rendering options.
- */
-//==============================================================================
-void CustomWorld::renderSceneGraph(cRenderOptions& a_options)
+void CustomMesh::renderSceneGraph(cRenderOptions& a_options)
+{
+    if(!m_recieveShadow && a_options.m_rendering_shadow)
+    {
+        // backup
+        //cColorf ambientBak(); // not used
+        std::vector<cColorf> diffuseBak;
+        cColorf specularBak(0.0, 0.0, 0.0);
+        
+        // no shadows
+        for (unsigned int i=0; i < m_worldParent->m_lights.size(); i++)
+        {
+            GLint lightNum = m_worldParent->getLightSource(i)->getGLLightNumber();
+            
+            diffuseBak.push_back(cColorf((GLfloat)(a_options.m_shadow_light_level * m_worldParent->getLightSource(i)->m_diffuse.getR()),
+                                         (GLfloat)(a_options.m_shadow_light_level * m_worldParent->getLightSource(i)->m_diffuse.getG()),
+                                         (GLfloat)(a_options.m_shadow_light_level * m_worldParent->getLightSource(i)->m_diffuse.getB())));
+            
+            //glLightfv(lightNum, GL_AMBIENT,  m_worldParent->getLightSource(i)->m_ambient.pColor()); not used
+            glLightfv(lightNum, GL_DIFFUSE,  m_worldParent->getLightSource(i)->m_diffuse.pColor() );
+            glLightfv(lightNum, GL_SPECULAR, m_worldParent->getLightSource(i)->m_specular.pColor());
+        }
+        
+        renderSceneGraphImpl(a_options);
+        
+        // restore to backup
+        for (unsigned int i=0; i < m_worldParent->m_lights.size(); i++)
+        {
+            GLint lightNum = m_worldParent->getLightSource(i)->getGLLightNumber();
+            
+            glLightfv(lightNum, GL_DIFFUSE,  diffuseBak[i].pColor());
+            glLightfv(lightNum, GL_SPECULAR, specularBak.pColor());
+        }
+    }
+    else
+    {
+        renderSceneGraphImpl(a_options);
+    }
+}
+
+void CustomMesh::renderSceneGraphImpl(cRenderOptions& a_options)
 {
 #ifdef C_USE_OPENGL
     
@@ -126,12 +153,15 @@ void CustomWorld::renderSceneGraph(cRenderOptions& a_options)
             /////////////////////////////////////////////////////////////////////
             if (a_options.m_creating_shadow_map)
             {
-                glEnable(GL_CULL_FACE);
-                glCullFace(GL_FRONT);
+                if (m_castShadow)
+                {
+                    glEnable(GL_CULL_FACE);
+                    glCullFace(GL_FRONT);
                 
-                // render object
-                render(a_options);
-                glDisable(GL_CULL_FACE);
+                    // render object
+                    render(a_options);
+                    glDisable(GL_CULL_FACE);
+                }
             }
             
             /////////////////////////////////////////////////////////////////////
@@ -243,25 +273,10 @@ void CustomWorld::renderSceneGraph(cRenderOptions& a_options)
             }
         }
     }
-
-    /*
-    m_children[3]->renderSceneGraph(a_options); // net
-    m_children[5]->renderSceneGraph(a_options); // player
-    m_children[0]->renderSceneGraph(a_options);
-    m_children[1]->renderSceneGraph(a_options);
-    m_children[2]->renderSceneGraph(a_options);
-    m_children[6]->renderSceneGraph(a_options); // opponent
-    m_children[4]->renderSceneGraph(a_options); // ball
-    */
     
     // render children
     for (unsigned int i=0; i<m_children.size(); i++)
     {
-        if (i==5) //ball
-            a_options.m_enable_lighting  = false;
-        else
-            a_options.m_enable_lighting  = true;
-        
         m_children[i]->renderSceneGraph(a_options);
     }
     

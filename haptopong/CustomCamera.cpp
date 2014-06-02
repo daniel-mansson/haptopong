@@ -5,19 +5,9 @@
 
 using namespace chai3d;
 
-
-/*CustomCamera::CustomCamera(cWorld* parent, cGenericObject* excludeOpaque1, cGenericObject* excludeOpaque2) :
- cCamera(parent),
- m_excludeOpaque1(excludeOpaque1),
- m_excludeOpaque2(excludeOpaque2)
- {
- 
- }*/
-
 CustomCamera::CustomCamera(cWorld* parent) :
 	cCamera(parent)
 {
-
 }
 
 void CustomCamera::renderView(const int a_windowWidth,
@@ -483,7 +473,8 @@ void CustomCamera::renderView(const int a_windowWidth,
                 for(lst = shadowMaps.begin(); lst !=shadowMaps.end(); ++lst)
                 {
                     cShadowMap *shadowMap = *lst;
-                    shadowMap->render(options);
+                    
+                    shadowMap->render(options);;
                     
                     if (m_parentWorld != NULL)
                     {
@@ -591,7 +582,7 @@ void CustomCamera::renderView(const int a_windowWidth,
                 options.m_shadow_light_level                    = 1.0;
                 options.m_storeObjectPositions                  = true;
                 options.m_resetDisplay                          = m_resetDisplay;
-                
+
                 // render 1st pass (opaque objects - all faces)
                 if (m_parentWorld != NULL)
                 {
@@ -642,7 +633,7 @@ void CustomCamera::renderView(const int a_windowWidth,
                 options.m_shadow_light_level                    = 1.0 - m_parentWorld->getShadowIntensity();
                 options.m_storeObjectPositions                  = false;
                 options.m_resetDisplay                          = m_resetDisplay;
-                
+
                 // render 1st pass (opaque objects - all faces - shadowed regions)
                 m_parentWorld->renderSceneGraph(options);
                 
@@ -709,7 +700,7 @@ void CustomCamera::renderView(const int a_windowWidth,
                 // render single pass (all objects)
                 if (m_parentWorld != NULL)
                 {
-                    m_parentWorld->renderSceneGraph(options); 
+                    m_parentWorld->renderSceneGraph(options);
                 }
             }
         }        

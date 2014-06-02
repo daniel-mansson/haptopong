@@ -1,19 +1,20 @@
 #pragma once
 
-#include "ShadowSphere.h"
-
 /**
- * Instances of this type does only cast a shadow
+ * cShapeSphere with ability toggle shadowcasting and/or recieving shadow
  */
 class CustomSphere : public chai3d::cShapeSphere
 {
 public:
-    CustomSphere(chai3d::cWorld* world, const double& a_radius, chai3d::cMaterialPtr a_material = chai3d::cMaterialPtr());
+    CustomSphere(chai3d::cWorld* a_world, const double& a_radius, bool castShadow  = true, bool recieveShadow = true, chai3d::cMaterialPtr a_material = chai3d::cMaterialPtr());
     
-    void render(chai3d::cRenderOptions& a_options) override;
+    virtual void renderSceneGraph(chai3d::cRenderOptions& a_options) override;
+    void renderSceneGraphImpl(chai3d::cRenderOptions& a_options);
     
 private:
-	ShadowSphere* m_shadowShape;
+    chai3d::cWorld* m_worldParent;
+    bool m_castShadow;
+    bool m_recieveShadow;
     
 };
 

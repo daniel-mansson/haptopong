@@ -67,9 +67,9 @@ private:
 	BallPtr m_ball;
     RacketPtr m_playerRacket;
     RacketPtr m_opponentRacket;
-	BallEventManagerPtr m_ballEventMgr;
 	OutsidePtr m_outside;
     OutsidePtr m_outsideWall;
+	BallEventManagerPtr m_ballEventMgr;
 	HapticResponseManagerPtr m_hapticResponseMgr;
 	StepTimer m_networkTimer;
     
